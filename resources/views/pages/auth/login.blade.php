@@ -1,20 +1,20 @@
 @extends('layouts.base-layout')
 
 @section('content')
-  <div class="bg-white bg-opacity-90 rounded-lg shadow-xl p-8 max-w-md w-full space-y-6">
+  <div class="bg-white dark:bg-gray-900 bg-opacity-90 rounded-lg shadow-xl p-8 max-w-md w-full space-y-6">
     <!-- Заголовок формы -->
-    <h1 class="text-3xl font-bold text-center text-gray-800">Вход в систему</h1>
+    <h1 class="text-3xl font-bold text-center dark:text-white text-gray-800">Вход в систему</h1>
 
     <!-- Форма -->
     <form class="space-y-4">
       <!-- Поле для логина -->
       <div>
-        <label for="login" class="block text-sm font-medium text-gray-700">Логин</label>
+        <label for="login" class="block text-sm font-medium dark:text-white text-gray-700">Логин</label>
         <input
           type="text"
           id="login"
           name="login"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          class="mt-1 block w-full px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="Введите ваш логин"
           required
         />
@@ -22,12 +22,12 @@
 
       <!-- Поле для пароля -->
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+        <label for="password" class="block text-sm font-medium dark:text-white text-gray-700">Пароль</label>
         <input
           type="password"
           id="password"
           name="password"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          class="mt-1 block w-full px-3 py-2 dark:bg-gray-800 border dark:text-white  border-gray-300 dark:border-blue-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="Введите ваш пароль"
           required
         />
