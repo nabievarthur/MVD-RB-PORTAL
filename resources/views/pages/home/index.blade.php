@@ -79,4 +79,6 @@
             <!-- Add more posts as needed -->
         </div>
     </div>
+    <!-- Cообщение об успешном входе -->
+    @include('components.messagebox')
 @endsection
