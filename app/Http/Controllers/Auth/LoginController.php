@@ -33,6 +33,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home')->with('update', 'Вы вышли из системы');
+        return redirect()->route('login')->with('exit', 'Вы вышли из системы');
     }
 }

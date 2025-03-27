@@ -12,6 +12,9 @@
     @include('components.navbar')
     <!-- Контент -->
     @yield('content')
+
+    <!-- Cообщение об успешном входе -->
+    @include('components.messagebox')
     <!-- Футер позже добавить -->
 </body>
 </html>
