@@ -13,7 +13,7 @@
                     type="text"
                     id="login"
                     name="login"
-                    class="mt-1 block w-full px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm @error('login') border-red-400 @enderror"
+                    class="mt-1 block w-full px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm @error('login') border-red-400 dark:border-red-400 @enderror"
                     placeholder="Введите ваш логин"
                     required
                 />
@@ -25,7 +25,7 @@
                     type="password"
                     id="password"
                     name="password"
-                    class="mt-1 block w-full px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm @error('password') border-red-400 @enderror"
+                    class="mt-1 block w-full px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm @error('password') border-red-400 dark:border-red-400 @enderror"
                     placeholder="Введите ваш пароль"
                     required
                 />
