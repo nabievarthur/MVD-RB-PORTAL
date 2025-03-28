@@ -1,5 +1,5 @@
 <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-    <div class="container mx-auto flex items-center justify-between mx-auto p-4">
+    <div class="container sm:w-11/12 mx-auto flex items-center justify-between mx-auto p-4">
         <!-- Логотип и название -->
         <div>
             <a href="{{route('home')}}" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -36,13 +36,17 @@
                     @auth
                         <li>
                             <a href="{{route('home')}}"
-                               class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                               aria-current="page">Главная</a>
+                               class="block py-2 px-3 {{ Route::is('home') ? 'text-blue-700' : 'text-gray-900 dark:text-white' }} rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700
+                                     dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Главная
+                            </a>
                         </li>
                     @endauth
                     <li>
-                        <a href="{{route('home')}}"
-                           class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Руководство</a>
+                        <a href="{{route('chiefs.index')}}"
+                           class="block py-2 px-3 {{ Route::is('chiefs.index') ? 'text-blue-700' : 'text-gray-900 dark:text-white' }} rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700
+                                     dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                            Руководство
+                        </a>
                     </li>
                     <li>
                         <a href="{{route('home')}}"
@@ -62,21 +66,21 @@
         <!-- Кнопки справа -->
         <div class="flex order-2 space-x-3 items-center">
             @auth()
-            <div>
-                <p class="dark:text-gray-300">{{auth()->user()->full_name ? auth()->user()->full_name : auth()->user()->login}}</p>
-            </div>
+                <div>
+                    <p class="font-medium text-gray-600 dark:text-gray-300">{{auth()->user()->full_name ? auth()->user()->full_name : auth()->user()->login}}</p>
+                </div>
             @endauth
             <div>
                 @unless(Request::is('login'))
-                @guest
-                    <a href="{{route('login')}}">
-                        <button
-                            type="button"
-                            class="text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Войти
-                        </button>
-                    </a>
-                @endguest
+                    @guest
+                        <a href="{{route('login')}}">
+                            <button
+                                type="button"
+                                class="text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Войти
+                            </button>
+                        </a>
+                    @endguest
                 @endunless
                 @auth
                     <form method="POST" action="{{route('logout')}}">
