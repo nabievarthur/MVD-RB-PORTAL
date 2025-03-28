@@ -60,8 +60,6 @@
                     <p class="text-base font-sm text-gray-500 dark:text-white"><span class="font-bold text-red-500">*</span> - поле обезательное для заполнения</p>
                 </div>
 
-
-
                 <div class="w-1/3 mx-auto">
                     <button
                         type="submit"
