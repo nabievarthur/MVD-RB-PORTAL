@@ -18,94 +18,108 @@
         </div>
         <div>
             <!-- Карточка министра -->
-            <div class="flex justify-center items-center mt-10">
-                <div
-                    class="w-72 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border border-gray-200 dark:border-gray-700">
-                    <!-- Фото руководителя -->
-                    <div class="h-52 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <img
-                            class="h-full w-full object-cover object-top"
-                            src="{{asset('images/chiefs/A.A_Pryadko.jpg')}}"
-                            alt="Фото руководителя">
-                    </div>
-
-                    <!-- Информация -->
-                    <div class="p-4 text-center">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Прядко Александр
-                            Александрович</h3>
-                        <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">Генерал-лейтенант полиции</p>
-                        <p class="text-sm text-gray-700 dark:text-gray-300">Министр внутренних дел по Республике
-                            Башкортостан</p>
-                    </div>
+            <div class="mt-10 flex justify-center">
+                <div class="grid grid-cols-1 gap-6 justify-center">
+                    <x-chief-card
+                        image="Pryadko.jpg"
+                        name="Прядко Александр Александрович"
+                        rank="Генерал-лейтенант полиции"
+                        position="Министр внутренних дел по Республике Башкортостан"
+                        position-class="text-sm text-orange-500 dark:text-orange-300"
+                    ></x-chief-card>
                 </div>
             </div>
             <div class="mt-10 flex justify-center">
-                <!-- Ряд с 4 карточками -->
+                <!-- Карточки замов -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center">
-                    <!-- Карточка 1 -->
-                    <div
-                        class="w-72 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border border-gray-200 dark:border-gray-700">
-                        <div class="h-52 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                            <img
-                                class="h-full w-full object-cover object-top"
-                                src="{{asset('images/chiefs/Saifullin.jpg')}}"
-                                alt="Фото сотрудника">
-                        </div>
-                        <div class="p-4 text-center">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Сайфуллин Артур
-                                Фаридович</h3>
-                            <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">Генерал-майор полиции</p>
-                            <p class="text-sm text-gray-700 dark:text-gray-300">Заместитель министра - начальник полиции</p>
-                        </div>
-                    </div>
 
-                    <!-- Карточка 2 -->
-                    <div
-                        class="w-72 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border border-gray-200 dark:border-gray-700">
-                        <div class="h-52 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                            <img
-                                class="h-full w-full object-cover object-top"
-                                src="{{asset('images/chiefs/Baranov.png')}}"
-                                alt="Фото сотрудника">
-                        </div>
-                        <div class="p-4 text-center">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Петров Петр</h3>
-                            <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">Полковник юстиции</p>
-                            <p class="text-sm text-gray-700 dark:text-gray-300">Начальник отдела</p>
-                        </div>
-                    </div>
+                    <x-chief-card
+                        image="Saifullin.jpg"
+                        name="Сайфуллин Артур Фаридович"
+                        rank="Генерал-майор полиции"
+                        position="Заместитель министра - начальник полиции"
+                    ></x-chief-card>
 
-                    <!-- Карточка 3 -->
-                    <div
-                        class="w-72 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border border-gray-200 dark:border-gray-700">
-                        <div class="h-52 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                            <img
-                                class="h-full w-full object-cover object-top"
-                                src="{{asset('images/chiefs/person3.jpg')}}"
-                                alt="Фото сотрудника">
-                        </div>
-                        <div class="p-4 text-center">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Сидоров Сидор</h3>
-                            <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">Майор</p>
-                            <p class="text-sm text-gray-700 dark:text-gray-300">Старший офицер</p>
-                        </div>
-                    </div>
+                    <x-chief-card
+                        image="Zubairov.jpg"
+                        name="Зубаиров Айдар Фарузович"
+                        rank="Генерал-майор полиции"
+                        position="Заместитель министра внутренних дел"
+                    ></x-chief-card>
 
-                    <!-- Карточка 4 -->
-                    <div
-                        class="w-72 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border border-gray-200 dark:border-gray-700">
-                        <div class="h-52 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                            <img
-                                class="h-full w-full object-cover object-top"
-                                src="{{asset('images/chiefs/person4.jpg')}}"
-                                alt="Фото сотрудника">
-                        </div>
-                        <div class="p-4 text-center">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Кузнецов Кузьма</h3>
-                            <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">Капитан</p>
-                            <p class="text-sm text-gray-700 dark:text-gray-300">Офицер связи</p>
-                        </div>
-                    </div>
+                    <x-chief-card
+                        image="Poltavec.jpg"
+                        name="Полтавец Евгений Алексеевич"
+                        rank="Генерал-майор внутренней службы"
+                        position="Заместитель министра внутренних дел"
+                    ></x-chief-card>
+
+                    <x-chief-card
+                        image="Baranov.jpg"
+                        name="Баранов Юрий Борисович"
+                        rank="Полковник юстиции"
+                        position="Заместитель министра внутренних дел - начальник ГСУ"
+                    ></x-chief-card>
+                </div>
+            </div>
+            <div class="mt-10 flex justify-center">
+                <!-- Карточки зам-замов -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center">
+
+                    <x-chief-card
+                        image="Semenov.jpg"
+                        name="Семенов Дмитрий Сергеевич"
+                        rank="Полковник полиции"
+                        position="Заместитель начальника полиции (по оперативной работе)"
+                    ></x-chief-card>
+
+                    <x-chief-card
+                        image="Skornyakov.jpg"
+                        name="Скорняков Руслан Александрович"
+                        rank="Полковник полиции"
+                        position="Заместитель начальника полиции (по охране общественного порядка)"
+                    ></x-chief-card>
+
+                    <x-chief-card
+                        image="Shaimuhametov.jpg"
+                        name="Шаймухаметов Радик Имаммухаметович"
+                        rank="Полковник полиции"
+                        position="Заместитель начальника полиции"
+                    ></x-chief-card>
+
+                    <x-chief-card
+                        image="Faizullin.jpg"
+                        name="Файзуллин Руслан Рашитович"
+                        rank="Полковник юстиции"
+                        position="Первый заместитель начальника ГСУ МВД по РБ"
+                    ></x-chief-card>
+                </div>
+            </div>
+            <div class="mt-10 flex justify-center">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
+
+                    <x-chief-card
+                        image="Bryzgalin.jpg"
+                        name="Брызгалин Александр Анатольевич"
+                        rank="Полковник полиции"
+                        position="Начальник УРЛС МВД по РБ"
+                    ></x-chief-card>
+
+                    <x-chief-card
+                        image="Dubrovkin.jpg"
+                        name="Дубровкин Олег Михайлович"
+                        rank="Полковник внутренней службы"
+                        position="Начальник штаба МВД по РБ"
+                    ></x-chief-card>
+
+                    <x-chief-card
+                        image="Avdeev.jpg"
+                        name="Авдеев Андрей Николаевич"
+                        rank="Полковник внутренней службы"
+                        position="Начальник тыла МВД по РБ"
+                    ></x-chief-card>
+
                 </div>
             </div>
         </div>

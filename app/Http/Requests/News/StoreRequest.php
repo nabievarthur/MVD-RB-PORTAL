@@ -11,7 +11,8 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'nullable|string',
-            'file' => 'nullable|file|max:30720'
+            'file.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip|max:30720',
+            'file' => 'max:5'
         ];
     }
 
@@ -19,7 +20,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title.required' => 'Заголовок новости должнен быть заполнен',
-            'file.max' => 'Превышен максимальный размер файла'
+            'file.max' => 'Превышенно максимальное колличество файлов или размер'
         ];
     }
 }

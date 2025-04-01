@@ -44,7 +44,7 @@
         <!-- Ссылка на восстановление пароля -->
         <div class="text-center">
             <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                Забыли пароль?
+                Забыли логин или пароль?
             </a>
         </div>
     </div>
