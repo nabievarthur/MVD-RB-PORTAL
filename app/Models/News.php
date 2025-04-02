@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class News extends Model
 {
+    public function getFormattedDateAttribute()
+    {
+        return $this->created_at->format('d.m.Y H:i');
+    }
     public function files(): HasMany
     {
         return $this->hasMany(File::class);

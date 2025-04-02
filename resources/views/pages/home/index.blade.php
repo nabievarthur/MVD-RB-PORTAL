@@ -31,6 +31,7 @@
                 <x-news-min
                 title="{{$shortNews['title']}}"
                 description="{{$shortNews['description']}}"
+                date="{{$shortNews['date']}}"
                 />
             @empty
                 <p class="mt-50 text-gray-400 text-2xl text-center">Новостей нет</p>
