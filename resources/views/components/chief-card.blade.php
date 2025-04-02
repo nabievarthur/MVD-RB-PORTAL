@@ -15,7 +15,7 @@
             alt="Фотография руководителя">
     </div>
     <div class="p-4 text-center">
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">{{ $name }}</h3>
+        <h3 class="text-lg font-bold text-gray-700 dark:text-white mb-1">{{ $name }}</h3>
         <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">{{ $rank }}</p>
         <p class="{{$positionClass}}">{{ $position }}</p>
     </div>

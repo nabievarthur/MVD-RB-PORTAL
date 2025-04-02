@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $news = News::query()->orderBy('created_at', 'desc')->cursorPaginate(8);
+        $news = News::query()->with('user')->orderBy('created_at', 'desc')->cursorPaginate(8);
 
         $news = ShortNewsResource::collection($news);
 
