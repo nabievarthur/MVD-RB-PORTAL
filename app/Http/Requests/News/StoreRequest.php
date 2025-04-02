@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\News;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -15,7 +16,6 @@ class StoreRequest extends FormRequest
             'file' => 'max:5'
         ];
     }
-
     public function messages(): array
     {
         return [

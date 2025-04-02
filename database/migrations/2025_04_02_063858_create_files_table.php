@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('news', function (Blueprint $table) {
-            $table->id()->index();
-            $table->text('title');
-            $table->text('description')->nullable();
-            $table->foreignId('user_id')->constrained('users');
+        Schema::create('news_files', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
+            $table->string('path');
+            $table->string('original_name');
+            $table->string('mime_type');
+            $table->unsignedInteger('size');
             $table->timestamps();
         });
-
     }
 
     /**
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists('files');
     }
 };

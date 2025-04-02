@@ -27,9 +27,16 @@
             </div>
         </div>
         <div class="flex flex-col space-y-4">
-            <!-- Post 1 -->
-            <x-news-min/>
-            <!-- Add more posts as needed -->
+            @forelse($news as $shortNews)
+                <x-news-min
+                title="{{$shortNews['title']}}"
+                description="{{$shortNews['description']}}"
+                />
+            @empty
+                <p class="mt-50 text-gray-400 text-2xl text-center">Новостей нет</p>
+            @endforelse
+
+            {{$news->links()}}
         </div>
     </div>
 @endsection
