@@ -20,7 +20,7 @@ class ShortNewsResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'user' => UserForNewsResource::make($this->user)->resolve(),
-            'created_at' => $this->created_at->format('d-m-Y H:i'),
+            'created_at' => $this->created_at,
         ];
     }
 }

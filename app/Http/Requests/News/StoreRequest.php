@@ -12,15 +12,15 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'nullable|string',
-            'file.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip|max:30720',
-            'file' => 'max:5'
+            'files.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip|max:30720',
+            'files' => 'max:5'
         ];
     }
     public function messages(): array
     {
         return [
             'title.required' => 'Заголовок новости должнен быть заполнен',
-            'file.max' => 'Превышенно максимальное колличество файлов или размер'
+            'files.max' => 'Превышен лимит максимального колличества файлов или размера'
         ];
     }
 }

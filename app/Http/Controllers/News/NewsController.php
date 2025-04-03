@@ -24,8 +24,7 @@ class NewsController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            $data = $request->validated();
-            $this->newsService->create($data);
+            $this->newsService->create($request);
             return redirect()->route('home')->with('success', 'Новость успешно добавлена !');
         } catch (Exception $e) {
             return redirect()->route('home')->with('error', 'Не удалось добавить новость. Пожалуйста, пвоторите попытку позже!');

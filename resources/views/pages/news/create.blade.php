@@ -46,15 +46,15 @@
                     >{{old('description')}}</textarea>
                 </div>
                 <div class="w-2/3 mx-auto mb-4">
-                    <label for="file" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Прикрепить файлы</label>
+                    <label for="files" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Прикрепить файлы</label>
                     <input
                         multiple
                         type="file"
-                        id="file"
-                        name="file[]"
+                        id="files"
+                        name="files[]"
                         class="block w-full px-3 py-2 text-gray-500 dark:bg-gray-800 border dark:text-white/60 border-gray-300 dark:border-blue-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-gray-700 dark:file:text-indigo-500 @error('file') border-red-400 dark:border-red-400 @enderror"
                     />
-                    @error('file')
+                    @error('files')
                     <p class="text-center font-bold font-semibold mt-2 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                     <p class="mt-1 mb-1 text-sm text-gray-500 dark:text-gray-400">Вы можете прикрепить несколько файлов, но не более 5.</p>

@@ -28,12 +28,7 @@
         </div>
         <div class="flex flex-col space-y-4">
             @forelse($news as $shortNews)
-                <x-news-min
-                title="{{$shortNews['title']}}"
-                description="{{$shortNews['description']}}"
-                date="{{$shortNews['created_at']}}"
-                user="{{$shortNews['user']['subdivision']['title']}}"
-                />
+                <x-news-min :news="$shortNews"/>
             @empty
                 <p class="mt-50 text-gray-400 text-2xl text-center">Новостей нет</p>
             @endforelse

@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class News extends Model
 {
-    public function getCreatedAtAttribute($value)
+
+    /*public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d.m.Y H:i');
-    }
+    }*/
     public function files(): HasMany
     {
         return $this->hasMany(File::class);
