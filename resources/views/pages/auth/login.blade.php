@@ -1,5 +1,7 @@
 @extends('layouts.base-layout')
 
+@section('title', '- вход')
+
 @section('content')
     <div class="bg-white dark:bg-gray-900 bg-opacity-90 rounded-lg shadow-xl p-8 max-w-md w-full space-y-6">
 
