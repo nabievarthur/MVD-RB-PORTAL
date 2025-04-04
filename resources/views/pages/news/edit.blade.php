@@ -1,25 +1,26 @@
 @extends('layouts.base-layout')
 
-@section('title', '- создание новости')
+@section('title', '- редактирование новости')
 
 @section('content')
     <div class="container sm:w-11/12 mx-auto px-4 mt-20 bg-white dark:bg-gray-900 pb-4 rounded-md min-h-screen">
         <div class="border-b border-b-gray-200 dark:border-b-gray-600 flex justify-between items-center py-4 mb-4">
             <div class="flex justify-between items-center">
-                <h1 class="text-xl font-semibold text-black/80 dark:text-white mr-4">Создание новости</h1>
+                <h1 class="text-xl font-semibold text-black/80 dark:text-white mr-4">Редактирование новости</h1>
             </div>
             <div class="flex justify-between items-center">
                 <x-button-back/>
             </div>
         </div>
         <div>
-            <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data" class="flex flex-col items-center">
+            <form method="POST" action="#" enctype="multipart/form-data" class="flex flex-col items-center">
+                @method('PATCH')
                 @csrf
                 <div class="w-2/3 mx-auto mb-4">
                     <label for="title"
                            class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Заголовок <span class="font-bold text-red-500">*</span></label>
                     <input
-                        value="{{old('title')}}"
+                        value="{{old('title') ? old('title') : $news['title']}}"
                         type="text"
                         id="title"
                         name="title"
@@ -39,8 +40,30 @@
                         name="description"
                         class="w-full block px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                         placeholder="Введите содержание новости"
-                    >{{old('description')}}</textarea>
+                    >{{old('description') ? old('description') : $news['description']}}</textarea>
                 </div>
+                @if($news->files->count() > 0)
+                <div class="w-2/3 mx-auto mb-4">
+                    <label for="files" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Прикрепленные файлы</label>
+
+                        <ul class="list-disc mb-2">
+                            @foreach($news->files as $file)
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <a href="{{ asset('storage/' . $file->path) }}" target="_blank" class="text-indigo-600 hover:underline dark:text-indigo-400">
+                                        {{ $file->original_name }}
+                                    </a>
+                                    <button type="button" class="ml-4 text-red-500 hover:underline text-sm remove-file" data-file-id="{{ $file->id }}">
+                                        Удалить
+                                    </button>
+                                    <input type="hidden" name="existing_files[]" value="{{ $file->id }}">
+                                </li>
+                            @endforeach
+                        </ul>
+                </div>
+                @endif
                 <div class="w-2/3 mx-auto mb-4">
                     <label for="files" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Прикрепить файлы</label>
                     <input
@@ -62,7 +85,7 @@
                         type="submit"
                         class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                        Опубликовать
+                        Сохранить
                     </button>
                 </div>
 

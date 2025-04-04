@@ -11,7 +11,7 @@
             <div class="flex justify-between">
                 <div class="mr-2 border-r-2 border-gray-300 pr-2">
                     <x-button-delete/>
-                    <x-button-edit/>
+                    <x-button-edit route="news.edit" id="{{$news['id']}}"/>
                 </div>
                 <x-button-back/>
             </div>

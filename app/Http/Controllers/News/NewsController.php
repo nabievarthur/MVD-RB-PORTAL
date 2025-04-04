@@ -33,6 +33,10 @@ class NewsController extends Controller
         } catch (Exception $e) {
             return redirect()->route('home')->with('error', 'Не удалось добавить новость. Пожалуйста, пвоторите попытку позже!');
         }
+    }
 
+    public function edit(News $news)
+    {
+        return view('pages.news.edit', compact('news'));
     }
 }
