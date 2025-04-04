@@ -21,6 +21,10 @@ class NewsController extends Controller
         return view('pages.news.create');
     }
 
+    public function show(News $news)
+    {
+        return view('pages.news.show', compact('news'));
+    }
     public function store(StoreRequest $request)
     {
         try {

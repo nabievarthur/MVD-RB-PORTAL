@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::get('/news/create', [NewsController::class, 'create'])->name('news.create')->middleware('auth');
+Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show')->middleware('auth');
 Route::post('/news', [NewsController::class, 'store'])->name('news.store')->middleware('auth');
 
 Route::get('/chiefs',[ChiefController::class,'index'] )->name('chiefs.index');
