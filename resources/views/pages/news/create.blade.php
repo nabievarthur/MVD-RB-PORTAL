@@ -58,8 +58,7 @@
                     @error('files')
                     <p class="text-center font-bold font-semibold mt-2 text-sm text-red-400">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 mb-1 text-sm text-gray-500 dark:text-gray-400">Вы можете прикрепить несколько файлов, но не более 5.</p>
-                    <p class="mt-1 mb-2 text-sm text-red-400 dark:text-red-400">Максимальный размер файла 30 мегабайт.</p>
+                    <p class="mt-1 mb-1 text-sm text-gray-500 dark:text-gray-400">Вы можете прикрепить несколько файлов, но не более 5. <span class="mt-1 mb-2 text-sm text-red-400 dark:text-red-400">Максимальный размер файла 30 мегабайт.</span></p>
                     <p class="text-base font-sm text-gray-500 dark:text-white"><span class="font-bold text-red-500">*</span> - поле обезательное для заполнения</p>
                 </div>
 
