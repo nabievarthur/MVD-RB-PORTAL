@@ -7,7 +7,15 @@
     <div class="container sm:w-11/12 mx-auto px-4 mt-20 bg-white dark:bg-gray-900 pb-4 rounded-md min-h-screen">
         <div class="border-b border-b-gray-200 dark:border-b-gray-600 flex justify-between items-center py-4 mb-4">
             <h1 class="text-2xl font-bold text-black/80 dark:text-white">{{ $news['title'] }}</h1>
-            <x-button-back/>
+
+            <div class="flex justify-between">
+                <div class="mr-2 border-r-2 border-gray-300 pr-2">
+                    <x-button-delete/>
+                    <x-button-edit/>
+                </div>
+                <x-button-back/>
+            </div>
+
         </div>
 
         {{--<p class="text-gray-600 dark:text-blue-300 leading-relaxed">{!! \Illuminate\Support\Str::markdown($news['description']) !!}</p>--}}
