@@ -1,17 +1,24 @@
 
 <div class="bg-gray-100/30 dark:bg-gray-800 border-2 border-transparent hover:border-blue-700 transition-colors duration-300 rounded-lg shadow-md overflow-hidden flex">
 
-    <div class="p-4 flex-1 grid grid-rows-[auto_1fr_auto] min-h-[150px]">
-        <a class="block" href="{{ route('news.show', $news['id']) }}">
+
+    <a class="p-4 flex-1 grid grid-rows-[auto_1fr_auto] min-h-[150px] group" href="{{ route('news.show', $news['id']) }}">
         <div class="flex justify-between">
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">{{ $news['title'] }}</h2>
-            <p class="text-sm text-blue-700 dark:text-blue-100/40">{{ Carbon\Carbon::parse($news['created_at'])->format('d.m.Y H:i')}}</p>
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2 group-hover:text-blue-700 transition-colors duration-300">
+                {{ $news['title'] }}
+            </h2>
+            <p class="text-sm text-blue-700/70 dark:text-blue-100/40">
+                {{ Carbon\Carbon::parse($news['created_at'])->format('d.m.Y H:i') }}
+            </p>
         </div>
 
-        <p class="text-gray-600 dark:text-blue-300">{{mb_strlen($news['description']) > 355 ? mb_substr($news['description'], 0, 355) . "..." : $news['description'] }}</p>
-        <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">опубликовал: <span class="text-blue-500">{{$news['user']['subdivision']['title']}}</span></p>
-        </a>
-    </div>
+        <p class="text-gray-600 dark:text-blue-300">
+            {{ mb_strlen($news['description']) > 355 ? mb_substr($news['description'], 0, 355) . "..." : $news['description'] }}
+        </p>
+        <p class="mt-3 text-sm text-gray-600/70 dark:text-gray-400">
+            опубликовал: <span class="text-blue-700/70">{{ $news['user']['subdivision']['title'] }}</span>
+        </p>
+    </a>
 
     <!-- Блок с файлами (только если они есть) -->
     @if(count($news['files']) > 0)

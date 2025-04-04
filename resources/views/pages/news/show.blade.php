@@ -1,26 +1,21 @@
 @extends('layouts.base-layout')
 
-@section('title', '- просмотр новости')
+@section('title', $news['title'])
 
 @section('content')
 
     <div class="container sm:w-11/12 mx-auto px-4 mt-20 bg-white dark:bg-gray-900 pb-4 rounded-md min-h-screen">
         <div class="border-b border-b-gray-200 dark:border-b-gray-600 flex justify-between items-center py-4 mb-4">
             <h1 class="text-2xl font-bold text-black/80 dark:text-white">{{ $news['title'] }}</h1>
-            <a href="{{route('home')}}">
-                <button type="button"
-                        class="text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Назад
-                </button>
-            </a>
+            <x-button-back/>
         </div>
 
         {{--<p class="text-gray-600 dark:text-blue-300 leading-relaxed">{!! \Illuminate\Support\Str::markdown($news['description']) !!}</p>--}}
         <p class="text-gray-600 dark:text-blue-300 leading-relaxed">{!! nl2br(e($news['description'])) !!}</p>
 
-        <div class="flex justify-between">
-            <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">Опубликовал: <span class="text-blue-500">{{$news['user']['subdivision']['title']}}</span></p>
-            <p class="text-sm text-blue-700 dark:text-blue-100/40">{{ Carbon\Carbon::parse($news['created_at'])->format('d.m.Y H:i')}}</p>
+        <div class="flex justify-between items-center">
+            <p class="mt-4 text-sm text-gray-600/70 dark:text-gray-400">Опубликовал: <span class="text-blue-700/70">{{$news['user']['subdivision']['title']}}</span></p>
+            <p class="text-sm text-blue-700/70 dark:text-blue-100/40">{{ Carbon\Carbon::parse($news['created_at'])->format('d.m.Y H:i')}}</p>
         </div>
 
         @if(count($news['files']) > 0)
