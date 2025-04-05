@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/logo.svg" />
-    <script>
-        (function () {
+        <script>
+            (() => {
             const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
+            const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            const html = document.documentElement;
+            html.classList.toggle('dark', isDark);
+
+            // Создаём временной стиль, чтобы скрыть ненужную иконку
+            const style = document.createElement('style');
+            style.textContent = isDark
+            ? '#moon-icon { display: none; } #sun-icon { display: inline; }'
+            : '#moon-icon { display: inline; } #sun-icon { display: none; }';
+            document.head.appendChild(style);
         })();
     </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
