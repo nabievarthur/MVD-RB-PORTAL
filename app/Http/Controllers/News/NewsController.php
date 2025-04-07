@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\News\StoreRequest;
 use App\Models\News;
 use App\Services\NewsService;
-use Auth;
-use Illuminate\Http\Request;
 use Exception;
 
 class NewsController extends Controller

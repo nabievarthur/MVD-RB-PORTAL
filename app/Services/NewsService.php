@@ -19,11 +19,7 @@ class NewsService
 
     public function create(StoreRequest $request)
     {
-        $data = $request->validated();
-
-        $data['user_id'] = Auth::id();
-
-        unset($data['files']);
+        $data = $request->except(['_token', 'files']);
 
         $news = News::query()->create($data);
 

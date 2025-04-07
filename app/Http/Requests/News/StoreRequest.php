@@ -16,6 +16,14 @@ class StoreRequest extends FormRequest
             'files' => 'max:5'
         ];
     }
+
+    protected function passedValidation()
+    {
+        return $this->merge([
+            'user_id' => Auth::user()->id
+        ]);
+    }
+
     public function messages(): array
     {
         return [
@@ -23,4 +31,6 @@ class StoreRequest extends FormRequest
             'files.max' => 'Превышен лимит максимального колличества файлов или размера'
         ];
     }
+
+
 }
