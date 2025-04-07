@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-bold text-black/80 dark:text-white">{{ $news['title'] }}</h1>
 
             <div class="flex justify-between">
-                <div class="mr-2 border-r-2 border-gray-300 pr-2">
+                <div class="mr-2 border-r-1 border-gray-300 dark:border-gray-600 pr-2">
                     <x-button-delete/>
                     <x-button-edit route="news.edit" id="{{$news['id']}}"/>
                 </div>
