@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container sm:w-11/12 mx-auto px-4 mt-20 bg-white dark:bg-gray-900 pb-4 rounded-md min-h-screen">
-        <div class="border-b border-b-gray-200 dark:border-b-gray-600 flex justify-between items-center py-4 mb-4">
+        <div class="border-b border-b-gray-200 dark:border-b-gray-6 00 flex justify-between items-center py-4 mb-4">
             <div class="flex justify-between items-center">
                 <h1 class="text-xl font-semibold text-black/80 dark:text-white mr-4">Редактирование новости</h1>
             </div>
@@ -42,28 +42,36 @@
                         placeholder="Введите содержание новости"
                     >{{old('description') ? old('description') : $news['description']}}</textarea>
                 </div>
-                @if($news->files->count() > 0)
-                <div class="w-2/3 mx-auto mb-4">
-                    <label for="files" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Прикрепленные файлы</label>
 
-                        <ul class="list-disc mb-2">
+                @if($news->files->count() > 0)
+                    <div class="w-2/3 mx-auto mb-4 file-list-wrapper">
+                        <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Загруженные файлы</h2>
+                        <ul class="list-disc">
                             @foreach($news->files as $file)
-                                <li class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                    </svg>
-                                    <a href="{{ asset('storage/' . $file->path) }}" target="_blank" class="text-indigo-600 hover:underline dark:text-indigo-400">
-                                        {{ $file->original_name }}
-                                    </a>
-                                    <button type="button" class="ml-4 text-red-500 hover:underline text-sm remove-file" data-file-id="{{ $file->id }}">
+                                <li class="mb-2 flex items-center">
+                                    <div class="flex items-center">
+                                        <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <a href="{{ asset('storage/' . $file->path) }}" target="_blank" class="text-indigo-600 hover:underline dark:text-indigo-400">
+                                            {{ $file->original_name }}
+                                        </a>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        class="ml-4 text-red-500 text-sm hover:underline delete-file-btn"
+                                        data-id="{{ $file->id }}"
+                                        data-url="{{route('files.destroy', $file->id)}}"
+                                    >
                                         Удалить
                                     </button>
-                                    <input type="hidden" name="existing_files[]" value="{{ $file->id }}">
                                 </li>
                             @endforeach
                         </ul>
-                </div>
+                    </div>
                 @endif
+
+
                 <div class="w-2/3 mx-auto mb-4">
                     <label for="files" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Прикрепить файлы</label>
                     <input
@@ -92,4 +100,47 @@
             </form>
         </div>
     </div>
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('.delete-file-btn');
+
+            deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+            const fileId = this.dataset.id;
+            const url = this.dataset.url;
+            const listItem = this.closest('li');
+            const fileListContainer = listItem.closest('.file-list-wrapper'); // добавим класс для обёртки
+
+            if (confirm('Удалить этот файл?')) {
+            fetch(url, {
+            method: 'DELETE',
+            headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+        },
+        })
+            .then(response => {
+            if (response.ok) {
+            listItem.remove();
+
+            // Проверим, остались ли другие <li>
+            const remainingFiles = fileListContainer.querySelectorAll('li');
+            if (remainingFiles.length === 0) {
+            fileListContainer.remove(); // скрываем весь блок
+        }
+        } else {
+            alert('Ошибка при удалении файла.');
+        }
+        })
+            .catch(error => {
+            console.error(error);
+            alert('Произошла ошибка при удалении.');
+        });
+        }
+        });
+        });
+        });
+    </script>
+
+
 @endsection
