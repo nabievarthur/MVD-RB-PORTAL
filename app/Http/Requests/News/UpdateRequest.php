@@ -3,6 +3,7 @@
 namespace App\Http\Requests\News;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateRequest extends FormRequest
 {
@@ -14,6 +15,22 @@ class UpdateRequest extends FormRequest
             'files.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip|max:30720',
             'files' => 'max:5'
         ];
+    }
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function (Validator $validator) {
+            if ($this->hasFile('files')) {
+                $news = $this->route('news');
+                $existingFilesCount = $news->files()->count();
+                $newFilesCount = count($this->file('files'));
+                $totalFilesCount = $existingFilesCount + $newFilesCount;
+
+                if ($totalFilesCount > 5) {
+                    $validator->errors()->add('files', 'Общее количество файлов не может превышать 5 (уже есть: '.$existingFilesCount.', пытаетесь загрузить: '.$newFilesCount.')');
+                }
+            }
+        });
     }
     public function messages(): array
     {
