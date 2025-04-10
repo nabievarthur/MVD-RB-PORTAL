@@ -9,7 +9,7 @@
                 <h1 class="text-xl font-semibold text-black/80 dark:text-white mr-4">Создание новости</h1>
             </div>
             <div class="flex justify-between items-center">
-                <x-button-back/>
+                <x-button-back route="home"/>
             </div>
         </div>
         <div>

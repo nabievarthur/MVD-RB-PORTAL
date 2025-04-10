@@ -10,7 +10,7 @@
                     Башкортостан</h1>
             </div>
             <div class="flex justify-between items-center">
-                <x-button-back/>
+                <x-button-back route="home"/>
             </div>
         </div>
         <div>

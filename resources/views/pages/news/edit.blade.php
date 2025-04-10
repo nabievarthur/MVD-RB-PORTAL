@@ -9,11 +9,11 @@
                 <h1 class="text-xl font-semibold text-black/80 dark:text-white mr-4">Редактирование новости</h1>
             </div>
             <div class="flex justify-between items-center">
-                <x-button-back/>
+                <x-button-back route="news.show" id="{{$news['id']}}"/>
             </div>
         </div>
         <div>
-            <form method="POST" action="#" enctype="multipart/form-data" class="flex flex-col items-center">
+            <form method="POST" action="{{route('news.update', $news['id'])}}" enctype="multipart/form-data" class="flex flex-col items-center">
                 @method('PATCH')
                 @csrf
                 <div class="w-2/3 mx-auto mb-4">

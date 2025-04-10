@@ -9,16 +9,19 @@
             <h1 class="text-2xl font-bold text-black/80 dark:text-white">{{ $news['title'] }}</h1>
 
             <div class="flex justify-between">
-                <div class="mr-2 border-r-1 border-gray-300 dark:border-gray-600 pr-2">
-                    <x-button-delete/>
+                <div class="flex justify-between mr-2 border-r-1 border-gray-300 dark:border-gray-600 pr-2">
+                    <form method="POST" action="{{route('news.destroy', $news['id'])}}" class="mr-2">
+                        @csrf
+                        @method('DELETE')
+                        <x-button-delete/>
+                    </form>
                     <x-button-edit route="news.edit" id="{{$news['id']}}"/>
                 </div>
-                <x-button-back/>
+                <x-button-back route="home"/>
             </div>
 
         </div>
 
-        {{--<p class="text-gray-600 dark:text-blue-300 leading-relaxed">{!! \Illuminate\Support\Str::markdown($news['description']) !!}</p>--}}
         <p class="text-gray-600 dark:text-blue-300 leading-relaxed">{!! nl2br(e($news['description'])) !!}</p>
 
         <div class="flex justify-between items-center">
