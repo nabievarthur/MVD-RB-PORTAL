@@ -8,6 +8,10 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test', function () {
+    return Auth::user()->isAdmin();
+});
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('files.destroy');

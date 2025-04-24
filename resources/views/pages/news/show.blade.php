@@ -10,12 +10,16 @@
 
             <div class="flex justify-between">
                 <div class="flex justify-between mr-2 border-r-1 border-gray-300 dark:border-gray-600 pr-2">
-                    <form method="POST" action="{{route('news.destroy', $news['id'])}}" class="mr-2">
-                        @csrf
-                        @method('DELETE')
-                        <x-button-delete/>
-                    </form>
-                    <x-button-edit route="news.edit" id="{{$news['id']}}"/>
+                    @can('delete', $news)
+                        <form method="POST" action="{{route('news.destroy', $news['id'])}}" class="mr-2">
+                            @csrf
+                            @method('DELETE')
+                            <x-button-delete/>
+                        </form>
+                    @endcan
+                    @can('update', $news)
+                        <x-button-edit route="news.edit" id="{{$news['id']}}"/>
+                    @endcan
                 </div>
                 <x-button-back route="home"/>
             </div>
@@ -25,7 +29,8 @@
         <p class="text-gray-600 dark:text-blue-300 leading-relaxed">{!! nl2br(e($news['description'])) !!}</p>
 
         <div class="flex justify-between items-center">
-            <p class="mt-4 text-sm text-gray-600/70 dark:text-gray-400">Опубликовал: <span class="text-blue-700/70">{{$news['user']['subdivision']['title']}}</span></p>
+            <p class="mt-4 text-sm text-gray-600/70 dark:text-gray-400">Опубликовал: <span
+                    class="text-blue-700/70">{{$news['user']['subdivision']['title']}}</span></p>
             <p class="text-sm text-blue-700/70 dark:text-blue-100/40">{{ Carbon\Carbon::parse($news['created_at'])->format('d.m.Y H:i')}}</p>
         </div>
 
@@ -35,8 +40,10 @@
                 <ul class="space-y-2">
                     @foreach($news['files'] as $file)
                         <li class="flex items-center">
-                            <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                             </svg>
                             <a href="{{ Storage::url($file['path']) }}"
                                target="_blank"
@@ -50,6 +57,5 @@
             </div>
         @endif
     </div>
-
 
 @endsection

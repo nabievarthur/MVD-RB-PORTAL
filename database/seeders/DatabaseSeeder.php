@@ -65,5 +65,12 @@ class DatabaseSeeder extends Seeder
             'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
         ]);
 
+        User::query()->create([
+            'login' => 'black',
+            'password' => Hash::make('12345'),
+            'full_name' => 'Black Артур Илдарович',
+            'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
+        ]);
+
     }
 }
