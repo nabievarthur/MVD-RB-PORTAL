@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::latestWithUser()->cursorPaginate(8);
+        $query = $request->has('q') ? News::searchQuery($request->q) : News::latestWithUser();
 
-        $news = ShortNewsResource::collection($news);
+        $news = $query->cursorPaginate(8);
 
-        return view('pages.home.index', compact('news'));
+        return view('pages.home.index', ['news' => ShortNewsResource::collection($news)]);
     }
 }

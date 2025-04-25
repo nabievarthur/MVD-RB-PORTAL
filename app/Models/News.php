@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Storage;
 class News extends Model
 {
 
+    public function scopeSearchQuery(Builder $query, $q)
+    {
+        $searchTerm = mb_strtolower($q);
+
+        return $query->whereRaw('LOWER(title) LIKE ?', ['%' . $searchTerm . '%'])
+            ->orWhereRaw('LOWER(description) LIKE ?', ['%' . $searchTerm . '%']);
+    }
+
     public function scopeLatestWithUser(Builder $query): Builder
     {
         return $query->with('user')

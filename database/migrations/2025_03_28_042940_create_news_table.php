@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->id()->index();
-            $table->text('title');
+            $table->text('title')->index();
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
