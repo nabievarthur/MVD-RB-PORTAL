@@ -9,18 +9,21 @@
             <h1 class="text-2xl font-bold text-black/80 dark:text-white">{{ $news['title'] }}</h1>
 
             <div class="flex justify-between">
-                <div class="flex justify-between mr-2 border-r-1 border-gray-300 dark:border-gray-600 pr-2">
-                    @can('delete', $news)
+
+                @can('delete', $news)
+                    <div class="flex justify-between mr-2 border-r-1 border-gray-300 dark:border-gray-600 pr-2">
                         <form method="POST" action="{{route('news.destroy', $news['id'])}}" class="mr-2">
                             @csrf
                             @method('DELETE')
                             <x-button-delete/>
                         </form>
-                    @endcan
-                    @can('update', $news)
-                        <x-button-edit route="news.edit" id="{{$news['id']}}"/>
-                    @endcan
-                </div>
+                        @endcan
+
+                        @can('update', $news)
+                            <x-button-edit route="news.edit" id="{{$news['id']}}"/>
+                    </div>
+                @endcan
+
                 <x-button-back route="home"/>
             </div>
 
