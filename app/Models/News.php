@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class News extends Model
 {
@@ -24,5 +25,19 @@ class News extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+
+    /**
+     * @return void
+     * Удаляем изображения связанные с новостью при удалении новости
+     */
+    protected static function booted(): void
+    {
+       static::deleting(function (self $model) {
+           foreach ($model->files as $file) {
+               Storage::disk('public')->delete($file->path);
+          }
+       });
     }
 }
