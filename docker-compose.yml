@@ -1,0 +1,91 @@
+services:
+    app:
+        build:
+            context: ./docker/nginx
+            dockerfile: Dockerfile
+        container_name: ${DOCKER_PROJECT_NAME}-app
+        command: ["nginx", "-g", "daemon off;"]
+        depends_on:
+            - php
+            - postgres
+            - redis
+        volumes:
+            - ./docker/nginx/templates:/etc/nginx/templates
+            - ./docker/nginx/config/nginx.conf:/etc/nginx/nginx.conf
+            - ./:/var/www/app
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - backend
+
+    php:
+        build:
+            context: ./docker/php-fpm
+            dockerfile: Dockerfile
+            args:
+                APP_ENV: ${APP_ENV}
+                X_DEBUG: ${X_DEBUG}
+                PUID: ${PUID}
+                PGID: ${PGID}
+        container_name: ${DOCKER_PROJECT_NAME}-php-fpm
+        expose:
+            - "9000"
+        volumes:
+            - ./:/var/www/app
+            - ./docker/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+        networks:
+            - backend
+
+    postgres:
+        image: postgres:16.2
+        container_name: ${DOCKER_PROJECT_NAME}-postgresql
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            PGDATA: "/var/lib/postgresql/data/pgdata"
+        volumes:
+            - ../docker-data/data/postgres_mvd_portal:/var/lib/postgresql/data
+        networks:
+            - backend
+
+#    mysql:
+#        image: mysql:8.0.40
+#        environment:
+#            MYSQL_ROOT_PASSWORD: rootpassword
+#            MYSQL_USER: ${MYSQL_USERNAME}
+#            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+#            MYSQL_DATABASE: ${MYSQL_DATABASE}
+#        ports:
+#            - "3306:3306"
+#        volumes:
+#            - mysql-s:/var/lib/mysql
+#        networks:
+#            - backend
+
+    redis:
+        image: redis:7.4-rc
+        container_name: ${DOCKER_PROJECT_NAME}-redis
+        ports:
+            - "6379:6379"
+        volumes:
+            - ../docker-data/redis-data:/var/lib/redis
+            - ./docker/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+        networks:
+            - backend
+
+networks:
+    backend:
+        driver: bridge
+        name: ${DOCKER_PROJECT_NAME}-backend
+        enable_ipv6: false
+        ipam:
+            config:
+                -   subnet: 12.6.0.0/16
+                    gateway: 12.6.0.1
+
+#volumes:
+#    mysql-s:
