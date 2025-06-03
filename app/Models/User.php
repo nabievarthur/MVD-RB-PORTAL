@@ -45,4 +45,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(News::class);
     }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return (bool) $this->roles->contains('name', 'администратор');
+    }
+
+    public function isModerator(): bool
+    {
+        return (bool) $this->roles->contains('name', 'модератор');
+    }
 }

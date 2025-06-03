@@ -20,6 +20,7 @@ class NewsController extends Controller
 
     public function create()
     {
+        $this->authorize('create', News::class);
         return view('pages.news.create');
     }
 
@@ -29,6 +30,8 @@ class NewsController extends Controller
     }
     public function store(StoreRequest $request)
     {
+        $this->authorize('create', News::class);
+
         try {
             $this->newsService->create($request);
             return redirect()->route('home')->with('success', 'Новость успешно добавлена');
@@ -39,11 +42,15 @@ class NewsController extends Controller
 
     public function edit(News $news)
     {
+        $this->authorize('update', $news);
+
         return view('pages.news.edit', compact('news'));
     }
 
     public function update(News $news, UpdateRequest $request)
     {
+        $this->authorize('update', $news);
+
         try {
             $news = $this->newsService->update($request, $news);
             return redirect()->route('news.show', $news)->with('warning', 'Новость отредактированна');
