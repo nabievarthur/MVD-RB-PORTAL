@@ -10,15 +10,19 @@
 
             <div class="flex justify-between">
 
+                @can('delete', $news)
                     <div class="flex justify-between mr-2 border-r-1 border-gray-300 dark:border-gray-600 pr-2">
                         <form method="POST" action="{{route('news.destroy', $news['id'])}}" class="mr-2">
                             @csrf
                             @method('DELETE')
                             <x-button-delete/>
                         </form>
+                        @endcan
 
+                        @can('update', $news)
                             <x-button-edit route="news.edit" id="{{$news['id']}}"/>
                     </div>
+                @endcan
 
                 <x-button-back route="home"/>
             </div>
