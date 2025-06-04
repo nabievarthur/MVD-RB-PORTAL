@@ -9,16 +9,44 @@
                 @csrf
                 <div class="space-y-4">
                     <!-- Full Name Input -->
-                    <div>
-                        <label for="full_name" class="block text-sm font-medium text-gray-400">ФИО</label>
-                        <input
-                            type="text"
-                            id="full_name"
-                            name="full_name"
-                            placeholder="Введите ФИО"
-                            class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
-                            required
-                        />
+                    <div class="grid grid-cols-3 gap-4">
+                        <!-- Фамилия -->
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-gray-400">Фамилия</label>
+                            <input
+                                type="text"
+                                id="last_name"
+                                name="last_name"
+                                placeholder="Введите фамилию"
+                                class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
+                                required
+                            />
+                        </div>
+
+                        <!-- Имя -->
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-gray-400">Имя</label>
+                            <input
+                                type="text"
+                                id="first_name"
+                                name="first_name"
+                                placeholder="Введите имя"
+                                class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
+                                required
+                            />
+                        </div>
+
+                        <!-- Отчество -->
+                        <div>
+                            <label for="middle_name" class="block text-sm font-medium text-gray-400">Отчество</label>
+                            <input
+                                type="text"
+                                id="middle_name"
+                                name="middle_name"
+                                placeholder="Введите отчество"
+                                class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
+                            />
+                        </div>
                     </div>
 
                     <!-- Department Select -->
