@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\Chief\ChiefController;
 use App\Http\Controllers\Contact\ContactController;
 use App\Http\Controllers\File\FileController;
@@ -20,7 +22,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/news', [NewsController::class, 'store'])->name('news.store');
     Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
 
+
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.user.index');
+
+
+    // TODO: доделать роуты
+
+    Route::view('/admin/news', 'pages.admin.news.index')->name('admin.news.index');
+    Route::view('/admin/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');
+    Route::view('/admin/role', 'pages.admin.role.index')->name('admin.role.index');
+
 });
+
 
 
 
