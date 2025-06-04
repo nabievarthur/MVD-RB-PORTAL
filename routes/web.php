@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.user.index');
 
 
-    // TODO: доделать роуты123
+    // TODO: доделать роуты1232
 
     Route::view('/admin/news', 'pages.admin.news.index')->name('admin.news.index');
     Route::view('/admin/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');
