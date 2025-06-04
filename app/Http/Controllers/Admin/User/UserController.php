@@ -16,4 +16,9 @@ class UserController extends Controller
 
         return view('pages.admin.user.index', compact('users'));
     }
+
+    public function create()
+    {
+        return view('pages.admin.user.create');
+    }
 }

@@ -24,7 +24,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.user.index');
+    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.user.create');
 
 
     // TODO: доделать роуты1232
