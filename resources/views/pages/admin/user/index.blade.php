@@ -59,10 +59,10 @@
                             required
                         >
                             <option value="" disabled selected>Выберите подразделение</option>
-                            <option value="1">Отдел разработки</option>
-                            <option value="2">Отдел маркетинга</option>
-                            <option value="3">Отдел продаж</option>
-                            <option value="4">Техническая поддержка</option>
+                            @foreach($subdivisions as $id => $title)
+                            <option value="{{ $id }}">{{ $title }}</option>
+                            @endforeach
+
                         </select>
                     </div>
 

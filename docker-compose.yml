@@ -52,19 +52,6 @@ services:
         networks:
             - backend
 
-#    mysql:
-#        image: mysql:8.0.40
-#        environment:
-#            MYSQL_ROOT_PASSWORD: rootpassword
-#            MYSQL_USER: ${MYSQL_USERNAME}
-#            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-#            MYSQL_DATABASE: ${MYSQL_DATABASE}
-#        ports:
-#            - "3306:3306"
-#        volumes:
-#            - mysql-s:/var/lib/mysql
-#        networks:
-#            - backend
 
     redis:
         image: redis:7.4-rc

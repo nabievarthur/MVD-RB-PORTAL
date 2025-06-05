@@ -37,12 +37,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-
-
-
 Route::get('/chiefs',[ChiefController::class,'index'] )->name('chiefs.index');
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
-
 
 require __DIR__.'/auth.php';

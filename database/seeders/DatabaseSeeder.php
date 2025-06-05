@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($this->subdivisions as $subdivision) {
             Subdivision::query()->create([
-                'title' => mb_strtolower($subdivision),
+                'title' => $subdivision,
             ]);
         }
 
