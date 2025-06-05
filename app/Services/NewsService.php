@@ -24,12 +24,12 @@ class NewsService
 
         $news = News::query()->create($data);
 
-        if ($request->hasFile('files')) {
-          $this->fileUploadService->uploadFiles('news_files', $news ,$request->file('files'));
-        }
-
         if (!$news) {
             throw new Exception();
+        }
+
+        if ($request->hasFile('files')) {
+          $this->fileUploadService->uploadFiles('news_files', $news ,$request->file('files'));
         }
 
         return $news;
@@ -44,10 +44,6 @@ class NewsService
 
         if ($request->hasFile('files')) {
             $this->fileUploadService->uploadFiles('news_files', $news ,$request->file('files'));
-        }
-
-        if (!$news) {
-            throw new Exception();
         }
 
         return $news;
