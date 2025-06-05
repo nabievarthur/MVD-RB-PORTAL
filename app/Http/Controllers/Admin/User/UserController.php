@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\UserStoreRequest;
-use App\Models\User;
 use App\Repositories\Interfaces\RoleInterface;
 use App\Repositories\Interfaces\SubdivisionInterface;
 use App\Repositories\Interfaces\UserInterface;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -38,6 +36,7 @@ class UserController extends Controller
         if (!$result) {
             return redirect()->back()->with('error', 'Не удалось создать пользователя');
         }
+
         return redirect()->back()->with('success', 'Пользователь успешно добавлен');
     }
 
