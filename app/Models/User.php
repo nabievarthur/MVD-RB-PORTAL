@@ -60,11 +60,11 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return (bool)$this->roles->contains('name', 'admin');
+        return (bool)$this->roles->contains('title', 'Администратор');
     }
 
     public function isModerator(): bool
     {
-        return (bool)$this->roles->contains('name', 'moder');
+        return (bool)$this->roles->contains('title', 'Модератор');
     }
 }
