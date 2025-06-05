@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
         'Отдел Национального Центрального Бюро Интерпола',
     ];
 
-    private array $roles = ['администратор', 'модератор'];
+    private array $roles = ['admin', 'moder'];
     public function run(): void
     {
         /**
@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
          * Создаем роли
          */
         foreach ($this->roles as $role) {
-            Role::query()->create(['name' => $role]);
+            Role::query()->create(['title' => $role]);
         }
 
         $admin = User::query()->create([

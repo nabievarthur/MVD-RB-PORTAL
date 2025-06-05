@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Repositories\Interfaces\RoleInterface;
 use App\Repositories\Interfaces\SubdivisionInterface;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function __construct(protected SubdivisionInterface $subdivisionRepository)
+    public function __construct(
+        protected SubdivisionInterface $subdivisionRepository,
+        protected RoleInterface $roleRepository,
+    )
     {
     }
 
@@ -21,7 +25,9 @@ class UserController extends Controller
 
         $subdivisions = $this->subdivisionRepository->getSubdivisionList();
 
-        return view('pages.admin.user.index', compact('users', 'subdivisions'));
+        $roles = $this->roleRepository->getRolesList();
+
+        return view('pages.admin.user.index', compact('users', 'subdivisions', 'roles'));
     }
 
 }

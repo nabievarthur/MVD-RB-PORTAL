@@ -49,7 +49,7 @@
                         </div>
                     </div>
 
-                    <!-- Department Select -->
+                    <!-- Подразделение -->
                     <div>
                         <label for="department" class="block text-sm font-medium text-gray-400">Подразделение</label>
                         <select
@@ -61,6 +61,22 @@
                             <option value="" disabled selected>Выберите подразделение</option>
                             @foreach($subdivisions as $id => $title)
                             <option value="{{ $id }}">{{ $title }}</option>
+                            @endforeach
+
+                        </select>
+                    </div>
+
+                    <!-- Роль -->
+                    <div>
+                        <label for="department" class="block text-sm font-medium text-gray-400">Роль</label>
+                        <select
+                            id="department"
+                            name="department"
+                            class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
+                        >
+                            <option value="" selected>Пользователь</option>
+                            @foreach($roles as $id => $title)
+                                <option value="{{ $id }}">{{ $title }}</option>
                             @endforeach
 
                         </select>
@@ -152,7 +168,7 @@
                             <td class="py-3 px-4">{{$user->id}}</td>
                             <td class="py-3 px-4">{{$user->login}}</td>
                             <td class="py-3 px-4">{{$user->full_name}}</td>
-                            <td class="py-3 px-4">{{$user->roles->pluck('name')->implode(', ') ?: 'пользователь'}}</td>
+                            <td class="py-3 px-4">{{$user->role_names}}</td>
                             <td class="py-3 px-4 space-x-2 flex">
                                 <button class="bg-indigo-500/50 text-white px-3 py-1 rounded cursor-pointer hover:bg-indigo-800/50 transition flex items-center space-x-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">

@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.user.create');
 
 
-    // TODO: доделать роуты1232
+    // TODO: доделать
 
     Route::view('/admin/news', 'pages.admin.news.index')->name('admin.news.index');
     Route::view('/admin/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');
@@ -40,5 +40,11 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/chiefs',[ChiefController::class,'index'] )->name('chiefs.index');
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+
+
+route::get('cache-clear', function () {
+    Cache::forget('roles.all');
+    Cache::forget('subdivisions.all');
+});
 
 require __DIR__.'/auth.php';

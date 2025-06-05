@@ -36,6 +36,13 @@ class User extends Authenticatable
         ];
     }
 
+    public function getRoleNamesAttribute(): string
+    {
+        return $this->roles->isNotEmpty()
+            ? $this->roles()->pluck('title')->implode(', ')
+            : 'Пользователь';
+    }
+
     public function subdivision(): BelongsTo
     {
         return $this->belongsTo(Subdivision::class);
@@ -53,11 +60,11 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return (bool) $this->roles->contains('name', 'администратор');
+        return (bool)$this->roles->contains('name', 'admin');
     }
 
     public function isModerator(): bool
     {
-        return (bool) $this->roles->contains('name', 'модератор');
+        return (bool)$this->roles->contains('name', 'moder');
     }
 }
