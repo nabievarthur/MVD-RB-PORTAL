@@ -12,9 +12,10 @@ class RoleRepository implements RoleInterface
     /**
      * Create a new class instance.
      */
-    public function __construct(protected Role $model)
+    public function __construct(
+        protected Role $model
+    )
     {
-        //
     }
 
     public function getRolesList(): Collection

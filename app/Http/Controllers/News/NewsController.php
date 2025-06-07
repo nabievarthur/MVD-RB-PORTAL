@@ -14,7 +14,9 @@ class NewsController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private NewsService $newsService)
+    public function __construct(
+        private NewsService $newsService
+    )
     {
     }
 
@@ -28,6 +30,7 @@ class NewsController extends Controller
     {
         return view('pages.news.show', compact('news'));
     }
+
     public function store(StoreRequest $request)
     {
         $this->authorize('create', News::class);

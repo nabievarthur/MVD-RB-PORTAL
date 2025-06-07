@@ -8,7 +8,9 @@ use Illuminate\Pagination\CursorPaginator;
 
 class UserRepository implements UserInterface
 {
-    public function __construct(protected User $user)
+    public function __construct(
+        protected User $user
+    )
     {
     }
 

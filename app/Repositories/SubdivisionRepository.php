@@ -12,13 +12,15 @@ class SubdivisionRepository implements SubdivisionInterface
     /**
      * Create a new class instance.
      */
-    public function __construct(protected Subdivision $model)
+    public function __construct(
+        protected Subdivision $model
+    )
     {
     }
 
     public function getSubdivisionList(): Collection
     {
-        return Cache::remember('subdivisions.all', 1440, function () {
+        return Cache::remember('subdivisions.all', 3600, function () {
             return $this->model->pluck('title', 'id');
         });
     }
