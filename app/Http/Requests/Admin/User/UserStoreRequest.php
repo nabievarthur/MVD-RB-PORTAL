@@ -27,18 +27,10 @@ class UserStoreRequest extends FormRequest
             'password' => ['required', 'confirmed'],
             'last_name' => ['required', 'string'],
             'first_name' => ['required', 'string'],
-            'role_id' => ['sometimes', 'nullable', 'exists:roles,id'],
             'surname' => ['required', 'string'],
+            'role_id' => ['sometimes', 'nullable', 'exists:roles,id'],
             'subdivision_id' => ['required', 'exists:subdivisions,id'],
-            'full_name' => ['nullable'],
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'full_name' => Str::ucfirst(trim($this->last_name)) . ' ' . Str::ucfirst(trim($this->first_name)) . ' ' . Str::ucfirst(trim($this->surname)),
-        ]);
     }
 
 }

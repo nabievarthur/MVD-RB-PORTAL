@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.user.index');
     Route::post('/admin/users', [UserController::class, 'store'])->name('admin.user.store');
+    Route::get('/admin/users/{user}', [UserController::class, 'edit'])->name('admin.user.edit');
 
 
 
@@ -46,13 +47,12 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services.ind
  *
  */
 
-Route::get('role', function () {
-    dd(Auth::user()->roles->pluck('title'));
-});
 
-route::get('cache-clear', function () {
+
+route::get('clear', function () {
     Cache::forget('roles.all');
     Cache::forget('subdivisions.all');
+    echo "Cache clear";
 });
 
 require __DIR__.'/auth.php';

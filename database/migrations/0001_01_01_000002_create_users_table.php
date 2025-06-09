@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('login')->unique();
             $table->string('password');
-            $table->string('full_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('surname')->nullable();
             $table->foreignId('subdivision_id')->nullable()->constrained('subdivisions')->nullOnDelete();
             $table->timestamps();
         });

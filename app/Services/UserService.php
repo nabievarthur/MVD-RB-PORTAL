@@ -12,15 +12,16 @@ class UserService
      */
     public function __construct(User $user)
     {
-
     }
 
-    public function store(array $userData): bool
+    public function storeUser(array $userData): bool
     {
         $user = User::create([
             'login' => $userData['login'],
             'password' => Hash::make($userData['password']),
-            'full_name' => $userData['full_name'],
+            'last_name' => $userData['last_name'],
+            'first_name' => $userData['first_name'],
+            'surname' => $userData['surname'],
             'subdivision_id' => $userData['subdivision_id'],
         ]);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\UserStoreRequest;
+use App\Models\User;
 use App\Repositories\Interfaces\RoleInterface;
 use App\Repositories\Interfaces\SubdivisionInterface;
 use App\Repositories\Interfaces\UserInterface;
@@ -31,13 +32,22 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        $result = $this->userService->store($request->validated());
+        $result = $this->userService->storeUser($request->validated());
 
         if (!$result) {
             return redirect()->back()->with('error', 'Не удалось создать пользователя');
         }
 
         return redirect()->back()->with('success', 'Пользователь успешно добавлен');
+    }
+
+    public function edit(User $user)
+    {
+        return view('pages.admin.user.edit', [
+            'user' => $user,
+            'subdivisions' => $this->subdivisionRepository->getSubdivisionList(),
+            'roles' => $this->roleRepository->getRolesList(),
+        ]);
     }
 
 }

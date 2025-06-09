@@ -21,7 +21,9 @@ class RoleRepository implements RoleInterface
     public function getRolesList(): Collection
     {
         return Cache::remember('roles.all', 3600, function () {
-            return $this->model->pluck('title', 'id');
+            return $this->model
+                ->orderBy('title', 'desc')
+                ->pluck('title', 'id');
         });
 
     }

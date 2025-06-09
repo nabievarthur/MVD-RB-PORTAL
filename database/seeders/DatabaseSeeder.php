@@ -70,7 +70,9 @@ class DatabaseSeeder extends Seeder
         $admin = User::query()->create([
             'login' => 'admin',
             'password' => Hash::make('12345'),
-            'full_name' => 'Админ Админ Админ',
+            'last_name' => 'Админов',
+            'first_name' => 'Админ',
+            'surname' => 'Админович',
             'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
         ]);
 
@@ -79,7 +81,9 @@ class DatabaseSeeder extends Seeder
         $moder = User::query()->create([
             'login' => 'moder',
             'password' => Hash::make('12345'),
-            'full_name' => 'Модер Модер Модер',
+            'last_name' => 'Модераторов',
+            'first_name' => 'Модератор',
+            'surname' => 'Модераторович',
             'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
         ]);
 
@@ -88,7 +92,9 @@ class DatabaseSeeder extends Seeder
         User::query()->create([
             'login' => 'user',
             'password' => Hash::make('12345'),
-            'full_name' => 'User User User',
+            'last_name' => 'Пользователев',
+            'first_name' => 'Пользователь',
+            'surname' => 'Пользователевич',
             'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
         ]);
     }

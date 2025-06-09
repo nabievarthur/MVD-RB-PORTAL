@@ -21,7 +21,8 @@ class SubdivisionRepository implements SubdivisionInterface
     public function getSubdivisionList(): Collection
     {
         return Cache::remember('subdivisions.all', 3600, function () {
-            return $this->model->pluck('title', 'id');
+            return $this->model
+                ->pluck('title', 'id');
         });
     }
 }
