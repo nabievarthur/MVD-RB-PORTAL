@@ -111,7 +111,7 @@
                 <div>
                     <label for="login" class="block text-sm font-medium text-gray-400">Логин</label>
                     <input
-                            value="{{ old('login') }}"
+                            value="{{ old('login') ?? $user->login }}"
                             type="text"
                             id="login"
                             name="login"
@@ -127,6 +127,7 @@
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-400">Пароль</label>
                     <input
+                            value="{{$user->password}}"
                             type="password"
                             id="password"
                             name="password"
