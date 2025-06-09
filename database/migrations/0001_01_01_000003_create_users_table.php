@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('surname')->nullable();
             $table->foreignId('subdivision_id')->nullable()->constrained('subdivisions')->nullOnDelete();
+            $table->foreignId('role_id')->nullable()->constrained('roles')->nullOnDelete();
             $table->timestamps();
         });
 

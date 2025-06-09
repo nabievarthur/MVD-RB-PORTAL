@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
         'Отдел Национального Центрального Бюро Интерпола',
     ];
 
-    private array $roles = ['admin', 'moder'];
+    private array $roles = ['admin', 'moder', 'user'];
     public function run(): void
     {
         /**
@@ -74,9 +74,9 @@ class DatabaseSeeder extends Seeder
             'first_name' => 'Админ',
             'surname' => 'Админович',
             'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
+            'role_id' => 1,
         ]);
 
-        $admin->roles()->attach(1); // Присваиваем роль админа
 
         $moder = User::query()->create([
             'login' => 'moder',
@@ -85,17 +85,19 @@ class DatabaseSeeder extends Seeder
             'first_name' => 'Модератор',
             'surname' => 'Модераторович',
             'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
+            'role_id' => 2,
         ]);
 
-        $moder->roles()->attach(2);
 
-        User::query()->create([
+        $user = User::query()->create([
             'login' => 'user',
             'password' => Hash::make('12345'),
             'last_name' => 'Пользователев',
             'first_name' => 'Пользователь',
             'surname' => 'Пользователевич',
             'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
+            'role_id' => 3,
         ]);
+
     }
 }

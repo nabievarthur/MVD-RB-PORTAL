@@ -39,12 +39,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function getRoleNamesAttribute(): string
-    {
-        return $this->roles->isNotEmpty()
-            ? $this->roles()->pluck('title')->implode(', ')
-            : 'Пользователь';
-    }
 
     public function subdivision(): BelongsTo
     {
@@ -56,18 +50,18 @@ class User extends Authenticatable
         return $this->hasMany(News::class);
     }
 
-    public function roles(): BelongsToMany
+    public function role(): BelongsTo
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
     public function isAdmin(): bool
     {
-        return (bool)$this->roles->contains('title', 'Администратор');
+        return $this->role->title === 'Администратор';
     }
 
     public function isModerator(): bool
     {
-        return (bool)$this->roles->contains('title', 'Модератор');
+        return $this->role->title === 'Модератор';
     }
 }

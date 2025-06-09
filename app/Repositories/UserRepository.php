@@ -17,7 +17,7 @@ class UserRepository implements UserInterface
     public function getPaginatedUsers():CursorPaginator
     {
         return $this->user
-            ->with('roles')
+            ->with('role')
             ->orderBy('created_at', 'desc')
             ->cursorPaginate(10);
     }

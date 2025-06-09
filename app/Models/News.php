@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Storage;
 
 class News extends Model
 {
-
+    protected $fillable = [
+        'title',
+        'description',
+        'user_id',
+    ];
     public function scopeSearchQuery(Builder $query, $q)
     {
         $searchTerm = mb_strtolower($q);

@@ -47,7 +47,9 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services.ind
  *
  */
 
-
+Route::get('dev', function () {
+    dd(Auth::user()->role->title);
+});
 
 route::get('clear', function () {
     Cache::forget('roles.all');

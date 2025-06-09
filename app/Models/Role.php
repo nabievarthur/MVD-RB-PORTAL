@@ -11,6 +11,7 @@ class Role extends Model
         $titles = [
             'admin' => 'Администратор',
             'moder' => 'Модератор',
+            'user' => 'Пользователь',
         ];
 
         return $titles[$value] ?? $value;
