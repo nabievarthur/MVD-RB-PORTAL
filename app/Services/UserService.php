@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CrudActionEnum;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Hash;
@@ -14,6 +15,7 @@ class UserService
     public function __construct(
         protected User           $user,
         protected UserRepository $userRepository,
+        protected UserLogService $logService,
     )
     {
     }
@@ -22,17 +24,38 @@ class UserService
     {
         $user = $this->userRepository->createUser($userData);
 
-        return $user ? true : false;
+        if ($user) {
+
+            $this->logService->log($user, CrudActionEnum::CREATE, $userData);
+
+            return true;
+        }
+
+        return false;
     }
 
     public function updateUser(User $user, array $userData): bool
     {
+        $oldData = $user->getOriginal();
+
         if (empty($userData['password'])) {
             unset($userData['password']);
         } else {
             $userData['password'] = Hash::make($userData['password']);
         }
 
-        return $this->userRepository->updateUser($user, $userData);
+        $updated = $this->userRepository->updateUser($user, $userData);
+
+        if ($updated) {
+            $this->logService->log($user, CrudActionEnum::UPDATE,
+                [
+                    'old' => $oldData,
+                    'new' => $userData
+                ]);
+            
+            return true;
+        }
+
+        return false;
     }
 }
