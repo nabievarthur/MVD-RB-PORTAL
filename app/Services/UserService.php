@@ -40,8 +40,6 @@ class UserService
 
         if (empty($userData['password'])) {
             unset($userData['password']);
-        } else {
-            $userData['password'] = Hash::make($userData['password']);
         }
 
         $updated = $this->userRepository->updateUser($user, $userData);
@@ -52,7 +50,7 @@ class UserService
                     'old' => $oldData,
                     'new' => $userData
                 ]);
-            
+
             return true;
         }
 

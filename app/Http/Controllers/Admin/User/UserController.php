@@ -47,7 +47,7 @@ class UserController extends Controller
     public function edit(User $user): View
     {
         return view('pages.admin.user.edit', [
-            'user' => $user,
+            'user' => $this->userRepository->findUserById($user->id),
             'subdivisions' => $this->subdivisionRepository->getSubdivisionList(),
             'roles' => $this->roleRepository->getRolesList(),
         ]);

@@ -18,7 +18,7 @@ class UserLogService
 
     public function log(Model $model, CrudActionEnum $action, array $data = []): void
     {
-        if ($action == CrudActionEnum::UPDATE) {
+        if ($action === CrudActionEnum::UPDATE) {
             unset($data['old']['password']);
             unset($data['new']['password']);
         }

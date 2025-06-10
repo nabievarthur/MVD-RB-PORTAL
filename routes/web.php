@@ -53,8 +53,8 @@ Route::get('dev', function () {
 });
 
 route::get('clear', function () {
-    Cache::forget('roles.all');
-    Cache::forget('subdivisions.all');
+    Cache::flush();
+
     echo "Cache clear";
 });
 
