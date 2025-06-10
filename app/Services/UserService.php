@@ -23,11 +23,8 @@ class UserService
             'first_name' => $userData['first_name'],
             'surname' => $userData['surname'],
             'subdivision_id' => $userData['subdivision_id'],
+            'role_id' => $userData['role_id'],
         ]);
-
-        if ($userData['role_id']) {
-            $user->roles()->attach($userData['role_id']);
-        }
 
         return $user ? true : false;
     }

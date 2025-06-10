@@ -83,7 +83,7 @@
                             name="role_id"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('role_id') border border-red-400 @enderror"
                         >
-                            <option value="" selected>Пользователь</option>
+                            <option value="" disabled selected>Выберите роль</option>
                             @foreach($roles as $id => $title)
                                 <option
                                     value="{{ $id }}" {{ old('role_id') == $id ? 'selected' : '' }}>{{ $title }}</option>
@@ -209,8 +209,8 @@
                             <td class="py-3 px-4">{{$user->surname}}</td>
                             <td class="py-3 px-4">{{$user->role->title}}</td>
                             <td class="py-3 px-4 space-x-2 flex">
-                                <a  href="{{route('admin.user.edit', $user->id)}}"
-                                    class="bg-indigo-500/50 text-white px-3 py-1 rounded cursor-pointer hover:bg-indigo-800/50 transition flex items-center space-x-2">
+                                <a href="{{route('admin.user.edit', $user->id)}}"
+                                   class="bg-indigo-500/50 text-white px-3 py-1 rounded cursor-pointer hover:bg-indigo-800/50 transition flex items-center space-x-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-pen" viewBox="0 0 16 16">
                                         <path

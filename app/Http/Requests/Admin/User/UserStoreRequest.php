@@ -28,7 +28,7 @@ class UserStoreRequest extends FormRequest
             'last_name' => ['required', 'string'],
             'first_name' => ['required', 'string'],
             'surname' => ['required', 'string'],
-            'role_id' => ['sometimes', 'nullable', 'exists:roles,id'],
+            'role_id' => ['required', 'exists:roles,id'],
             'subdivision_id' => ['required', 'exists:subdivisions,id'],
         ];
     }
