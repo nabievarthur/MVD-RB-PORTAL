@@ -39,7 +39,7 @@ class NewsController extends Controller
             $this->newsService->create($request);
             return redirect()->route('home')->with('success', 'Новость успешно добавлена');
         } catch (Exception $e) {
-            return redirect()->route('home')->with('error', 'Не удалось добавить новость. Пожалуйста, пвоторите попытку позже!'. $e->getMessage());
+            return redirect()->route('home')->with('error', 'Не удалось добавить новость. Пожалуйста, повторите попытку позже!'. $e->getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ class NewsController extends Controller
 
         try {
             $news = $this->newsService->update($request, $news);
-            return redirect()->route('news.show', $news)->with('warning', 'Новость отредактированна');
+            return redirect()->route('news.show', $news)->with('warning', 'Новость отредактирована');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Ошибка при редактировании новости');
         }
