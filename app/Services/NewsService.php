@@ -18,7 +18,7 @@ class NewsService
      * @throws Exception
      */
 
-    public function create(StoreRequest $request)
+    public function create(StoreRequest $request): News
     {
         $data = $request->except(['_token', 'files']);
 
@@ -36,7 +36,7 @@ class NewsService
 
     }
 
-    public function update(UpdateRequest $request, News $news)
+    public function update(UpdateRequest $request, News $news): News
     {
         $data = $request->except(['_token','_method', 'files']);
 
