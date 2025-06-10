@@ -23,21 +23,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
 
 
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::prefix('/admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.user.index');
-    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.user.store');
-    Route::get('/admin/users/{user}', [UserController::class, 'edit'])->name('admin.user.edit');
+        Route::get('/users', [UserController::class, 'index'])->name('admin.user.index');
+        Route::post('/users', [UserController::class, 'store'])->name('admin.user.store');
+        Route::get('/users/{user}', [UserController::class, 'edit'])->name('admin.user.edit');
+        Route::patch('/users/{user}', [UserController::class, 'update'])->name('admin.user.update');
 
 
-
-    Route::view('/admin/news', 'pages.admin.news.index')->name('admin.news.index');
-    Route::view('/admin/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');
-    Route::view('/admin/role', 'pages.admin.role.index')->name('admin.role.index');
-
+        Route::view('/news', 'pages.admin.news.index')->name('admin.news.index');
+        Route::view('/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');
+        Route::view('/role', 'pages.admin.role.index')->name('admin.role.index');
+    });
 });
 
-Route::get('/chiefs',[ChiefController::class,'index'] )->name('chiefs.index');
+Route::get('/chiefs', [ChiefController::class, 'index'])->name('chiefs.index');
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 
@@ -57,4 +58,4 @@ route::get('clear', function () {
     echo "Cache clear";
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

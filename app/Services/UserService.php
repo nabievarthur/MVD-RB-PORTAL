@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Hash;
 
 class UserService
@@ -10,22 +11,28 @@ class UserService
     /**
      * Create a new class instance.
      */
-    public function __construct(User $user)
+    public function __construct(
+        protected User           $user,
+        protected UserRepository $userRepository,
+    )
     {
     }
 
     public function storeUser(array $userData): bool
     {
-        $user = User::create([
-            'login' => $userData['login'],
-            'password' => Hash::make($userData['password']),
-            'last_name' => $userData['last_name'],
-            'first_name' => $userData['first_name'],
-            'surname' => $userData['surname'],
-            'subdivision_id' => $userData['subdivision_id'],
-            'role_id' => $userData['role_id'],
-        ]);
+        $user = $this->userRepository->createUser($userData);
 
         return $user ? true : false;
+    }
+
+    public function updateUser(User $user, array $userData): bool
+    {
+        if (empty($userData['password'])) {
+            unset($userData['password']);
+        } else {
+            $userData['password'] = Hash::make($userData['password']);
+        }
+
+        return $this->userRepository->updateUser($user, $userData);
     }
 }

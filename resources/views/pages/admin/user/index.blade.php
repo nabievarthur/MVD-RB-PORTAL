@@ -131,7 +131,7 @@
                             type="password"
                             id="password"
                             name="password_confirmation"
-                            placeholder="Введите пароль"
+                            placeholder="Повторите пароль"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('password') border border-red-400 @enderror"
                         />
                     </div>
@@ -155,7 +155,7 @@
         </div>
 
         <!-- Блок с поиском и таблицей (2/3 ширины) -->
-        <div class="w-2/3 bg-gray-800 rounded-lg shadow-md m-4 p-6">
+        <div class="w-2/3 bg-gray-800 rounded-lg shadow-md m-4 p-4">
             <!-- Header with Search and Add User Button -->
             <div class="flex justify-between items-center mb-4">
                 <div>

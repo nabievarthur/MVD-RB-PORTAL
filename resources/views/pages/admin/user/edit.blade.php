@@ -3,8 +3,8 @@
 @section('content')
     <div class="flex w-full justify-center bg-gray-800 rounded-lg shadow-md p-6 m-4 relative">
         <!-- Кнопка "Назад" -->
-        <a href="{{ url()->previous() }}"
-           class="absolute top-4 right-4 bg-gray-700 text-gray-300 px-4 py-2 rounded hover:bg-gray-600 transition flex items-center space-x-2">
+        <a href="{{ route('admin.user.index') }}"
+           class="absolute top-4 right-4 bg-teal-700/50 text-white px-4 py-2 rounded hover:bg-teal-800/50 cursor-pointer transition flex items-center space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
                  viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -18,9 +18,9 @@
                 <h2 class="text-xl font-bold text-gray-200 mb-4 text-center">Редактирование пользователя
                     № {{$user->id}}</h2>
             </div>
-            <form action="{{route('admin.user.store')}}" method="POST" class="w-full flex flex-col space-y-4">
+            <form action="{{ route('admin.user.update', $user->id) }}" method="POST" class="w-full flex flex-col space-y-4">
                 @csrf
-
+                @method('PATCH')
                 <!-- Фамилия -->
                 <div>
                     <label for="last_name" class="block text-sm font-medium text-gray-400">Фамилия</label>
@@ -125,13 +125,12 @@
 
                 <!-- Password Input -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-400">Пароль</label>
+                    <label for="password" class="block text-sm font-medium text-gray-400">Новый пароль</label>
                     <input
-                            value="{{$user->password}}"
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="Введите пароль"
+                            placeholder="Введите новый пароль"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('password') border border-red-400 @enderror"
                     />
                     @error('password')
@@ -140,12 +139,12 @@
                 </div>
 
                 <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-400">Повторите пароль</label>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-400">Повторите новый пароль</label>
                     <input
                         type="password"
                         id="password_confirmation"
                         name="password_confirmation"
-                        placeholder="Введите пароль"
+                        placeholder="Повторите новый пароль"
                         class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
                     />
                 </div>
