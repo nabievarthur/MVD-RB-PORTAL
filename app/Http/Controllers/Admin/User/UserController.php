@@ -11,7 +11,6 @@ use App\Repositories\Interfaces\SubdivisionInterface;
 use App\Repositories\Interfaces\UserInterface;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -45,7 +44,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Пользователь успешно добавлен');
     }
 
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         return view('pages.admin.user.edit', [
             'user' => $user,
@@ -54,7 +53,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(UserUpdateRequest $request, User $user) : RedirectResponse
     {
         $result = $this->userService->updateUser($user, $request->validated());
 
