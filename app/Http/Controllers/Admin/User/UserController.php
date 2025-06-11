@@ -38,7 +38,7 @@ class UserController extends Controller
         $result = $this->userService->storeUser($request->validated());
 
         if (!$result) {
-            return redirect()->back()->with('error', 'Не удалось создать пользователя');
+            return redirect()->back();
         }
 
         return redirect()->back()->with('success', 'Пользователь успешно добавлен');

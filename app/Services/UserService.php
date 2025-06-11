@@ -5,6 +5,10 @@ namespace App\Services;
 use App\Enums\CrudActionEnum;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Services\Log\ExceptionLogService;
+use App\Services\Log\UserLogService;
+use Illuminate\Http\RedirectResponse;
+use Throwable;
 
 class UserService
 {
@@ -12,25 +16,38 @@ class UserService
      * Create a new class instance.
      */
     public function __construct(
-        protected User           $user,
-        protected UserRepository $userRepository,
-        protected UserLogService $logService,
+        protected User                $user,
+        protected UserRepository      $userRepository,
+        protected UserLogService      $userLogService,
+        protected ExceptionLogService $exceptionLogService,
     )
     {
     }
 
     public function storeUser(array $userData): bool
     {
-        $user = $this->userRepository->createUser($userData);
+        try {
+            $user = $this->userRepository->createUser($userData);
 
-        if ($user) {
+            if ($user) {
 
-            $this->logService->log($user, CrudActionEnum::CREATE, $userData);
+                $this->userLogService->log($user, CrudActionEnum::CREATE, $userData);
 
-            return true;
+                return true;
+            }
+
+            return false;
+
+        } catch (Throwable $e) {
+            $this->exceptionLogService->logException(CrudActionEnum::CREATE, $e, ['userData' => $userData]);
+
+            $message = $e->getMessage() ?: 'Неизвестная ошибка';
+
+            session()->flash('error', 'Не удалось создать пользователя: ' . $message);
+
+            return false;
         }
 
-        return false;
     }
 
     public function updateUser(User $user, array $userData): User|false
@@ -47,7 +64,7 @@ class UserService
             return false;
         }
 
-        $this->logService->log($updatedUser, CrudActionEnum::UPDATE, [
+        $this->userLogService->log($updatedUser, CrudActionEnum::UPDATE, [
             'old' => $oldData,
             'new' => $userData,
         ]);

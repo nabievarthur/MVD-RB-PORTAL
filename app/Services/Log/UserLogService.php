@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Log;
 
 use App\Enums\CrudActionEnum;
 use App\Models\UserLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Validation\Rules\Enum;
 
 
 class UserLogService
