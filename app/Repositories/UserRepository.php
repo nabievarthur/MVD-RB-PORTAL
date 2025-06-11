@@ -51,13 +51,19 @@ class UserRepository implements UserInterface
             'role_id' => $userData['role_id'],
         ]);
 
-        Cache::forget(self::CACHE_PREFIX_FOR_ALL_USERS);
+        Cache::tags(['users'])->flush();
 
         return $user;
     }
 
-    public function updateUser(User $user, array $userData): bool
+    public function updateUser(int $userId, array $userData): ?User
     {
+        $user = $this->findUserById($userId);
+
+        if (!$user) {
+            return null;
+        }
+
         $result = $user->update($userData);
 
         if ($result) {
@@ -65,6 +71,12 @@ class UserRepository implements UserInterface
             Cache::forget(self::CACHE_PREFIX_FOR_ONE_USER . $user->id);
         }
 
-        return $result;
+        return $user;
+    }
+
+    public function deleteUser(int $userId): ?bool
+    {
+        // TODO: допилить
+        return false;
     }
 }

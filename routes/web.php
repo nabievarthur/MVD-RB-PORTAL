@@ -48,14 +48,9 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services.ind
  *
  */
 
-Route::get('dev', function () {
-    dd(Auth::user()->role->title);
-});
-
-route::get('clear', function () {
+Route::get('clear', function () {
     Cache::flush();
-
-    echo "Cache clear";
-});
+    return redirect()->back()->with('success', 'Кэш очищен');
+})->name('clear');
 
 require __DIR__ . '/auth.php';

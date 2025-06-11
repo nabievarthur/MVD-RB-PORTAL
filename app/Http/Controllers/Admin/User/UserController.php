@@ -55,13 +55,13 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user) : RedirectResponse
     {
-        $result = $this->userService->updateUser($user, $request->validated());
+        $updatedUser= $this->userService->updateUser($user, $request->validated());
 
-        if (!$result) {
+        if (!$updatedUser) {
             return redirect()->back()->with('error', 'Ошибка обновления данных пользователя');
         }
 
-        return redirect()->back()->with('success', 'Данные пользователя обновлены');
+        return redirect()->route('admin.user.edit', $updatedUser->id)->with('success', 'Данные пользователя обновлены');
     }
 
 }

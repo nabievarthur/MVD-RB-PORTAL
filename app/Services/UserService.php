@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Enums\CrudActionEnum;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Hash;
 
 class UserService
 {
@@ -34,7 +33,7 @@ class UserService
         return false;
     }
 
-    public function updateUser(User $user, array $userData): bool
+    public function updateUser(User $user, array $userData): User|false
     {
         $oldData = $user->getOriginal();
 
@@ -42,18 +41,17 @@ class UserService
             unset($userData['password']);
         }
 
-        $updated = $this->userRepository->updateUser($user, $userData);
+        $updatedUser = $this->userRepository->updateUser($user->id, $userData);
 
-        if ($updated) {
-            $this->logService->log($user, CrudActionEnum::UPDATE,
-                [
-                    'old' => $oldData,
-                    'new' => $userData
-                ]);
-
-            return true;
+        if (!$updatedUser) {
+            return false;
         }
 
-        return false;
+        $this->logService->log($updatedUser, CrudActionEnum::UPDATE, [
+            'old' => $oldData,
+            'new' => $userData,
+        ]);
+
+        return $updatedUser;
     }
 }
