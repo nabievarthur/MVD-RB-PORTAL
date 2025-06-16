@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Log\ExceptionLogService;
 use App\Services\Log\UserLogService;
-use Illuminate\Http\RedirectResponse;
 use Throwable;
 
 class UserService
@@ -24,31 +23,27 @@ class UserService
     {
     }
 
+    /**
+     * @throws Throwable
+     */
     public function storeUser(array $userData): bool
     {
         try {
             $user = $this->userRepository->createUser($userData);
 
-            if ($user) {
-
-                $this->userLogService->log($user, CrudActionEnum::CREATE, $userData);
-
-                return true;
+            if (!$user) {
+                return false;
             }
 
-            return false;
+            $this->userLogService->log($user, CrudActionEnum::CREATE, $userData);
+            return true;
 
         } catch (Throwable $e) {
             $this->exceptionLogService->logException(CrudActionEnum::CREATE, $e, ['userData' => $userData]);
-
-            $message = $e->getMessage() ?: 'Неизвестная ошибка';
-
-            session()->flash('error', 'Не удалось создать пользователя: ' . $message);
-
-            return false;
+            throw $e; // Пробрасываем исключение в контроллер
         }
-
     }
+
 
     public function updateUser(User $user, array $userData): User|false
     {

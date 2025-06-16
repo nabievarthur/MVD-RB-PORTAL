@@ -12,6 +12,7 @@ use App\Repositories\Interfaces\UserInterface;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -35,13 +36,18 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): RedirectResponse
     {
-        $result = $this->userService->storeUser($request->validated());
+        try {
+            $success = $this->userService->storeUser($request->validated());
 
-        if (!$result) {
-            return redirect()->back();
+            if ($success) {
+                return back()->with('success', 'Пользователь успешно добавлен');
+            }
+
+            return back()->with('error', 'Не удалось создать пользователя.');
+
+        } catch (Throwable $e) {
+            return back()->with('error', 'Ошибка при создании пользователя: ' . $e->getMessage());
         }
-
-        return redirect()->back()->with('success', 'Пользователь успешно добавлен');
     }
 
     public function edit(User $user): View
@@ -53,9 +59,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(UserUpdateRequest $request, User $user) : RedirectResponse
+    public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
-        $updatedUser= $this->userService->updateUser($user, $request->validated());
+        $updatedUser = $this->userService->updateUser($user, $request->validated());
 
         if (!$updatedUser) {
             return redirect()->back()->with('error', 'Ошибка обновления данных пользователя');
