@@ -61,13 +61,33 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
-        $updatedUser = $this->userService->updateUser($user, $request->validated());
+        try {
+            $updatedUser = $this->userService->updateUser($user, $request->validated());
 
-        if (!$updatedUser) {
-            return redirect()->back()->with('error', 'Ошибка обновления данных пользователя');
+            return redirect()
+                ->route('admin.user.edit', $updatedUser->id)
+                ->with('success', 'Данные пользователя обновлены');
+        } catch (Throwable $e) {
+            return back()->with('error', 'Ошибка обновления данных пользователя: ' . $e->getMessage());
+        }
+    }
+
+    public function destroy(User $user): RedirectResponse
+    {
+        if (auth()->id() === $user->id) {
+            return back()->with('error', "Нельзя удалить самого себя");
         }
 
-        return redirect()->route('admin.user.edit', $updatedUser->id)->with('success', 'Данные пользователя обновлены');
+        try {
+            $this->userService->deleteUser($user);
+
+            return redirect()
+                ->route('admin.user.index')
+                ->with('warning', 'Пользователь успешно удалён');
+        } catch (Throwable $e) {
+            return back()->with('error', 'Ошибка удаления пользователя: ' . $e->getMessage());
+        }
     }
+
 
 }

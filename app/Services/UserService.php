@@ -45,25 +45,63 @@ class UserService
     }
 
 
-    public function updateUser(User $user, array $userData): User|false
+    /**
+     * @throws Throwable
+     */
+    public function updateUser(User $user, array $userData): User
     {
-        $oldData = $user->getOriginal();
+        try {
+            $oldData = $user->getOriginal();
 
-        if (empty($userData['password'])) {
-            unset($userData['password']);
+            if (empty($userData['password'])) {
+                unset($userData['password']);
+            }
+
+            $updatedUser = $this->userRepository->updateUser($user->id, $userData);
+
+            if (!$updatedUser) {
+                throw new \RuntimeException('Не удалось обновить пользователя.');
+            }
+
+            $this->userLogService->log($updatedUser, CrudActionEnum::UPDATE, [
+                'old' => $oldData,
+                'new' => $userData,
+            ]);
+
+            return $updatedUser;
+
+        } catch (Throwable $e) {
+            $this->exceptionLogService->logException(CrudActionEnum::UPDATE, $e, [
+                'user_id' => $user->id,
+                'data' => $userData
+            ]);
+
+            throw $e; // пробрасываем вверх
         }
-
-        $updatedUser = $this->userRepository->updateUser($user->id, $userData);
-
-        if (!$updatedUser) {
-            return false;
-        }
-
-        $this->userLogService->log($updatedUser, CrudActionEnum::UPDATE, [
-            'old' => $oldData,
-            'new' => $userData,
-        ]);
-
-        return $updatedUser;
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function deleteUser(User $user): void
+    {
+        try {
+            $oldData = $user->getOriginal();
+
+            $this->userRepository->deleteUser($user->id);
+
+            $this->userLogService->log($user, CrudActionEnum::DELETE, [
+                'old' => $oldData,
+            ]);
+
+        } catch (\Throwable $e) {
+            $this->exceptionLogService->logException(CrudActionEnum::DELETE, $e, [
+                'user_id' => $user->id,
+            ]);
+
+            throw $e;
+        }
+    }
+
+
 }

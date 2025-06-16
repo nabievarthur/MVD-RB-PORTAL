@@ -74,9 +74,21 @@ class UserRepository implements UserInterface
         return $user;
     }
 
-    public function deleteUser(int $userId): ?bool
+    public function deleteUser(int $userId): bool
     {
-        // TODO: допилить
-        return false;
+        $deletedUser = $this->findUserById($userId);
+
+        if (!$deletedUser) {
+            return false;
+        }
+
+        $result = $deletedUser->delete();
+
+        if ($result) {
+            Cache::tags(['users'])->flush();
+            Cache::forget(self::CACHE_PREFIX_FOR_ALL_USERS . $userId);
+        }
+
+        return true;
     }
 }

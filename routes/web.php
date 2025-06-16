@@ -15,6 +15,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('files.destroy');
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
+
     Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
     Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
     Route::get('/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
@@ -30,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/users', [UserController::class, 'store'])->name('admin.user.store');
         Route::get('/users/{user}', [UserController::class, 'edit'])->name('admin.user.edit');
         Route::patch('/users/{user}', [UserController::class, 'update'])->name('admin.user.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
 
         Route::view('/news', 'pages.admin.news.index')->name('admin.news.index');
