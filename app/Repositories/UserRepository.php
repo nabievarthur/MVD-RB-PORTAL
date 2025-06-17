@@ -4,45 +4,61 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Repositories\Interfaces\UserInterface;
-use Cache;
-use Illuminate\Pagination\CursorPaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserInterface
 {
     const CACHE_PREFIX_FOR_ALL_USERS = 'users:all';
     const CACHE_PREFIX_FOR_ONE_USER = 'users:';
-    const CACHE_TTL = 60 * 24;
+    const CACHE_TTL = 60 * 24; //Сутки
 
-    public function __construct(
-        protected User $user
-    )
+    public function __construct(protected User $user)
     {
     }
 
     public function findUserById(int $userId): ?User
     {
-        return Cache::remember(self::CACHE_PREFIX_FOR_ONE_USER . $userId, self::CACHE_TTL, function () use ($userId) {
-            return $this->user->find($userId);
-        });
-
+        return Cache::remember(
+            self::CACHE_PREFIX_FOR_ONE_USER . $userId,
+            self::CACHE_TTL,
+            fn() => $this->user->with('role')->find($userId)
+        );
     }
 
-    public function getFilterableUsers(array $data): CursorPaginator
+    public function getFilterableUsers(array $data): LengthAwarePaginator
     {
-        $users = User::filter($data);
-
-        return $users->cursorPaginate();
+        return $this->user
+            ->filter($data)
+            ->with('role')
+            ->paginate(10)
+            ->withQueryString();
     }
-    public function getPaginatedUsers(): CursorPaginator
+
+    public function getPaginatedUsers(): LengthAwarePaginator
     {
-        return Cache::tags(['users'])->remember(self::CACHE_PREFIX_FOR_ALL_USERS, self::CACHE_TTL, function () {
-            return $this->user
+        $perPage = 10;
+        $page = request()->get('page', 1);
+
+        $users = Cache::tags(['users'])->remember(
+            self::CACHE_PREFIX_FOR_ALL_USERS,
+            self::CACHE_TTL,
+            fn() => $this->user
                 ->with('role')
                 ->orderBy('created_at', 'desc')
-                ->cursorPaginate(10);
-        });
+                ->get()
+        );
 
+        $paged = $users->forPage($page, $perPage);
+
+        return new LengthAwarePaginator(
+            $paged,
+            $users->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
     }
 
     public function createUser(array $userData): ?User
@@ -57,7 +73,7 @@ class UserRepository implements UserInterface
             'role_id' => $userData['role_id'],
         ]);
 
-        Cache::tags(['users'])->flush();
+        $this->clearUserCache($user->id);
 
         return $user;
     }
@@ -66,35 +82,31 @@ class UserRepository implements UserInterface
     {
         $user = $this->findUserById($userId);
 
-        if (!$user) {
+        if (!$user || !$user->update($userData)) {
             return null;
         }
 
-        $result = $user->update($userData);
-
-        if ($result) {
-            Cache::tags(['users'])->flush();
-            Cache::forget(self::CACHE_PREFIX_FOR_ONE_USER . $user->id);
-        }
+        $this->clearUserCache($user->id);
 
         return $user;
     }
 
     public function deleteUser(int $userId): bool
     {
-        $deletedUser = $this->findUserById($userId);
+        $user = $this->findUserById($userId);
 
-        if (!$deletedUser) {
+        if (!$user || !$user->delete()) {
             return false;
         }
 
-        $result = $deletedUser->delete();
-
-        if ($result) {
-            Cache::tags(['users'])->flush();
-            Cache::forget(self::CACHE_PREFIX_FOR_ALL_USERS . $userId);
-        }
+        $this->clearUserCache($userId);
 
         return true;
+    }
+
+    protected function clearUserCache(int $userId): void
+    {
+        Cache::tags(['users'])->flush();
+        Cache::forget(self::CACHE_PREFIX_FOR_ONE_USER . $userId);
     }
 }

@@ -26,9 +26,9 @@ class UserController extends Controller
     {
     }
 
-    public function index(IndexRequest $request): View
+    public function index(IndexRequest $searchRequest): View
     {
-        $dataRequest = $request->validated();
+        $dataRequest = $searchRequest->validated();
 
         return view('pages.admin.user.index', [
             'users' => $dataRequest ? $this->userRepository->getFilterableUsers($dataRequest) : $this->userRepository->getPaginatedUsers(),

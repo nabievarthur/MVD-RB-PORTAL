@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Role;
+use App\Models\Subdivision;
 use App\Models\User;
 use Hash;
 use Illuminate\Console\Command;
@@ -27,14 +29,18 @@ class AddUserCommand extends Command
      */
     public function handle()
     {
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 15; $i++) {
             User::create([
                 'login' => fake()->word() . $i,
                 'password' => Hash::make('password' . $i),
-                'full_name' => fake()->lastName,
+                'last_name' => fake()->word(),
+                'first_name' => fake()->word(),
+                'surname' => fake()->word(),
+                'subdivision_id' => fake()->randomElement(Subdivision::all()->pluck('id')->toArray()),
+                'role_id' => fake()->randomElement(Role::all()->pluck('id')->toArray()),
             ]);
         }
 
-        echo "Пользователи успешно добавленны";
+        echo "Пользователи успешно добавлены";
     }
 }
