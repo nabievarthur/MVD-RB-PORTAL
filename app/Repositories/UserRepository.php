@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class UserRepository implements UserInterface
 {
     const CACHE_PREFIX_FOR_ALL_USERS = 'users:all';
-    const CACHE_PREFIX_FOR_ONE_USER = 'users:';
+    const CACHE_PREFIX_FOR_ONE_USER = 'users:single';
     const CACHE_TTL = 60 * 24; //Сутки
 
     public function __construct(protected User $user)
@@ -81,6 +81,10 @@ class UserRepository implements UserInterface
     public function updateUser(int $userId, array $userData): ?User
     {
         $user = $this->findUserById($userId);
+
+        if (isset($userData['password'])) {
+            $userData['password'] = Hash::make($userData['password']);
+        }
 
         if (!$user || !$user->update($userData)) {
             return null;
