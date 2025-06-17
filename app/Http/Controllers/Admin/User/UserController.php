@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\User\IndexRequest;
 use App\Http\Requests\Admin\User\UserStoreRequest;
 use App\Http\Requests\Admin\User\UserUpdateRequest;
 use App\Models\User;
@@ -25,10 +26,12 @@ class UserController extends Controller
     {
     }
 
-    public function index(): View
+    public function index(IndexRequest $request): View
     {
+        $dataRequest = $request->validated();
+
         return view('pages.admin.user.index', [
-            'users' => $this->userRepository->getPaginatedUsers(),
+            'users' => $dataRequest ? $this->userRepository->getFilterableUsers($dataRequest) : $this->userRepository->getPaginatedUsers(),
             'subdivisions' => $this->subdivisionRepository->getSubdivisionList(),
             'roles' => $this->roleRepository->getRolesList(),
         ]);

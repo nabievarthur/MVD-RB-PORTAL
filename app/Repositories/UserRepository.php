@@ -28,6 +28,12 @@ class UserRepository implements UserInterface
 
     }
 
+    public function getFilterableUsers(array $data): CursorPaginator
+    {
+        $users = User::filter($data);
+
+        return $users->cursorPaginate();
+    }
     public function getPaginatedUsers(): CursorPaginator
     {
         return Cache::tags(['users'])->remember(self::CACHE_PREFIX_FOR_ALL_USERS, self::CACHE_TTL, function () {

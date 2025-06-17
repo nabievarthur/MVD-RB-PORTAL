@@ -156,34 +156,59 @@
 
         <!-- Блок с поиском и таблицей (2/3 ширины) -->
         <div class="w-2/3 bg-gray-800 rounded-lg shadow-md m-4 p-4">
-            <!-- Header with Search and Add User Button -->
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Поиск по логину..."
-                        class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-64 mr-4"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Поиск по ФИО..."
-                        class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-64"
-                    />
-                </div>
-                <div>
-                    <a href="#">
-                        <button
-                            class="bg-teal-700/50 text-white px-4 py-2 rounded hover:bg-teal-800/50 cursor-pointer transition flex items-center space-x-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-search" viewBox="0 0 16 16">
-                                <path
-                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                            </svg>
-                            <span>Найти</span>
-                        </button>
-                    </a>
-                </div>
-            </div>
+            <!-- Блок поиска -->
+
+            <form class="grid grid-cols-3 gap-4 mb-4" >
+                <!-- Первая строка: Логин, Фамилия, Имя -->
+                <input
+                    name="login"
+                    type="text"
+                    placeholder="Поиск по логину..."
+                    class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
+                />
+                <input
+                    name="last_name"
+                    type="text"
+                    placeholder="Поиск по фамилии..."
+                    class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
+                />
+                <input
+                    name="first_name"
+                    type="text"
+                    placeholder="Поиск по имени..."
+                    class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
+                />
+
+                <!-- Вторая строка: Отчество, Роль и Кнопка "Найти" -->
+                <input
+                    name="surname"
+                    type="text"
+                    placeholder="Поиск по отчеству..."
+                    class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
+                />
+                <select
+                    name="role_id"
+                    class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
+                >
+                    <option selected disabled>Поиск по роли</option>
+                    @foreach($roles as $id => $title)
+                        <option
+                            value="{{ $id }}">{{ $title }}</option>
+                    @endforeach
+                </select>
+                <a href="#" class="col-span-1">
+                    <button
+                        class="bg-teal-700/50 text-white px-4 py-2 rounded hover:bg-teal-800/50 cursor-pointer transition flex items-center space-x-2 justify-center w-full"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                        <span>Найти</span>
+                    </button>
+                </a>
+            </form>
 
             <!-- Table -->
             <div class="bg-gray-700 rounded-lg overflow-hidden">
