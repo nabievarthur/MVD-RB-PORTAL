@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('login')->unique();
+            $table->string('login')->unique()->index();
             $table->string('password');
-            $table->string('last_name')->nullable();
-            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable()->index();
+            $table->string('first_name')->nullable()->index();
             $table->string('surname')->nullable();
             $table->foreignId('subdivision_id')->nullable()->constrained('subdivisions')->nullOnDelete();
             $table->foreignId('role_id')->nullable()->constrained('roles')->nullOnDelete();

@@ -158,22 +158,25 @@
         <div class="w-2/3 bg-gray-800 rounded-lg shadow-md m-4 p-4">
             <!-- Блок поиска -->
 
-            <form class="grid grid-cols-3 gap-4 mb-4" >
+            <form method="GET" action="{{ route('admin.user.index') }}" class="grid grid-cols-3 gap-4 mb-4">
                 <!-- Первая строка: Логин, Фамилия, Имя -->
                 <input
                     name="login"
+                    value="{{ request()->input('login') }}"
                     type="text"
                     placeholder="Поиск по логину..."
                     class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
                 />
                 <input
                     name="last_name"
+                    value="{{ request()->input('last_name') }}"
                     type="text"
                     placeholder="Поиск по фамилии..."
                     class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
                 />
                 <input
                     name="first_name"
+                    value="{{ request()->input('first_name') }}"
                     type="text"
                     placeholder="Поиск по имени..."
                     class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
@@ -182,6 +185,7 @@
                 <!-- Вторая строка: Отчество, Роль и Кнопка "Найти" -->
                 <input
                     name="surname"
+                    value="{{ request()->input('surname') }}"
                     type="text"
                     placeholder="Поиск по отчеству..."
                     class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
@@ -193,21 +197,39 @@
                     <option selected disabled>Поиск по роли</option>
                     @foreach($roles as $id => $title)
                         <option
-                            value="{{ $id }}">{{ $title }}</option>
+                            value="{{ $id }}" {{request()->input('role_id') == $id ? 'selected' : '' }}>{{ $title }}</option>
                     @endforeach
                 </select>
-                <a href="#" class="col-span-1">
+                <div class="flex space-x-2">
                     <button
-                        class="bg-teal-700/50 text-white px-4 py-2 rounded hover:bg-teal-800/50 cursor-pointer transition flex items-center space-x-2 justify-center w-full"
+                        type="submit"
+                        class="bg-green-600/50 text-white px-4 py-2 rounded hover:bg-green-700/50  transition flex items-center justify-center w-full"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-search" viewBox="0 0 16 16">
+                             class="bi bi-search mr-2" viewBox="0 0 16 16">
                             <path
                                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                         </svg>
-                        <span>Найти</span>
+                        Найти
                     </button>
-                </a>
+
+                    <a href="{{ route('admin.user.index') }}" class="w-full">
+                        <button
+                            type="button"
+                            class="bg-indigo-500/50 text-white px-4 py-2 rounded hover:bg-indigo-800/50 transition w-full flex items-center justify-center"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                 class="bi bi-arrow-counterclockwise mr-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"/>
+                                <path
+                                    d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"/>
+                            </svg>
+                            Сбросить
+                        </button>
+                    </a>
+                </div>
+
             </form>
 
             <!-- Table -->
@@ -283,9 +305,11 @@
                         onclick="closeModal()"
                         class="cursor-pointer px-4 py-2 bg-indigo-500/50 rounded hover:bg-indigo-800/50 flex items-center space-x-2"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-x-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                         </svg>
                         <span>Отмена</span>
                     </button>
