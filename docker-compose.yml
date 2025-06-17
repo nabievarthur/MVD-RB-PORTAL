@@ -74,5 +74,3 @@ networks:
                 -   subnet: 12.6.0.0/16
                     gateway: 12.6.0.1
 
-#volumes:
-#    mysql-s:
