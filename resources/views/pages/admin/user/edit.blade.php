@@ -144,7 +144,7 @@
                         type="text"
                         id="password"
                         name="password"
-                        placeholder="Введите пароль"
+                        placeholder="Введите новый пароль"
                         class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('password') border border-red-400 @enderror"
                     />
                     @error('password')
@@ -158,7 +158,7 @@
                         type="text"
                         id="password_confirmation"
                         name="password_confirmation"
-                        placeholder="Повторите пароль"
+                        placeholder="Повторите новый пароль"
                         class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
                     />
                 </div>

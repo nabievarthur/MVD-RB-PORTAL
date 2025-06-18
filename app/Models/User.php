@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasFilter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -39,6 +40,34 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected function firstName(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => mb_ucfirst(mb_strtolower($value))
+        );
+    }
+
+    protected function lastName(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => mb_ucfirst(mb_strtolower($value))
+        );
+    }
+
+    protected function surname(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => mb_ucfirst(mb_strtolower($value))
+        );
+    }
+
+    protected function login(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => mb_strtolower($value)
+        );
     }
 
 

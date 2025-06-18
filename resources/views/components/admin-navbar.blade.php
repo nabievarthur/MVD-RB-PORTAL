@@ -85,6 +85,9 @@
                               </svg>'
                     />
                 </li>
+                <li>
+                    <hr class="border-gray-700">
+                </li>
                 <!-- Ссылка на сайт -->
                 <li>
                     <x-nav-admin-link

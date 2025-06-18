@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex w-full">
         <!-- Блок создания пользователя (1/3 ширины) -->
-        <div class="w-1/3 bg-gray-800 rounded-lg shadow-md ml-4 mt-4 mb-4 p-6">
+        <div class="w-1/3 bg-gray-800 rounded-lg shadow-md ml-4 mt-4 mb-4 p-6 overflow-auto">
             <h2 class="text-xl font-bold text-gray-200 mb-4 text-center">Создание нового пользователя</h2>
             <form action="{{route('admin.user.store')}}" method="POST" class="w-full">
                 @csrf
@@ -99,18 +99,22 @@
                         <label for="login" class="block text-sm font-medium text-gray-400">Логин</label>
                         <input
                             value="{{ old('login') }}"
+                            autocomplete="off"
                             type="text"
                             id="login"
                             name="login"
+                            pattern="[a-z0-9]+"
+                            oninput="this.value = this.value.replace(/[^a-z0-9]/g, '')"
                             placeholder="Введите логин"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('login') border border-red-400 @enderror"
                         />
+                        <div class="mt-2 text-sm text-gray-500" id="login_help">Логин должен состоять из строчных латинских букв a-z и цифр 0-9</div>
                         @error('login')
                         <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="pt-2">
+                    <div class="">
                         <button
                             id="generate-password"
                             type="button"
@@ -131,16 +135,18 @@
                             type="text"
                             id="password"
                             name="password"
+                            pattern="[a-zA-Z0-9]{8,}"
                             placeholder="Введите пароль"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('password') border border-red-400 @enderror"
                         />
+                        <div class="mt-2 text-sm text-gray-500" id="login_help">Пароль должен быть длинной не менее 8 символов и состоять из латинских букв a-zA-Z и цифр 0-9</div>
                         @error('password')
                         <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-400">Повторите пароль</label>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-400">Повторите пароль</label>
                         <input
                             type="text"
                             id="password_confirmation"
