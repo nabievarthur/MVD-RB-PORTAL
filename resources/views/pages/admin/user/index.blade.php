@@ -110,11 +110,25 @@
                         @enderror
                     </div>
 
+                    <div class="pt-2">
+                        <button
+                            id="generate-password"
+                            type="button"
+                            class="w-full bg-yellow-600/50 text-white px-4 py-2 rounded hover:bg-yellow-700/50 cursor-pointer transition flex items-center justify-center space-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-key" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/>
+                                <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                            </svg>
+                            <span>Сгенерировать пароль</span>
+                        </button>
+                    </div>
                     <!-- Password Input -->
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-400">Пароль</label>
                         <input
-                            type="password"
+                            type="text"
                             id="password"
                             name="password"
                             placeholder="Введите пароль"
@@ -128,8 +142,8 @@
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-400">Повторите пароль</label>
                         <input
-                            type="password"
-                            id="password"
+                            type="text"
+                            id="password_confirmation"
                             name="password_confirmation"
                             placeholder="Повторите пароль"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('password') border border-red-400 @enderror"
@@ -286,10 +300,10 @@
                                 <span>По вашему запросу ничего не найдено</span>
                                 <span>
                                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
-                                         class="bi bi-emoji-frown" viewBox="0 0 16 16">
+                                      class="bi bi-emoji-frown" viewBox="0 0 16 16">
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                           <path
-                                         d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.5 3.5 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.5 4.5 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5"/>
+                                              d="M4.285 12.433a.5.5 0 0 0 .683-.183A3.5 3.5 0 0 1 8 10.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.5 4.5 0 0 0 8 9.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5"/>
                                          </svg>
                                  </span>
                             </div>
@@ -359,6 +373,21 @@
 
             function closeModal() {
                 document.getElementById('delete-modal').classList.add('hidden');
+            }
+
+            document.getElementById('generate-password').addEventListener('click', function () {
+                const password = generatePassword(8); // длина 8 символов
+                document.getElementById('password').value = password;
+                document.getElementById('password_confirmation').value = password;
+            });
+
+            function generatePassword(length) {
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHJKMNOPQRSTUVWXYZ0123456789';
+                let password = '';
+                for (let i = 0; i < length; i++) {
+                    password += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return password;
             }
         </script>
 
