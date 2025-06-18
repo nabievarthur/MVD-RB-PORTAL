@@ -382,7 +382,7 @@
             });
 
             function generatePassword(length) {
-                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHJKMNOPQRSTUVWXYZ0123456789';
+                const chars = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKMNOPQRSTUVWXYZ0123456789'; // удалил I L l чтобы не путаться т.к иногда отображаются одинаково или очень похожи
                 let password = '';
                 for (let i = 0; i < length; i++) {
                     password += chars.charAt(Math.floor(Math.random() * chars.length));
