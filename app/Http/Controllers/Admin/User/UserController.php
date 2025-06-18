@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\User\IndexRequest;
 use App\Http\Requests\Admin\User\UserStoreRequest;
 use App\Http\Requests\Admin\User\UserUpdateRequest;
 use App\Models\User;
+use App\Repositories\Interfaces\OVDInterface;
 use App\Repositories\Interfaces\RoleInterface;
 use App\Repositories\Interfaces\SubdivisionInterface;
 use App\Repositories\Interfaces\UserInterface;
@@ -21,7 +22,8 @@ class UserController extends Controller
         protected SubdivisionInterface $subdivisionRepository,
         protected RoleInterface        $roleRepository,
         protected UserInterface        $userRepository,
-        protected UserService          $userService
+        protected UserService          $userService,
+        protected OVDInterface         $ovdInterface
     )
     {
     }
@@ -34,6 +36,7 @@ class UserController extends Controller
             'users' => $dataRequest ? $this->userRepository->getFilterableUsers($dataRequest) : $this->userRepository->getPaginatedUsers(),
             'subdivisions' => $this->subdivisionRepository->getSubdivisionList(),
             'roles' => $this->roleRepository->getRolesList(),
+            'ovd' => $this->ovdInterface->getOVDList(),
         ]);
     }
 

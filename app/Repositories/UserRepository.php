@@ -45,7 +45,7 @@ class UserRepository implements UserInterface
             self::CACHE_PREFIX_FOR_ALL_USERS,
             self::CACHE_TTL,
             fn() => $this->user
-                ->with('role')
+                ->with(['role', 'ovd'])
                 ->orderBy('created_at', 'desc')
                 ->get()
         );

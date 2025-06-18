@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('last_name')->nullable()->index();
             $table->string('first_name')->nullable()->index();
             $table->string('surname')->nullable();
+            $table->foreignId('ovd_id')->nullable()->constrained('ovd')->nullOnDelete();
             $table->foreignId('subdivision_id')->nullable()->constrained('subdivisions')->nullOnDelete();
             $table->foreignId('role_id')->nullable()->constrained('roles')->nullOnDelete();
             $table->timestamps();

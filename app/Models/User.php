@@ -70,6 +70,10 @@ class User extends Authenticatable
         );
     }
 
+    public function ovd(): BelongsTo
+    {
+        return $this->belongsTo(OVD::class, 'ovd_id', 'id', 'ovd');
+    }
 
     public function subdivision(): BelongsTo
     {

@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\OVDInterface;
 use App\Repositories\Interfaces\RoleInterface;
 use App\Repositories\Interfaces\SubdivisionInterface;
 use App\Repositories\Interfaces\UserInterface;
+use App\Repositories\OVDRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\SubdivisionRepository;
 use App\Repositories\UserRepository;
@@ -31,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UserInterface::class,
             UserRepository::class
+        );
+        $this->app->bind(
+            OVDInterface::class,
+            OVDRepository::class
         );
     }
 

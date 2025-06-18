@@ -235,7 +235,8 @@ return [
         'surname' => 'Отчество',
         'subdivision_id' => 'Подразделение',
         'role_id' => 'Роль',
-        'login' => 'Логин'
+        'login' => 'Логин',
+        'ovd_id' => 'ОВД'
     ],
 
 ];

@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exception_logs', function (Blueprint $table) {
+        Schema::create('ovd', function (Blueprint $table) {
             $table->id();
-            $table->string('service')->nullable();
-            $table->string('method');
-            $table->text('message');
-            $table->json('context')->nullable();
+            $table->text('title');
+            $table->unsignedInteger('cod_ovd')->unique();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exception_logs');
+        Schema::dropIfExists('ovd');
     }
 };

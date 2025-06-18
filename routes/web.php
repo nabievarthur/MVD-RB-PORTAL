@@ -50,6 +50,11 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services.ind
  *
  */
 
+Route::get('debug', function () {
+    return auth()->user()->ovd->title;
+});
+
+
 Route::get('clear', function () {
     Cache::flush();
     return redirect()->back()->with('success', 'Кэш очищен');
