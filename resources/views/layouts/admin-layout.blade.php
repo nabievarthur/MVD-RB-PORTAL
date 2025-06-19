@@ -20,10 +20,16 @@
 <!-- Сообщения -->
 @include('components.messagebox')
 
+@include('components.modal-confirmation')
 <script>
-    function openModal(userId) {
-        const form = document.getElementById('delete-form'); //Закидываем в модальное окно нужный ID пользователя для удаления
-        form.action = `/admin/users/${userId}`; // Или blade: "{{ route('admin.user.destroy', '') }}/" + userId;
+    function openModal(actionUrl, entityText = 'этого объекта') {
+        const form = document.getElementById('delete-form');
+        form.action = actionUrl;
+
+        // Меняем текст в модалке
+        const textEl = document.getElementById('delete-modal-text');
+        textEl.textContent = `Вы уверены, что хотите удалить ${entityText}?`;
+
         document.getElementById('delete-modal').classList.remove('hidden');
     }
 
@@ -31,11 +37,16 @@
         document.getElementById('delete-modal').classList.add('hidden');
     }
 
-    document.getElementById('generate-password').addEventListener('click', function () {
-        const password = generatePassword(8); // длина 8 символов
-        document.getElementById('password').value = password;
-        document.getElementById('password_confirmation').value = password;
-    });
+    /*Генератор пароля для Юзера*/
+
+   const genPassBtn = document.getElementById('generate-password');
+   if (genPassBtn) {
+       genPassBtn.addEventListener('click', function () {
+           const password = generatePassword(8);
+           document.getElementById('password').value = password;
+           document.getElementById('password_confirmation').value = password;
+       });
+   }
 
     function generatePassword(length) {
         const chars = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKMNOPQRSTUVWXYZ0123456789'; // удалил I L l чтобы не путаться т.к иногда отображаются одинаково или очень похожи

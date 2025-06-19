@@ -50,7 +50,6 @@ class UserService
         try {
             $oldData = $user->getOriginal();
 
-            // Удаляем пустой пароль, если он есть
             if (array_key_exists('password', $userData) && empty($userData['password'])) {
                 unset($userData['password']);
             }

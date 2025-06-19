@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('ovd', [OvdController::class, 'index'])->name('admin.ovd.index');
         Route::post('ovd', [OvdController::class, 'store'])->name('admin.ovd.store');
         Route::get('ovd/{ovd}', [OvdController::class, 'edit'])->name('admin.ovd.edit');
+        Route::patch('ovd/{ovd}', [OvdController::class, 'update'])->name('admin.ovd.update');
+        Route::delete('ovd/{ovd}', [OvdController::class, 'destroy'])->name('admin.ovd.destroy');
 
         Route::view('/news', 'pages.admin.news.index')->name('admin.news.index');
         Route::view('/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');
