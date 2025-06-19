@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\OVD\OVDController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\Chief\ChiefController;
 use App\Http\Controllers\Contact\ContactController;
@@ -23,7 +24,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/news', [NewsController::class, 'store'])->name('news.store');
     Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
 
-
+    /***
+     *Роуты для админа
+     */
     Route::prefix('/admin')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
@@ -33,6 +36,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::patch('/users/{user}', [UserController::class, 'update'])->name('admin.user.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
+        Route::get('ovd', [OvdController::class, 'index'])->name('admin.ovd.index');
+        Route::post('ovd', [OvdController::class, 'store'])->name('admin.ovd.store');
+        Route::get('ovd/{ovd}', [OvdController::class, 'edit'])->name('admin.ovd.edit');
 
         Route::view('/news', 'pages.admin.news.index')->name('admin.news.index');
         Route::view('/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');

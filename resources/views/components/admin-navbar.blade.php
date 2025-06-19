@@ -23,12 +23,6 @@
                     </g>
                 </svg>
             </svg>
-            {{--            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24"--}}
-            {{--                 stroke="currentColor">--}}
-            {{--                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"--}}
-            {{--                      d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"--}}
-            {{--                />--}}
-            {{--            </svg>--}}
             <h1 class="text-1xl font-bold text-gray-200">Администрирование портала МВД по РБ</h1>
         </div>
         <nav>
@@ -66,7 +60,7 @@
                 </li>
                 <li>
                     <x-nav-admin-link
-                        route="admin.user.index"
+                        route="admin.ovd.index"
                         text="ОВД"
                         icon='<svg fill="#000000" class="h-5 w-5 mr-3 fill-white" version="1.1" xmlns="http://www.w3.org/2000/svg"
 	 viewBox="0 0 512 512" xml:space="preserve">

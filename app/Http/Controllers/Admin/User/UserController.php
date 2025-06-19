@@ -23,7 +23,7 @@ class UserController extends Controller
         protected RoleInterface        $roleRepository,
         protected UserInterface        $userRepository,
         protected UserService          $userService,
-        protected OVDInterface         $ovdInterface
+        protected OVDInterface         $ovdRepository,
     )
     {
     }
@@ -36,7 +36,7 @@ class UserController extends Controller
             'users' => $dataRequest ? $this->userRepository->getFilterableUsers($dataRequest) : $this->userRepository->getPaginatedUsers(),
             'subdivisions' => $this->subdivisionRepository->getSubdivisionList(),
             'roles' => $this->roleRepository->getRolesList(),
-            'ovd' => $this->ovdInterface->getOVDList(),
+            'ovd' => $this->ovdRepository->getOVDList(),
         ]);
     }
 
