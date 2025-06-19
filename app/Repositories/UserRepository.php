@@ -11,18 +11,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserInterface
 {
-    const CACHE_PREFIX_FOR_ALL_USERS = 'users:all';
-    const CACHE_PREFIX_FOR_ONE_USER = 'users:single';
-    const CACHE_TTL = 60 * 24; //Сутки
+    private const CACHE_PREFIX_FOR_ALL_USERS = 'users:all';
+    private const CACHE_PREFIX_FOR_ONE_USER = 'users:single:';
+    private const CACHE_TTL = 1440; // 60 * 24, сутки
 
-    public function __construct(protected User $user)
-    {
-    }
+    public function __construct(
+        protected User $user
+    ) {}
 
     public function findUserById(int $userId): ?User
     {
-        return Cache::remember(
-            self::CACHE_PREFIX_FOR_ONE_USER . $userId,
+        $cacheKey = self::CACHE_PREFIX_FOR_ONE_USER . $userId;
+
+        return Cache::tags(['users'])->remember(
+            $cacheKey,
             self::CACHE_TTL,
             fn() => $this->user->with('role')->find($userId)
         );
@@ -40,44 +42,37 @@ class UserRepository implements UserInterface
     public function getPaginatedUsers(): LengthAwarePaginator
     {
         $perPage = 10;
-        $page = request()->get('page', 1);
+        $page = (int) request()->get('page', 1);
 
         $users = Cache::tags(['users'])->remember(
             self::CACHE_PREFIX_FOR_ALL_USERS,
             self::CACHE_TTL,
             fn() => $this->user
                 ->with(['role', 'ovd'])
-                ->orderBy('created_at', 'desc')
+                ->orderByDesc('created_at')
                 ->get()
         );
 
         $paged = $users->forPage($page, $perPage);
 
         return new LengthAwarePaginator(
-            $paged,
+            $paged->values(),
             $users->count(),
             $perPage,
             $page,
-            ['path' => request()->url(), 'query' => request()->query()]
+            [
+                'path' => request()->url(),
+                'query' => request()->query(),
+            ]
         );
     }
 
     public function createUser(array $userData): ?User
     {
         return DB::transaction(function () use ($userData) {
-            $user = $this->user->create([
-                'login' => $userData['login'],
-                'password' => Hash::make($userData['password']),
-                'last_name' => $userData['last_name'],
-                'first_name' => $userData['first_name'],
-                'surname' => $userData['surname'],
-                'ovd_id' => $userData['ovd_id'],
-                'subdivision_id' => $userData['subdivision_id'],
-                'role_id' => $userData['role_id'],
-            ]);
-
+            $userData['password'] = Hash::make($userData['password']);
+            $user = $this->user->create($userData);
             $this->clearUserCache($user->id);
-
             return $user;
         });
     }
@@ -86,36 +81,43 @@ class UserRepository implements UserInterface
     {
         return DB::transaction(function () use ($userId, $userData) {
             $user = $this->user->find($userId);
-
             if (!$user) {
                 return null;
             }
 
-            if (isset($userData['password'])) {
+            if (!empty($userData['password'])) {
                 $userData['password'] = Hash::make($userData['password']);
+            } else {
+                unset($userData['password']);
             }
 
-            if (!$user->update($userData)) {
-                return null;
+            $updated = $user->update($userData);
+
+            if ($updated) {
+                $this->clearUserCache($user->id);
+                return $user;
             }
 
-            $this->clearUserCache($user->id);
-
-            return $user;
+            return null;
         });
     }
 
     public function deleteUser(int $userId): bool
     {
-        $user = $this->user->find($userId);
+        return DB::transaction(function () use ($userId) {
+            $user = $this->user->find($userId);
 
-        if (!$user || !$user->delete()) {
-            return false;
-        }
+            if (!$user) {
+                return false;
+            }
 
-        $this->clearUserCache($userId);
+            $deleted = $user->delete();
+            if ($deleted) {
+                $this->clearUserCache($userId);
+            }
 
-        return true;
+            return $deleted;
+        });
     }
 
     protected function clearUserCache(int $userId): void
