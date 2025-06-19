@@ -69,6 +69,7 @@ class UserRepository implements UserInterface
             'last_name' => $userData['last_name'],
             'first_name' => $userData['first_name'],
             'surname' => $userData['surname'],
+            'ovd_id' => $userData['ovd_id'],
             'subdivision_id' => $userData['subdivision_id'],
             'role_id' => $userData['role_id'],
         ]);

@@ -62,6 +62,7 @@ class UserController extends Controller
             'user' => $this->userRepository->findUserById($user->id),
             'subdivisions' => $this->subdivisionRepository->getSubdivisionList(),
             'roles' => $this->roleRepository->getRolesList(),
+            'ovd' => $this->ovdInterface->getOVDList(),
         ]);
     }
 

@@ -68,7 +68,24 @@
                     <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
-
+                <!-- ОВД -->
+                <div>
+                    <label for="ovd" class="block text-sm font-medium text-gray-400">ОВД</label>
+                    <select
+                        id="ovd"
+                        name="ovd_id"
+                        class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('ovd_id') border border-red-400 @enderror"
+                    >
+                        <option value="" disabled selected>Выберите ОВД</option>
+                        @foreach($ovd as $id => $title)
+                            <option
+                                value="{{ $id }}" {{ old('ovd_id') == $id ? 'selected' : '' }}>{{ $title }}</option>
+                        @endforeach
+                    </select>
+                    @error('ovd_id')
+                    <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
                 <!-- Подразделение -->
                 <div>
                     <label for="subdivision" class="block text-sm font-medium text-gray-400">Подразделение</label>
