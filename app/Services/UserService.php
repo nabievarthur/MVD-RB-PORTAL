@@ -11,17 +11,12 @@ use Throwable;
 
 class UserService
 {
-    /**
-     * Create a new class instance.
-     */
     public function __construct(
-        protected User                $user,
-        protected UserRepository      $userRepository,
-        protected UserLogService      $userLogService,
+        protected User $user,
+        protected UserRepository $userRepository,
+        protected UserLogService $userLogService,
         protected ExceptionLogService $exceptionLogService,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws Throwable
@@ -37,13 +32,15 @@ class UserService
 
             $this->userLogService->log($user, CrudActionEnum::CREATE, $userData);
             return true;
-
         } catch (Throwable $e) {
-            $this->exceptionLogService->logException(CrudActionEnum::CREATE, $e, ['userData' => $userData]);
-            throw $e; // Пробрасываем исключение в контроллер
+            $this->exceptionLogService->logException(
+                CrudActionEnum::CREATE,
+                $e,
+                ['userData' => $userData]
+            );
+            throw $e;
         }
     }
-
 
     /**
      * @throws Throwable
@@ -53,7 +50,8 @@ class UserService
         try {
             $oldData = $user->getOriginal();
 
-            if (empty($userData['password'])) {
+            // Удаляем пустой пароль, если он есть
+            if (array_key_exists('password', $userData) && empty($userData['password'])) {
                 unset($userData['password']);
             }
 
@@ -69,14 +67,16 @@ class UserService
             ]);
 
             return $updatedUser;
-
         } catch (Throwable $e) {
-            $this->exceptionLogService->logException(CrudActionEnum::UPDATE, $e, [
-                'user_id' => $user->id,
-                'data' => $userData
-            ]);
-
-            throw $e; // пробрасываем вверх
+            $this->exceptionLogService->logException(
+                CrudActionEnum::UPDATE,
+                $e,
+                [
+                    'user_id' => $user->id,
+                    'data' => $userData,
+                ]
+            );
+            throw $e;
         }
     }
 
@@ -93,15 +93,15 @@ class UserService
             $this->userLogService->log($user, CrudActionEnum::DELETE, [
                 'old' => $oldData,
             ]);
-
-        } catch (\Throwable $e) {
-            $this->exceptionLogService->logException(CrudActionEnum::DELETE, $e, [
-                'user_id' => $user->id,
-            ]);
-
+        } catch (Throwable $e) {
+            $this->exceptionLogService->logException(
+                CrudActionEnum::DELETE,
+                $e,
+                [
+                    'user_id' => $user->id,
+                ]
+            );
             throw $e;
         }
     }
-
-
 }
