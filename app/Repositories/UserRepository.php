@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\Interfaces\UserInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserInterface
@@ -63,42 +64,50 @@ class UserRepository implements UserInterface
 
     public function createUser(array $userData): ?User
     {
-        $user = $this->user->create([
-            'login' => $userData['login'],
-            'password' => Hash::make($userData['password']),
-            'last_name' => $userData['last_name'],
-            'first_name' => $userData['first_name'],
-            'surname' => $userData['surname'],
-            'ovd_id' => $userData['ovd_id'],
-            'subdivision_id' => $userData['subdivision_id'],
-            'role_id' => $userData['role_id'],
-        ]);
+        return DB::transaction(function () use ($userData) {
+            $user = $this->user->create([
+                'login' => $userData['login'],
+                'password' => Hash::make($userData['password']),
+                'last_name' => $userData['last_name'],
+                'first_name' => $userData['first_name'],
+                'surname' => $userData['surname'],
+                'ovd_id' => $userData['ovd_id'],
+                'subdivision_id' => $userData['subdivision_id'],
+                'role_id' => $userData['role_id'],
+            ]);
 
-        $this->clearUserCache($user->id);
+            $this->clearUserCache($user->id);
 
-        return $user;
+            return $user;
+        });
     }
 
     public function updateUser(int $userId, array $userData): ?User
     {
-        $user = $this->findUserById($userId);
+        return DB::transaction(function () use ($userId, $userData) {
+            $user = $this->user->find($userId);
 
-        if (isset($userData['password'])) {
-            $userData['password'] = Hash::make($userData['password']);
-        }
+            if (!$user) {
+                return null;
+            }
 
-        if (!$user || !$user->update($userData)) {
-            return null;
-        }
+            if (isset($userData['password'])) {
+                $userData['password'] = Hash::make($userData['password']);
+            }
 
-        $this->clearUserCache($user->id);
+            if (!$user->update($userData)) {
+                return null;
+            }
 
-        return $user;
+            $this->clearUserCache($user->id);
+
+            return $user;
+        });
     }
 
     public function deleteUser(int $userId): bool
     {
-        $user = $this->findUserById($userId);
+        $user = $this->user->find($userId);
 
         if (!$user || !$user->delete()) {
             return false;
