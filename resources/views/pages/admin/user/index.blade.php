@@ -281,7 +281,7 @@
                         <th class="py-3 px-4 text-left font-semibold">Имя</th>
                         <th class="py-3 px-4 text-left font-semibold">Отчество</th>
                         <th class="py-3 px-4 text-left font-semibold">Роль</th>
-                        <th class="py-3 px-4 text-left font-semibold">Действия</th>
+                        <th class="py-3 px-4 text-center font-semibold">Действия</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -293,7 +293,7 @@
                             <td class="py-3 px-4">{{$user->first_name}}</td>
                             <td class="py-3 px-4">{{$user->surname}}</td>
                             <td class="py-3 px-4">{{$user->role->title}}</td>
-                            <td class="py-3 px-4 space-x-2 flex">
+                            <td class="py-3 px-4 space-x-2 flex justify-center">
                                 <a href="{{route('admin.user.edit', $user->id)}}"
                                    class="bg-indigo-500/50 text-white px-3 py-1 rounded cursor-pointer hover:bg-indigo-800/50 transition flex items-center space-x-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
