@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\OVD;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\OVD\IndexRequest;
 use App\Http\Requests\Admin\OVD\OVDStoreRequest;
 use App\Http\Requests\Admin\OVD\OVDUpdateRequest;
 use App\Models\OVD;
@@ -21,11 +22,13 @@ class OVDController extends Controller
     {
     }
 
-    public function index(): View
+    public function index(IndexRequest $searchRequest): View
     {
+        $dataRequest = $searchRequest->validated();
+
         return view('pages.admin.ovd.index',
             [
-                'ovd' => $this->ovdRepository->getPaginatedOVD(),
+                'ovd' => $dataRequest? $this->ovdRepository->getFilterableOVD($dataRequest) : $this->ovdRepository->getPaginatedOVD(),
             ]
         );
     }

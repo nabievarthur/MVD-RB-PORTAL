@@ -11,6 +11,7 @@ interface OVDInterface
     public function findOVDById(int $ovdId): ?OVD;
     public function getOVDList(): Collection;
 
+    public function getFilterableOVD(array $data): LengthAwarePaginator;
     public function getPaginatedOVD(): LengthAwarePaginator;
 
 

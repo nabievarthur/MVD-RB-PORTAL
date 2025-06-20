@@ -42,9 +42,16 @@ class OVDRepository implements OVDInterface
         );
     }
 
+    public function getFilterableOVD(array $data): LengthAwarePaginator
+    {
+        return $this->ovd
+            ->filter($data)
+            ->paginate(10)
+            ->withQueryString();
+    }
     public function getPaginatedOVD(): LengthAwarePaginator
     {
-        $perPage = 15;
+        $perPage = 10;
         $page = (int) request()->get('page', 1);
 
         $ovds = Cache::tags(['ovd'])->remember(

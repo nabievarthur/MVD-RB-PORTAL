@@ -57,7 +57,7 @@
         <div class="w-2/3 bg-gray-800 rounded-lg shadow-md m-4 p-4">
             <!-- Блок поиска -->
 
-            <form method="GET" action="{{ route('admin.user.index') }}" class="grid grid-cols-3 gap-4 mb-4">
+            <form method="GET" action="{{ route('admin.ovd.index') }}" class="grid grid-cols-3 gap-4 mb-4">
                 <!-- Первая строка: Название, Код -->
                 <input
                     name="title"
@@ -87,7 +87,7 @@
                         Найти
                     </button>
 
-                    <a href="{{ route('admin.user.index') }}" class="w-full">
+                    <a href="{{ route('admin.ovd.index') }}" class="w-full">
                         <button
                             type="button"
                             class="bg-indigo-500/50 text-white px-4 py-2 rounded hover:bg-indigo-800/50 transition w-full flex items-center justify-center"
