@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\OVD;
+namespace App\Http\Requests\Admin\Subdivision;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexRequest extends FormRequest
+class SubdivisionIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,6 @@ class IndexRequest extends FormRequest
     {
         return [
             'title' => 'nullable|string',
-            'cod_ovd' => 'nullable|int',
         ];
     }
 }

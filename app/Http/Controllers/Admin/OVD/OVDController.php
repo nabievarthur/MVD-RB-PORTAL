@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\OVD;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\OVD\IndexRequest;
-use App\Http\Requests\Admin\OVD\OVDStoreRequest;
-use App\Http\Requests\Admin\OVD\OVDUpdateRequest;
+use App\Http\Requests\Admin\OVD\OVDIndexRequest;
+use App\Http\Requests\Admin\OVD\SubdivisionStoreRequest;
+use App\Http\Requests\Admin\OVD\SubdivisionUpdateRequest;
 use App\Models\OVD;
 use App\Repositories\Interfaces\OVDInterface;
 use App\Services\OVDService;
@@ -22,7 +22,7 @@ class OVDController extends Controller
     {
     }
 
-    public function index(IndexRequest $searchRequest): View
+    public function index(OVDIndexRequest $searchRequest): View
     {
         $dataRequest = $searchRequest->validated();
 
@@ -33,7 +33,7 @@ class OVDController extends Controller
         );
     }
 
-    public function store(OVDStoreRequest $request): RedirectResponse
+    public function store(SubdivisionStoreRequest $request): RedirectResponse
     {
         try {
             $success = $this->ovdService->storeOVD($request->validated());
@@ -55,7 +55,7 @@ class OVDController extends Controller
         ]);
     }
 
-    public function update(OVD $ovd, OVDUpdateRequest $request): RedirectResponse
+    public function update(OVD $ovd, SubdivisionUpdateRequest $request): RedirectResponse
     {
         try {
             $updatedOvd = $this->ovdService->updateOVD($ovd, $request->validated());

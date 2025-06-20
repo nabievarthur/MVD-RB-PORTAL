@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OVD\OVDController;
+use App\Http\Controllers\Admin\Subdivision\SubdivisionController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\Chief\ChiefController;
 use App\Http\Controllers\Contact\ContactController;
@@ -36,14 +37,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::patch('/users/{user}', [UserController::class, 'update'])->name('admin.user.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
-        Route::get('ovd', [OvdController::class, 'index'])->name('admin.ovd.index');
-        Route::post('ovd', [OvdController::class, 'store'])->name('admin.ovd.store');
-        Route::get('ovd/{ovd}', [OvdController::class, 'edit'])->name('admin.ovd.edit');
-        Route::patch('ovd/{ovd}', [OvdController::class, 'update'])->name('admin.ovd.update');
-        Route::delete('ovd/{ovd}', [OvdController::class, 'destroy'])->name('admin.ovd.destroy');
+        Route::get('ovd', [OVDController::class, 'index'])->name('admin.ovd.index');
+        Route::post('ovd', [OVDController::class, 'store'])->name('admin.ovd.store');
+        Route::get('ovd/{ovd}', [OVDController::class, 'edit'])->name('admin.ovd.edit');
+        Route::patch('ovd/{ovd}', [OVDController::class, 'update'])->name('admin.ovd.update');
+        Route::delete('ovd/{ovd}', [OVDController::class, 'destroy'])->name('admin.ovd.destroy');
+
+        Route::get('subdivisions', [SubdivisionController::class, 'index'])->name('admin.subdivision.index');
+        Route::post('subdivisions', [SubdivisionController::class, 'store'])->name('admin.subdivision.store');
+        Route::get('subdivisions/{subdivision}', [SubdivisionController::class, 'edit'])->name('admin.subdivision.edit');
+        Route::patch('subdivisions/{subdivision}', [SubdivisionController::class, 'update'])->name('admin.subdivision.update');
+        Route::delete('subdivisions/{subdivision}', [SubdivisionController::class, 'destroy'])->name('admin.subdivision.destroy');
 
         Route::view('/news', 'pages.admin.news.index')->name('admin.news.index');
-        Route::view('/subdivision', 'pages.admin.subdivision.index')->name('admin.subdivision.index');
+
         Route::view('/role', 'pages.admin.role.index')->name('admin.role.index');
     });
 });

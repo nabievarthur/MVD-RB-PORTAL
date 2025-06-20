@@ -79,7 +79,8 @@
                         <option value="" disabled selected>Выберите ОВД</option>
                         @foreach($ovd as $id => $title)
                             <option
-                                value="{{ $id }}" {{ old('ovd_id') == $id ? 'selected' : '' }}>{{ $title }}</option>
+                                value="{{ $id }}" {{ $id == $user->ovd_id ? 'selected' : '' }}>{{ $title }}
+                            </option>
                         @endforeach
                     </select>
                     @error('ovd_id')
