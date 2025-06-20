@@ -105,24 +105,6 @@ php artisan migrate:fresh --seed
 
 ---
 
-## 🔍 Структура проекта
-
-```
-MVD-RB-PORTAL/
-├── app/                # Контроллеры, модели, сервисы Laravel
-├── config/             # Настройки приложения
-├── database/           # Миграции и сидеры
-├── public/             # Публичные файлы
-├── resources/          # Шаблоны, переводы, Vite ресурсы
-├── routes/             # Маршруты (web, api)
-├── docker/             # Docker-конфигурации
-├── tests/              # Тесты
-├── .env.example        # Пример конфигурации окружения
-└── docker-compose.yml  # Docker-описание
-```
-
----
-
 ## 🐳 Docker
 
 Проект запускается в контейнерах:
