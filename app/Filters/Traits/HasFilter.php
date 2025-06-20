@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Filters\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Response;
