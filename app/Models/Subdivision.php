@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subdivision extends Model
 {
+
+    protected $fillable = [
+        'title',
+    ];
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

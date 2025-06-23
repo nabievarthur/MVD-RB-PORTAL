@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Admin\Subdivision;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Subdivision\SubdivisionIndexRequest;
+use App\Http\Requests\Admin\Subdivision\SubdivisionStoreRequest;
+use App\Http\Requests\Admin\Subdivision\SubdivisionUpdateRequest;
+use App\Models\Subdivision;
 use App\Repositories\Interfaces\SubdivisionInterface;
 use App\Services\SubdivisionService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Throwable;
 
 class SubdivisionController extends Controller
 {
@@ -28,7 +33,7 @@ class SubdivisionController extends Controller
         );
     }
 
-    /*public function store(SubdivisionStoreRequest $request): RedirectResponse
+    public function store(SubdivisionStoreRequest $request): RedirectResponse
     {
         try {
             $success = $this->subdivisionService->storeSubdivision($request->validated());
@@ -74,5 +79,5 @@ class SubdivisionController extends Controller
         } catch (Throwable $e) {
             return back()->with('error', 'Ошибка удаления ОВД: ' . $e->getMessage());
         }
-    }*/
+    }
 }
