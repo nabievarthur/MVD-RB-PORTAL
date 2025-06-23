@@ -31,6 +31,15 @@ class SubdivisionRepository implements SubdivisionInterface
         );
     }
 
+    public function getSubdivisionCount(): int
+    {
+        return Cache::tags(['subdivision'])->remember(
+            'subdivision:count',
+            self::CACHE_TTL,
+            fn() => $this->subdivision->count()
+        );
+    }
+
     public function getSubdivisionList(): Collection
     {
         return Cache::tags(['subdivision'])->remember(
@@ -128,5 +137,6 @@ class SubdivisionRepository implements SubdivisionInterface
         Cache::tags(['subdivision'])->flush();
         Cache::forget(self::CACHE_PREFIX_FOR_ONE_Subdivision . $subdivisionId);
         Cache::forget(self::CACHE_PREFIX_FOR_ALL_Subdivision . '.list');
+        Cache::forget('users:count');
     }
 }

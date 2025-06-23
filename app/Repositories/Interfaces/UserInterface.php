@@ -8,6 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface UserInterface
 {
     public function findUserById(int $userId): ?User;
+    public function getUsersCount(): int;
     public function getFilterableUsers(array $data):LengthAwarePaginator;
     public function getPaginatedUsers(): LengthAwarePaginator;
     public function createUser(array $userData): ?User;

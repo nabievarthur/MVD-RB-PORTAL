@@ -31,6 +31,14 @@ class OVDRepository implements OVDInterface
         );
     }
 
+    public function getOVDCount(): int
+    {
+        return Cache::tags(['ovd'])->remember(
+            'ovd:count',
+            self::CACHE_TTL,
+            fn() => $this->ovd->count()
+        );
+    }
     public function getOVDList(): Collection
     {
         return Cache::tags(['ovd'])->remember(
@@ -128,5 +136,6 @@ class OVDRepository implements OVDInterface
         Cache::tags(['ovd'])->flush();
         Cache::forget(self::CACHE_PREFIX_FOR_ONE_OVD . $ovdId);
         Cache::forget(self::CACHE_PREFIX_FOR_ALL_OVD . '.list');
+        Cache::forget('ovd:count');
     }
 }

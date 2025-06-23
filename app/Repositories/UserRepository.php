@@ -30,6 +30,16 @@ class UserRepository implements UserInterface
         );
     }
 
+    public function getUsersCount(): int
+    {
+        return Cache::tags(['users'])->remember(
+            'users:count',
+            self::CACHE_TTL,
+            fn() => $this->user->count()
+        );
+    }
+
+
     public function getFilterableUsers(array $data): LengthAwarePaginator
     {
         return $this->user
@@ -124,5 +134,6 @@ class UserRepository implements UserInterface
     {
         Cache::tags(['users'])->flush();
         Cache::forget(self::CACHE_PREFIX_FOR_ONE_USER . $userId);
+        Cache::forget('users:count');
     }
 }

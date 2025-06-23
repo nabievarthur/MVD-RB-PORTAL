@@ -44,18 +44,20 @@
 
             <form method="GET" action="{{ route('admin.subdivision.index') }}" class="grid grid-cols-3 gap-4 mb-4">
                 <!-- Первая строка: Название, Код -->
-                <input
-                    name="title"
-                    value="{{ request()->input('title') }}"
-                    type="text"
-                    placeholder="Поиск по названию..."
-                    class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-full"
-                />
+                <div class="col-span-2 flex">
+                    <input
+                        name="title"
+                        value="{{ request()->input('title') }}"
+                        type="text"
+                        placeholder="Поиск по названию..."
+                        class="bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition w-1/2"
+                    />
+                </div>
 
-                <div class="flex space-x-2">
+                <div class="flex justify-end space-x-2">
                     <button
                         type="submit"
-                        class="bg-green-600/50 text-white px-4 py-2 rounded hover:bg-green-700/50  transition flex items-center justify-center w-full"
+                        class="bg-green-600/50 text-white px-4 py-2 rounded hover:bg-green-700/50 transition flex items-center justify-center w-full max-w-[200px]"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-search mr-2" viewBox="0 0 16 16">
@@ -65,7 +67,7 @@
                         Найти
                     </button>
 
-                    <a href="{{ route('admin.subdivision.index') }}" class="w-full">
+                    <a href="{{ route('admin.subdivision.index') }}" class="w-full max-w-[200px]">
                         <button
                             type="button"
                             class="bg-indigo-500/50 text-white px-4 py-2 rounded hover:bg-indigo-800/50 transition w-full flex items-center justify-center"
@@ -81,7 +83,6 @@
                         </button>
                     </a>
                 </div>
-
             </form>
 
             <!-- Table -->
