@@ -13,7 +13,7 @@ interface UserInterface
     public function getPaginatedUsers(): LengthAwarePaginator;
     public function createUser(array $userData): ?User;
     public function updateUser(int $userId, array $userData): ?User;
-    public function deleteUser(int $userId): ?bool;
+    public function deleteUser(int $userId): bool;
 
 
 }

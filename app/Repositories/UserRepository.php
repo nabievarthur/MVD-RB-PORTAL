@@ -17,7 +17,9 @@ class UserRepository implements UserInterface
 
     public function __construct(
         protected User $user
-    ) {}
+    )
+    {
+    }
 
     public function findUserById(int $userId): ?User
     {
@@ -52,7 +54,7 @@ class UserRepository implements UserInterface
     public function getPaginatedUsers(): LengthAwarePaginator
     {
         $perPage = 10;
-        $page = (int) request()->get('page', 1);
+        $page = (int)request()->get('page', 1);
 
         $users = Cache::tags(['users'])->remember(
             self::CACHE_PREFIX_FOR_ALL_USERS,
@@ -80,7 +82,6 @@ class UserRepository implements UserInterface
     public function createUser(array $userData): ?User
     {
         return DB::transaction(function () use ($userData) {
-            $userData['password'] = Hash::make($userData['password']);
             $user = $this->user->create($userData);
             $this->clearUserCache($user->id);
             return $user;
@@ -95,9 +96,7 @@ class UserRepository implements UserInterface
                 return null;
             }
 
-            if (!empty($userData['password'])) {
-                $userData['password'] = Hash::make($userData['password']);
-            } else {
+            if (empty($userData['password'])) {
                 unset($userData['password']);
             }
 

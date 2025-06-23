@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Log\ExceptionLogService;
 use App\Services\Log\UserLogService;
+use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class UserService
@@ -24,8 +25,9 @@ class UserService
     public function storeUser(array $userData): bool
     {
         try {
-            $user = $this->userRepository->createUser($userData);
+            $userData = $this->handlePassword($userData);
 
+            $user = $this->userRepository->createUser($userData);
             if (!$user) {
                 return false;
             }
@@ -50,9 +52,7 @@ class UserService
         try {
             $oldData = $user->getOriginal();
 
-            if (array_key_exists('password', $userData) && empty($userData['password'])) {
-                unset($userData['password']);
-            }
+            $userData = $this->handlePassword($userData);
 
             $updatedUser = $this->userRepository->updateUser($user->id, $userData);
 
@@ -102,5 +102,17 @@ class UserService
             );
             throw $e;
         }
+    }
+
+    private function handlePassword(array $userData): array
+    {
+        if (array_key_exists('password', $userData)) {
+            if (empty($userData['password'])) {
+                unset($userData['password']);
+            } else {
+                $userData['password'] = Hash::make($userData['password']);
+            }
+        }
+        return $userData;
     }
 }
