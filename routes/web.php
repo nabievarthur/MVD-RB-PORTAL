@@ -12,6 +12,7 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('files.destroy');
@@ -25,34 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/news', [NewsController::class, 'store'])->name('news.store');
     Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
 
-    /***
-     *Роуты для админа
-     */
-    Route::prefix('/admin')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
-
-        Route::get('/users', [UserController::class, 'index'])->name('admin.user.index');
-        Route::post('/users', [UserController::class, 'store'])->name('admin.user.store');
-        Route::get('/users/{user}', [UserController::class, 'edit'])->name('admin.user.edit');
-        Route::patch('/users/{user}', [UserController::class, 'update'])->name('admin.user.update');
-        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
-
-        Route::get('ovd', [OVDController::class, 'index'])->name('admin.ovd.index');
-        Route::post('ovd', [OVDController::class, 'store'])->name('admin.ovd.store');
-        Route::get('ovd/{ovd}', [OVDController::class, 'edit'])->name('admin.ovd.edit');
-        Route::patch('ovd/{ovd}', [OVDController::class, 'update'])->name('admin.ovd.update');
-        Route::delete('ovd/{ovd}', [OVDController::class, 'destroy'])->name('admin.ovd.destroy');
-
-        Route::get('subdivisions', [SubdivisionController::class, 'index'])->name('admin.subdivision.index');
-        Route::post('subdivisions', [SubdivisionController::class, 'store'])->name('admin.subdivision.store');
-        Route::get('subdivisions/{subdivision}', [SubdivisionController::class, 'edit'])->name('admin.subdivision.edit');
-        Route::patch('subdivisions/{subdivision}', [SubdivisionController::class, 'update'])->name('admin.subdivision.update');
-        Route::delete('subdivisions/{subdivision}', [SubdivisionController::class, 'destroy'])->name('admin.subdivision.destroy');
-
-        Route::view('/news', 'pages.admin.news.index')->name('admin.news.index');
-
-        Route::view('/role', 'pages.admin.role.index')->name('admin.role.index');
-    });
 });
 
 Route::get('/chiefs', [ChiefController::class, 'index'])->name('chiefs.index');
@@ -75,4 +48,8 @@ Route::get('clear', function () {
     return redirect()->back()->with('success', 'Кэш очищен');
 })->name('clear');
 
+
+//Роуты для админа
 require __DIR__ . '/auth.php';
+//Роуты для авторизации
+require __DIR__ . '/admin.php';
