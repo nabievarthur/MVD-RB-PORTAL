@@ -20,12 +20,12 @@
                 <form method="GET" action="{{ route('home') }}" class="flex justify-between items-center">
                     <input
                         type="text"
-                        name="q"
+                        name="title"
                         class="mr-4 block w-full px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
                         placeholder="Поиск"
                         value="{{ request()->input('q') }}"
                     />
-                    @if(request()->has('q'))
+                    @if(request()->has('title'))
                         <a href="{{ route('home') }}"
                            class="mr-2 text-white bg-gradient-to-r from-emerald-500 to-cyan-800 hover:from-emerald-500 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">
                             Отмена

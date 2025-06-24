@@ -2,13 +2,17 @@
 
 namespace App\Filters;
 
-class NewsFilter
+use Illuminate\Database\Eloquent\Builder;
+
+class NewsFilter extends AbstractFilter
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
+    protected array $keys = [
+        'title',
+    ];
+
+    protected function title(Builder $builder, $value)
     {
-        //
+        $builder->where('title', 'ilike', "%$value%")
+            ->orWhere('description', 'ilike', "%$value%");
     }
 }

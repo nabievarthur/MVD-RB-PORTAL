@@ -50,7 +50,7 @@ class NewsRepository implements NewsInterface
     public function getFilterableNews(array $data): LengthAwarePaginator
     {
         return $this->news
-            ->filter($data) // Предполагается, что в модели есть локальная область видимости "filter"
+            ->filter($data)
             ->with(['user', 'files'])
             ->orderByDesc('created_at')
             ->paginate(10)

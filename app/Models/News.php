@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filters\Traits\HasFilter;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -11,24 +12,13 @@ use Illuminate\Support\Facades\Storage;
 
 class News extends Model
 {
+    use HasFilter;
     protected $fillable = [
         'title',
         'description',
         'user_id',
     ];
-    public function scopeSearchQuery(Builder $query, $q)
-    {
-        $searchTerm = mb_strtolower($q);
 
-        return $query->whereRaw('LOWER(title) LIKE ?', ['%' . $searchTerm . '%'])
-            ->orWhereRaw('LOWER(description) LIKE ?', ['%' . $searchTerm . '%']);
-    }
-
-    public function scopeLatestWithUser(Builder $query): Builder
-    {
-        return $query->with('user')
-            ->orderBy('created_at', 'desc');
-    }
     public function files(): HasMany
     {
         return $this->hasMany(File::class);

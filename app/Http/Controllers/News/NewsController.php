@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\News\IndexRequest;
 use App\Http\Requests\News\StoreRequest;
 use App\Http\Requests\News\UpdateRequest;
 use App\Models\News;
@@ -25,10 +26,12 @@ class NewsController extends Controller
     /**
      * Страница списка новостей.
      */
-    public function index(): View
+    public function index(IndexRequest $searchRequest): View
     {
-        return view('pages.home.index', [
-            'newsList' => $this->newsRepository->getPaginatedNews(),
+        $dataRequest = $searchRequest->validated();
+
+        return view('pages.news.index', [
+            'news' => $dataRequest ? $this->newsRepository->getFilterableNews($dataRequest) : $this->newsRepository->getPaginatedNews(),
         ]);
     }
 
