@@ -13,7 +13,6 @@ use Throwable;
 class UserService
 {
     public function __construct(
-        protected User $user,
         protected UserRepository $userRepository,
         protected UserLogService $userLogService,
         protected ExceptionLogService $exceptionLogService,
@@ -22,18 +21,19 @@ class UserService
     /**
      * @throws Throwable
      */
-    public function storeUser(array $userData): bool
+    public function storeUser(array $userData): User
     {
         try {
             $userData = $this->handlePassword($userData);
 
             $user = $this->userRepository->createUser($userData);
             if (!$user) {
-                return false;
+                throw new \RuntimeException('Не удалось создать пользователя');
             }
 
             $this->userLogService->log($user, CrudActionEnum::CREATE, $userData);
-            return true;
+
+            return $user;
         } catch (Throwable $e) {
             $this->exceptionLogService->logException(
                 CrudActionEnum::CREATE,
@@ -55,7 +55,6 @@ class UserService
             $userData = $this->handlePassword($userData);
 
             $updatedUser = $this->userRepository->updateUser($user->id, $userData);
-
             if (!$updatedUser) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
@@ -87,7 +86,10 @@ class UserService
         try {
             $oldData = $user->getOriginal();
 
-            $this->userRepository->deleteUser($user->id);
+            $success = $this->userRepository->deleteUser($user->id);
+            if (!$success) {
+                throw new \RuntimeException('Не удалось удалить пользователя.');
+            }
 
             $this->userLogService->log($user, CrudActionEnum::DELETE, [
                 'old' => $oldData,
