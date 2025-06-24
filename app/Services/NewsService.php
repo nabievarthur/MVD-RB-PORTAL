@@ -2,50 +2,124 @@
 
 namespace App\Services;
 
+use App\Enums\CrudActionEnum;
 use App\Http\Requests\News\StoreRequest;
 use App\Http\Requests\News\UpdateRequest;
 use App\Models\News;
-use Exception;
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\NewsRepository;
+use App\Services\Log\ExceptionLogService;
+use App\Services\Log\UserLogService;
+use Throwable;
 
 class NewsService
 {
-    public function __construct(public FileUploadService $fileUploadService)
+    public function __construct(
+        protected NewsRepository $newsRepository,
+        protected FileUploadService $fileUploadService,
+        protected UserLogService $userLogService,
+        protected ExceptionLogService $exceptionLogService,
+    ) {}
+
+    /**
+     * Создание новой новости.
+     *
+     * @throws Throwable
+     */
+    public function store(StoreRequest $request): News
     {
+        try {
+            $data = $request->except(['_token', 'files']);
+
+            $news = $this->newsRepository->createNews($data);
+
+            if (!$news) {
+                throw new \RuntimeException('Не удалось создать новость.');
+            }
+
+            $this->userLogService->log($news, CrudActionEnum::CREATE, $data);
+
+            if ($request->hasFile('files')) {
+                $this->fileUploadService->uploadFiles('news_files', $news, $request->file('files'));
+            }
+
+            return $news;
+        } catch (Throwable $e) {
+            $this->exceptionLogService->logException(
+                CrudActionEnum::CREATE,
+                $e,
+                ['data' => $data]
+            );
+            throw $e;
+        }
     }
 
     /**
-     * @throws Exception
+     * Обновление существующей новости.
+     *
+     * @throws Throwable
      */
-
-    public function create(StoreRequest $request): News
-    {
-        $data = $request->except(['_token', 'files']);
-
-        $news = News::query()->create($data);
-
-        if (!$news) {
-            throw new Exception();
-        }
-
-        if ($request->hasFile('files')) {
-          $this->fileUploadService->uploadFiles('news_files', $news ,$request->file('files'));
-        }
-
-        return $news;
-
-    }
-
     public function update(UpdateRequest $request, News $news): News
     {
-        $data = $request->except(['_token','_method', 'files']);
+        try {
+            $oldData = $news->getOriginal();
 
-        $news->update($data);
+            $data = $request->except(['_token', '_method', 'files']);
 
-        if ($request->hasFile('files')) {
-            $this->fileUploadService->uploadFiles('news_files', $news ,$request->file('files'));
+            $updatedNews = $this->newsRepository->updateNews($news->id, $data);
+
+            if (!$updatedNews) {
+                throw new \RuntimeException('Не удалось обновить новость.');
+            }
+
+            $this->userLogService->log($updatedNews, CrudActionEnum::UPDATE, [
+                'old' => $oldData,
+                'new' => $data,
+            ]);
+
+            if ($request->hasFile('files')) {
+                $this->fileUploadService->uploadFiles('news_files', $news, $request->file('files'));
+            }
+
+            return $updatedNews;
+        } catch (Throwable $e) {
+
+            $this->exceptionLogService->logException(
+                CrudActionEnum::UPDATE,
+                $e,
+                [
+                    'news_id' => $news->id,
+                    'data' => $data,
+                ]
+            );
+            throw $e;
         }
+    }
 
-        return $news;
+    /**
+     * Удаление новости.
+     *
+     * @throws Throwable
+     */
+    public function delete(News $news): void
+    {
+        try {
+            $oldData = $news->getOriginal();
+
+            $this->newsRepository->deleteNews($news->id);
+
+            $this->userLogService->log($news, CrudActionEnum::DELETE, [
+                'old' => $oldData,
+            ]);
+        } catch (Throwable $e) {
+
+            $this->exceptionLogService->logException(
+                CrudActionEnum::DELETE,
+                $e,
+                [
+                    'news_id' => $news->id,
+                ]
+            );
+            throw $e;
+        }
     }
 }

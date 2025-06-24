@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\OVD\OVDController;
-use App\Http\Controllers\Admin\Subdivision\SubdivisionController;
-use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\Chief\ChiefController;
 use App\Http\Controllers\Contact\ContactController;
 use App\Http\Controllers\File\FileController;

@@ -6,66 +6,118 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\News\StoreRequest;
 use App\Http\Requests\News\UpdateRequest;
 use App\Models\News;
+use App\Repositories\Interfaces\NewsInterface;
 use App\Services\NewsService;
-use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Throwable;
 
 class NewsController extends Controller
 {
     use AuthorizesRequests;
 
     public function __construct(
-        private NewsService $newsService
-    )
+        protected NewsInterface $newsRepository,
+        protected NewsService $newsService,
+    ) {}
+
+    /**
+     * Страница списка новостей.
+     */
+    public function index(): View
     {
+        return view('pages.home.index', [
+            'newsList' => $this->newsRepository->getPaginatedNews(),
+        ]);
     }
 
-    public function create()
+    /**
+     * Страница создания новости.
+     */
+    public function create(): View
     {
         $this->authorize('create', News::class);
         return view('pages.news.create');
     }
 
-    public function show(News $news)
-    {
-        return view('pages.news.show', compact('news'));
-    }
-
-    public function store(StoreRequest $request)
+    /**
+     * Создание новости.
+     */
+    public function store(StoreRequest $request): RedirectResponse
     {
         $this->authorize('create', News::class);
 
         try {
-            $this->newsService->create($request);
-            return redirect()->route('home')->with('success', 'Новость успешно добавлена');
-        } catch (Exception $e) {
-            return redirect()->route('home')->with('error', 'Не удалось добавить новость. Пожалуйста, повторите попытку позже!'. $e->getMessage());
+            $success = $this->newsService->store($request);
+
+            if ($success) {
+                return redirect()
+                    ->route('home')
+                    ->with('success', 'Новость успешно добавлена.');
+            }
+
+            return back()->with('error', 'Не удалось создать новость.');
+        } catch (Throwable $e) {
+            return back()->with('error', 'Ошибка при создании новости: ' . $e->getMessage());
         }
     }
 
-    public function edit(News $news)
+    /**
+     * Страница просмотра новости.
+     */
+    public function show(News $news): View
+    {
+        return view('pages.news.show', [
+            'news' => $this->newsRepository->findNewsById($news->id),
+        ]);
+    }
+
+    /**
+     * Страница редактирования новости.
+     */
+    public function edit(News $news): View
     {
         $this->authorize('update', $news);
 
-        return view('pages.news.edit', compact('news'));
+        return view('pages.news.edit', [
+            'news' => $this->newsRepository->findNewsById($news->id),
+        ]);
     }
 
-    public function update(News $news, UpdateRequest $request)
+    /**
+     * Обновление новости.
+     */
+    public function update(News $news, UpdateRequest $request): RedirectResponse
     {
         $this->authorize('update', $news);
 
         try {
-            $news = $this->newsService->update($request, $news);
-            return redirect()->route('news.show', $news)->with('warning', 'Новость отредактирована');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Ошибка при редактировании новости');
-        }
+            $updatedNews = $this->newsService->update($request->validated(), $news);
 
+            return redirect()
+                ->route('news.show', $updatedNews->id)
+                ->with('success', 'Данные новости обновлены.');
+        } catch (Throwable $e) {
+            return back()->with('error', 'Ошибка обновления данных новости: ' . $e->getMessage());
+        }
     }
 
-    public function destroy(News $news)
+    /**
+     * Удаление новости.
+     */
+    public function destroy(News $news): RedirectResponse
     {
-        $news->delete();
-        return redirect()->route('home')->with('warning', 'Новость удаленна');
+        $this->authorize('delete', $news);
+
+        try {
+            $this->newsService->delete($news);
+
+            return redirect()
+                ->route('home')
+                ->with('warning', 'Новость успешно удалена.');
+        } catch (Throwable $e) {
+            return back()->with('error', 'Ошибка удаления новости: ' . $e->getMessage());
+        }
     }
 }
