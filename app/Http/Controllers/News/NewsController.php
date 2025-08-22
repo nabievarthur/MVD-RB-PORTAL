@@ -61,6 +61,7 @@ class NewsController extends Controller
             }
 
             return back()->with('error', 'Не удалось создать новость.');
+
         } catch (Throwable $e) {
             return back()->with('error', 'Ошибка при создании новости: ' . $e->getMessage());
         }

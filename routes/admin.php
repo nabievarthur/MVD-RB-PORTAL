@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 /***
  *Роуты для админа
  */
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'],function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'] ],function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     Route::get('/users', [UserController::class, 'index'])->name('admin.user.index');
