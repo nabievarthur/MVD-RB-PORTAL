@@ -96,7 +96,7 @@ class NewsController extends Controller
         $this->authorize('update', $news);
 
         try {
-            $updatedNews = $this->newsService->update($request->validated(), $news);
+            $updatedNews = $this->newsService->update($request, $news);
 
             return redirect()
                 ->route('news.show', $updatedNews->id)

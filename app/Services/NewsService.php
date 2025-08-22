@@ -14,9 +14,9 @@ use Throwable;
 class NewsService
 {
     public function __construct(
-        protected NewsRepository $newsRepository,
-        protected FileUploadService $fileUploadService,
-        protected UserLogService $userLogService,
+        protected NewsRepository      $newsRepository,
+        protected FileService         $fileUploadService,
+        protected UserLogService      $userLogService,
         protected ExceptionLogService $exceptionLogService,
     ) {}
 

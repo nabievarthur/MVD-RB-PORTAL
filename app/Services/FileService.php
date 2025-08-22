@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
-class FileUploadService
+class FileService
 {
     public function uploadFiles(string $folderName, Model $model, array $files): void
     {
@@ -18,5 +20,12 @@ class FileUploadService
                 'size' => $file->getSize(),
             ]);
         }
+    }
+
+    public function destroyFile(File $file): void
+    {
+        $file->delete();
+        Cache::tags(['news'])->flush();
+
     }
 }
