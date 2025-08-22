@@ -4,7 +4,7 @@
     'description' => '',
     'icon' => null,
     'iconPosition' => 'bottom-right',
-    'iconSize' => '24',
+    'iconSize' => '15',
     'iconOpacity' => '20',
     'iconColor' => 'gray-600',
     'route' => '',
@@ -17,14 +17,13 @@
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
-            @class([
-                "h-$iconSize w-$iconSize text-$iconColor absolute opacity-$iconOpacity",
-                '-right-4 -bottom-4' => $iconPosition === 'bottom-right',
-                '-left-4 -bottom-4' => $iconPosition === 'bottom-left',
-                '-right-4 -top-4' => $iconPosition === 'top-right',
-                '-left-4 -top-4' => $iconPosition === 'top-left',
-            ])
-            viewBox="0 0 16 16"
+            class="text-{{ $iconColor }} absolute opacity-{{ $iconOpacity }}
+        @if($iconPosition === 'bottom-right') -right-4 -bottom-4 @endif
+        @if($iconPosition === 'bottom-left') -left-4 -bottom-4 @endif
+        @if($iconPosition === 'top-right') -right-4 -top-4 @endif
+        @if($iconPosition === 'top-left') -left-4 -top-4 @endif"
+            style="width: {{ $iconSize }}px; height: {{ $iconSize }}px;"
+            viewBox="0 0 20 20"
         >
             {!! $icon !!}
         </svg>
