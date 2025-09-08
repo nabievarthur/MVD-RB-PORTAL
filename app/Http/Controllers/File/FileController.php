@@ -18,7 +18,6 @@ class FileController extends Controller
 
         $this->fileService->destroyFile($file);
 
-
         return response()->json([
             'message' => 'Файл удалён успешно'
         ], 200);

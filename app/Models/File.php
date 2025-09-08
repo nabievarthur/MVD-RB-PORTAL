@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
 class File extends Model
@@ -19,6 +20,11 @@ class File extends Model
     public function news(): BelongsTo
     {
         return $this->belongsTo(News::class);
+    }
+
+    public function fileable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     protected static function booted(): void
