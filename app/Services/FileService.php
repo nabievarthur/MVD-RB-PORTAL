@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Cache;
 
 class FileService
 {
-    public function uploadFiles(string $folderName, Model $model, array $files): void
+    public function uploadFiles(string $folderName, Model $model, $files): void
     {
+        $files = is_array($files) ? $files : [$files];
+
         foreach ($files as $file) {
             $path = $file->store($folderName, 'public');
 

@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\LeaderInterface;
 use App\Repositories\Interfaces\NewsInterface;
 use App\Repositories\Interfaces\OVDInterface;
 use App\Repositories\Interfaces\RoleInterface;
 use App\Repositories\Interfaces\SubdivisionInterface;
 use App\Repositories\Interfaces\UserInterface;
+use App\Repositories\LeaderRepository;
 use App\Repositories\NewsRepository;
 use App\Repositories\OVDRepository;
 use App\Repositories\RoleRepository;
@@ -43,6 +45,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             NewsInterface::class,
             NewsRepository::class
+        );
+
+        $this->app->bind(
+            LeaderInterface::class,
+            LeaderRepository::class
         );
     }
 
