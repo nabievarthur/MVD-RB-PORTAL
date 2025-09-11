@@ -12,7 +12,7 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'nullable|string',
-            'files.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip|max:30720',
+            'files.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip,tar,gz|max:30720',
             'files' => 'max:5'
         ];
     }
