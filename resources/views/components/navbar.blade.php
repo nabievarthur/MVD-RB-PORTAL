@@ -54,7 +54,7 @@
                     @endauth
                     <li>
                         <x-nav-link
-                            route="chiefs.index"
+                            route="leaders.index"
                             text="Руководство"
                         />
                     </li>

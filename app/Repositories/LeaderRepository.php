@@ -25,6 +25,7 @@ class LeaderRepository implements LeaderInterface
         );
     }
 
+    //Мейби убрать
     public function getLeadersCount(): int
     {
         return Cache::tags(['leaders'])->remember(

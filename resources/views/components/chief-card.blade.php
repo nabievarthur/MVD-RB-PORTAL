@@ -11,7 +11,7 @@
     <div class="h-52 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
         <img
             class="h-full w-full object-cover object-top"
-            src="{{ asset('images/chiefs/' . $image) }}"
+            src="{{ asset('storage/' . $image) }}"
             alt="Фотография руководителя">
     </div>
     <div class="p-4 text-center">

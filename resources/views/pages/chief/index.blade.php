@@ -15,110 +15,35 @@
         </div>
         <div>
             <!-- Карточка министра -->
-            <div class="mt-10 flex justify-center">
-                <div class="grid grid-cols-1 gap-6 justify-center">
-                    <x-chief-card
-                        image="Pryadko.jpg"
-                        name="Прядко Александр Александрович"
-                        rank="Генерал-лейтенант полиции"
-                        position="Министр внутренних дел по Республике Башкортостан"
-                        position-class="text-sm text-orange-500 dark:text-orange-300"
-                    ></x-chief-card>
+            @foreach($leaders as $leader)
+                @if($leader->priority == 1)
+                    <div class="mt-10 flex justify-center">
+                        <div class="grid grid-cols-1 gap-6 justify-center">
+                            <x-chief-card
+                                image="{{$leader->files->first()?->path}}"
+                                name="{{$leader->full_name}}"
+                                rank="{{$leader->rank}}"
+                                position="{{$leader->position}}"
+                                position-class="text-sm text-orange-500 dark:text-orange-300"
+                            ></x-chief-card>
+                        </div>
+                    </div>
+                    @continue
+                @endif
+
+                <div class="mt-10 flex justify-center">
+                    <!-- Карточки замов -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center">
+                        <x-chief-card
+                            image="{{$leader->files->first()?->path}}"
+                            name="{{$leader->full_name}}"
+                            rank="{{$leader->rank}}"
+                            position="{{$leader->position}}"
+                        ></x-chief-card>
+                    </div>
                 </div>
-            </div>
-            <div class="mt-10 flex justify-center">
-                <!-- Карточки замов -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center">
 
-                    <x-chief-card
-                        image="Saifullin.jpg"
-                        name="Сайфуллин Артур Фаридович"
-                        rank="Генерал-майор полиции"
-                        position="Заместитель министра - начальник полиции"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Zubairov.jpg"
-                        name="Зубаиров Айдар Фарузович"
-                        rank="Генерал-майор полиции"
-                        position="Заместитель министра внутренних дел"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Poltavec.jpg"
-                        name="Полтавец Евгений Алексеевич"
-                        rank="Генерал-майор внутренней службы"
-                        position="Заместитель министра внутренних дел"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Baranov.jpg"
-                        name="Баранов Юрий Борисович"
-                        rank="Полковник юстиции"
-                        position="Заместитель министра внутренних дел - начальник ГСУ"
-                    ></x-chief-card>
-                </div>
-            </div>
-            <div class="mt-10 flex justify-center">
-                <!-- Карточки зам-замов -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center">
-
-                    <x-chief-card
-                        image="Semenov.jpg"
-                        name="Семенов Дмитрий Сергеевич"
-                        rank="Полковник полиции"
-                        position="Заместитель начальника полиции (по оперативной работе)"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Skornyakov.jpg"
-                        name="Скорняков Руслан Александрович"
-                        rank="Полковник полиции"
-                        position="Заместитель начальника полиции (по охране общественного порядка)"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Shaimuhametov.jpg"
-                        name="Шаймухаметов Радик Имаммухаметович"
-                        rank="Полковник полиции"
-                        position="Заместитель начальника полиции"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Faizullin.jpg"
-                        name="Файзуллин Руслан Рашитович"
-                        rank="Полковник юстиции"
-                        position="Первый заместитель начальника ГСУ МВД по РБ"
-                    ></x-chief-card>
-                </div>
-            </div>
-            <div class="mt-10 flex justify-center">
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center">
-
-                    <x-chief-card
-                        image="Bryzgalin.jpg"
-                        name="Брызгалин Александр Анатольевич"
-                        rank="Полковник полиции"
-                        position="Начальник УРЛС МВД по РБ"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Dubrovkin.jpg"
-                        name="Дубровкин Олег Михайлович"
-                        rank="Полковник внутренней службы"
-                        position="Начальник штаба МВД по РБ"
-                    ></x-chief-card>
-
-                    <x-chief-card
-                        image="Avdeev.jpg"
-                        name="Авдеев Андрей Николаевич"
-                        rank="Полковник внутренней службы"
-                        position="Начальник тыла МВД по РБ"
-                    ></x-chief-card>
-
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 @endsection

@@ -22,12 +22,10 @@ class LeaderController extends Controller
     {
     }
 
-    public function index(IndexRequest $searchRequest): View
+    public function index(): View
     {
-        $dataRequest = $searchRequest->validated();
-
         return view('pages.admin.leader.index', [
-            'leaders' => $dataRequest ? $this->leaderRepository->getFilterableLeaders($dataRequest) : $this->leaderRepository->getPaginatedLeaders(),
+            'leaders' => $this->leaderRepository->getPaginatedLeaders(),
         ]);
     }
 

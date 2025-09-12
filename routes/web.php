@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Chief\ChiefController;
 use App\Http\Controllers\Contact\ContactController;
 use App\Http\Controllers\File\FileController;
-//use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Leader\LeaderController;
 use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Support\Facades\Route;
+
+//use App\Http\Controllers\Home\HomeController;
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -23,7 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-Route::get('/chiefs', [ChiefController::class, 'index'])->name('chiefs.index');
+Route::get('/leaders', [LeaderController::class, 'index'])->name('leaders.index');
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 
