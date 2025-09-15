@@ -65,11 +65,10 @@
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('priority') border border-red-400 @enderror"
                         >
                             <option value="" disabled selected>Выберите приоритет</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                            <option value="minister">Министр</option>
+                            <option value="deputy_minister">Заместитель министра</option>
+                            <option value="deputy_police_chief">Заместитель начальника полиции</option>
+                            <option value="department_head">Прочее</option>
                         </select>
                         @error('priority')
                         <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
@@ -178,10 +177,10 @@
                     @forelse($leaders as $leader)
                         <tr class="border-b border-gray-600 hover:bg-gray-600 transition-colors">
                             <td class="py-3 px-4">{{$leader->id}}</td>
-                            <td class="py-3 px-4">{{$leader->login}}</td>
                             <td class="py-3 px-4">{{$leader->full_name}}</td>
                             <td class="py-3 px-4">{{$leader->rank}}</td>
                             <td class="py-3 px-4">{{$leader->position}}</td>
+                            <td class="py-3 px-4">{{$leader->priority}}</td>
                             <td class="py-3 px-4 space-x-2 flex justify-center">
                                 <a href="{{route('admin.leader.edit', $leader->id)}}"
                                    class="bg-indigo-500/50 text-white px-3 py-1 rounded cursor-pointer hover:bg-indigo-800/50 transition flex items-center space-x-2">
@@ -237,5 +236,4 @@
         </div>
 
     </div>
-
 @endsection

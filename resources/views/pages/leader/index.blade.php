@@ -15,35 +15,38 @@
         </div>
         <div>
             <!-- Карточка министра -->
-            @foreach($leaders as $leader)
-                @if($leader->priority == 1)
-                    <div class="mt-10 flex justify-center">
-                        <div class="grid grid-cols-1 gap-6 justify-center">
-                            <x-chief-card
-                                image="{{$leader->files->first()?->path}}"
-                                name="{{$leader->full_name}}"
-                                rank="{{$leader->rank}}"
-                                position="{{$leader->position}}"
-                                position-class="text-sm text-orange-500 dark:text-orange-300"
-                            ></x-chief-card>
-                        </div>
-                    </div>
-                    @continue
-                @endif
+            @php
+                $chief = $leaders->firstWhere('priority', 'Министр внутренних дел');
+                $deputies = $leaders->where('priority', '!=', 'Министр внутренних дел');
+            @endphp
 
+            @if($chief)
                 <div class="mt-10 flex justify-center">
-                    <!-- Карточки замов -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center">
+                    <div class="grid grid-cols-1 gap-6 justify-center">
+                        <x-chief-card
+                            image="{{$chief->files->first()?->path}}"
+                            name="{{$chief->full_name}}"
+                            rank="{{$chief->rank}}"
+                            position="{{$chief->position}}"
+                            position-class="text-sm text-orange-500 dark:text-orange-300"
+                        ></x-chief-card>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Карточки замов -->
+            <div class="mt-10 flex justify-center">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center">
+                    @foreach($deputies as $leader)
                         <x-chief-card
                             image="{{$leader->files->first()?->path}}"
                             name="{{$leader->full_name}}"
                             rank="{{$leader->rank}}"
                             position="{{$leader->position}}"
                         ></x-chief-card>
-                    </div>
+                    @endforeach
                 </div>
-
-            @endforeach
+            </div>
         </div>
     </div>
 @endsection

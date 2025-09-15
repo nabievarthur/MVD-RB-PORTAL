@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('full_name'); //ФИО
             $table->string('rank');      // Звание
             $table->string('position');  // Должность
-            $table->integer('priority')->default(0); // Приоритет сортировки
+            $table->enum('priority', ['minister', 'deputy_minister', 'deputy_police_chief', 'department_head']);
             $table->timestamps();
         });
     }

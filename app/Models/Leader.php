@@ -14,6 +14,17 @@ class Leader extends Model
         'priority'
     ];
 
+    public function getPriorityAttribute($value): string
+    {
+        $priority = [
+            'minister' => 'Министр внутренних дел',
+            'deputy_minister' => 'Заместитель министра',
+            'deputy_police_chief' => 'Заместитель начальника полиции',
+            'department_head' => 'Начальник управления и прочее',
+        ];
+
+        return $priority[$value] ?? $value;
+    }
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');

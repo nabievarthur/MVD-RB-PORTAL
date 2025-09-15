@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class LeaderRepository implements LeaderInterface
 {
-    private const CACHE_PREFIX_USER = 'leader:';
+    private const CACHE_PREFIX_LEADER = 'leader:';
     private const CACHE_PREFIX_COUNT = 'leaders:count';
     private const CACHE_TTL = 1440; // 60 * 24, сутки
 
     public function findLeaderById(int $leaderId): ?Leader
     {
-        $cacheKey = self::CACHE_PREFIX_USER . $leaderId;
+        $cacheKey = self::CACHE_PREFIX_LEADER . $leaderId;
 
         return Cache::tags(['leaders'])->remember(
             $cacheKey,
@@ -44,8 +44,19 @@ class LeaderRepository implements LeaderInterface
 
     public function getPaginatedLeaders(int $perPage = 10, int $page = 1): LengthAwarePaginator
     {
-        return Leader::orderByDesc('created_at')
-            ->paginate($perPage, ['*'], 'page', $page);
+        return Cache::tags(['leaders'])->remember(
+            self::CACHE_PREFIX_COUNT . $perPage . $page,
+            self::CACHE_TTL,
+            fn () => Leader::with('files')
+                ->orderByRaw("CASE priority
+            WHEN 'minister' THEN 1
+            WHEN 'deputy_minister' THEN 2
+            WHEN 'deputy_police_chief' THEN 3
+            WHEN 'department_head' THEN 4
+            ELSE 5 END")
+                ->paginate($perPage, ['*'], 'page', $page)
+        );
+
     }
 
     public function createLeader(array $leaderData): ?Leader
@@ -53,7 +64,7 @@ class LeaderRepository implements LeaderInterface
         return DB::transaction(function () use ($leaderData) {
             $leader = Leader::create($leaderData);
             if ($leader) {
-                $this->clearLeaderCache($leader->id);
+                $this->clearLeaderCache();
             }
             return $leader;
         });
@@ -69,7 +80,7 @@ class LeaderRepository implements LeaderInterface
             $updated = $leader->update($leaderData);
 
             if ($updated) {
-                $this->clearLeaderCache($leaderId);
+                $this->clearLeaderCache();
                 return $leader->fresh();
             }
             return null;
@@ -85,15 +96,14 @@ class LeaderRepository implements LeaderInterface
             }
             $deleted = $leader->delete();
             if ($deleted) {
-                $this->clearLeaderCache($leaderId);
+                $this->clearLeaderCache();
             }
             return $deleted;
         });
     }
 
-    protected function clearLeaderCache(int $leaderId): void
+    protected function clearLeaderCache(): void
     {
-        Cache::tags(['leaders'])->forget(self::CACHE_PREFIX_USER . $leaderId);
-        Cache::tags(['leaders'])->forget(self::CACHE_PREFIX_COUNT);
+        Cache::tags(['leaders'])->flush();
     }
 }
