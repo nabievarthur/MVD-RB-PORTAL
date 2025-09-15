@@ -16,7 +16,7 @@
                             type="text"
                             id="full_name"
                             name="full_name"
-                            placeholder="Введите фамилию"
+                            placeholder="Введите ФИО"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('full_name') border border-red-400 @enderror"
                         />
                         @error('full_name')
@@ -32,7 +32,7 @@
                             type="text"
                             id="rank"
                             name="rank"
-                            placeholder="Введите имя"
+                            placeholder="Введите звание"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('rank') border border-red-400 @enderror"
                         />
                         @error('rank')
@@ -48,7 +48,7 @@
                             type="text"
                             id="position"
                             name="position"
-                            placeholder="Введите отчество"
+                            placeholder="Введите должность"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('position') border border-red-400 @enderror"
                         />
                         @error('position')
@@ -192,7 +192,7 @@
                                     <span class="text-sm">Редактировать</span>
                                 </a>
                                 <button
-                                    onclick="openModal('{{ route('admin.leader.destroy', $leader->id) }}', 'этого пользователя')"
+                                    onclick="openModal('{{ route('admin.leader.destroy', $leader->id) }}', 'этого руководителя')"
                                     class="bg-red-600/50 text-white px-3 py-1 rounded cursor-pointer hover:bg-red-800/50 transition flex items-center space-x-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                          fill="currentColor"
