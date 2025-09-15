@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'nullable|string',
             'files.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip|max:30720',
-            'files' => 'max:5'
+            'files' => 'max:5',
         ];
     }
 
@@ -32,11 +32,12 @@ class UpdateRequest extends FormRequest
             }
         });
     }
+
     public function messages(): array
     {
         return [
             'title.required' => 'Заголовок новости должнен быть заполнен',
-            'files.max' => 'Превышен лимит максимального колличества файлов или размера'
+            'files.max' => 'Превышен лимит максимального колличества файлов или размера',
         ];
     }
 }

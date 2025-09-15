@@ -18,9 +18,7 @@ class OVDService
         protected OVDRepository $ovdRepository,
         protected UserLogService $userLogService,
         protected ExceptionLogService $exceptionLogService,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws Throwable
@@ -30,11 +28,12 @@ class OVDService
         try {
             $ovd = $this->ovdRepository->createOVD($ovdData);
 
-            if (!$ovd) {
+            if (! $ovd) {
                 return false;
             }
 
             $this->userLogService->log($ovd, CrudActionEnum::CREATE, $ovdData);
+
             return true;
 
         } catch (Throwable $e) {
@@ -53,7 +52,7 @@ class OVDService
 
             $updatedOvd = $this->ovdRepository->updateOVD($ovd->id, $ovdData);
 
-            if (!$updatedOvd) {
+            if (! $updatedOvd) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
 

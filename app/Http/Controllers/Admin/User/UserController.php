@@ -20,13 +20,11 @@ class UserController extends Controller
 {
     public function __construct(
         protected SubdivisionInterface $subdivisionRepository,
-        protected RoleInterface        $roleRepository,
-        protected UserInterface        $userRepository,
-        protected UserService          $userService,
-        protected OVDInterface         $ovdRepository,
-    )
-    {
-    }
+        protected RoleInterface $roleRepository,
+        protected UserInterface $userRepository,
+        protected UserService $userService,
+        protected OVDInterface $ovdRepository,
+    ) {}
 
     public function index(IndexRequest $searchRequest): View
     {
@@ -52,7 +50,7 @@ class UserController extends Controller
             return back()->with('error', 'Не удалось создать пользователя.');
 
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка при создании пользователя: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка при создании пользователя: '.$e->getMessage());
         }
     }
 
@@ -75,14 +73,14 @@ class UserController extends Controller
                 ->route('admin.user.edit', $updatedUser->id)
                 ->with('success', 'Данные пользователя обновлены');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка обновления данных пользователя: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка обновления данных пользователя: '.$e->getMessage());
         }
     }
 
     public function destroy(User $user): RedirectResponse
     {
         if (auth()->id() === $user->id) {
-            return back()->with('error', "Нельзя удалить самого себя");
+            return back()->with('error', 'Нельзя удалить самого себя');
         }
 
         try {
@@ -92,9 +90,7 @@ class UserController extends Controller
                 ->route('admin.user.index')
                 ->with('warning', 'Пользователь успешно удалён');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка удаления пользователя: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка удаления пользователя: '.$e->getMessage());
         }
     }
-
-
 }

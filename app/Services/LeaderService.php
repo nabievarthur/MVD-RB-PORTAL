@@ -30,7 +30,7 @@ class LeaderService
 
             $leader = $this->leaderRepository->createLeader($data);
 
-            if (!$leader) {
+            if (! $leader) {
                 throw new \RuntimeException('Не удалось создать новость.');
             }
 
@@ -62,7 +62,7 @@ class LeaderService
             $userData = $this->handlePassword($userData);
 
             $updatedLeader = $this->leaderRepository->updateLeader($user->id, $userData);
-            if (!$updatedLeader) {
+            if (! $updatedLeader) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
 
@@ -94,7 +94,7 @@ class LeaderService
             $oldData = $user->getOriginal();
 
             $success = $this->leaderRepository->deleteLeader($user->id);
-            if (!$success) {
+            if (! $success) {
                 throw new \RuntimeException('Не удалось удалить пользователя.');
             }
 
@@ -122,6 +122,7 @@ class LeaderService
                 $userData['password'] = Hash::make($userData['password']);
             }
         }
+
         return $userData;
     }
 }

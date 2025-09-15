@@ -7,8 +7,7 @@ use App\Http\Controllers\News\NewsController;
 use App\Http\Controllers\Service\ServiceController;
 use Illuminate\Support\Facades\Route;
 
-//use App\Http\Controllers\Home\HomeController;
-
+// use App\Http\Controllers\Home\HomeController;
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -38,14 +37,13 @@ Route::get('debug', function () {
     return auth()->user()->ovd->title;
 });
 
-
 Route::get('clear', function () {
     Cache::flush();
+
     return redirect()->back()->with('success', 'Кэш очищен');
 })->name('clear');
 
-
-//Роуты для админа
-require __DIR__ . '/auth.php';
-//Роуты для авторизации
-require __DIR__ . '/admin.php';
+// Роуты для админа
+require __DIR__.'/auth.php';
+// Роуты для авторизации
+require __DIR__.'/admin.php';

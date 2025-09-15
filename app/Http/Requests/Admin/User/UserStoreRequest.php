@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
 class UserStoreRequest extends FormRequest
 {
@@ -33,5 +32,4 @@ class UserStoreRequest extends FormRequest
             'subdivision_id' => ['required', 'exists:subdivisions,id'],
         ];
     }
-
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('leaders', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name'); //ФИО
+            $table->string('full_name'); // ФИО
             $table->string('rank');      // Звание
             $table->string('position');  // Должность
             $table->enum('priority', ['minister', 'deputy_minister', 'deputy_police_chief', 'department_head']);

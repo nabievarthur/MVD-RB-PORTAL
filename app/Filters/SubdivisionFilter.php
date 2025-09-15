@@ -14,5 +14,4 @@ class SubdivisionFilter extends AbstractFilter
     {
         $builder->where('title', 'ilike', "%$value%");
     }
-
 }

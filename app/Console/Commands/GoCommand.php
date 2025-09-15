@@ -32,6 +32,6 @@ class GoCommand extends Command
             'password' => Hash::make('test'),
         ]);
 
-        return 200 . "OK";
+        return 200 .'OK';
     }
 }

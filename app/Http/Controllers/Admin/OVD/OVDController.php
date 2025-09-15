@@ -18,9 +18,7 @@ class OVDController extends Controller
     public function __construct(
         protected OVDInterface $ovdRepository,
         protected OVDService $ovdService,
-    )
-    {
-    }
+    ) {}
 
     public function index(OVDIndexRequest $searchRequest): View
     {
@@ -28,7 +26,7 @@ class OVDController extends Controller
 
         return view('pages.admin.ovd.index',
             [
-                'ovd' => $dataRequest? $this->ovdRepository->getFilterableOVD($dataRequest) : $this->ovdRepository->getPaginatedOVD(),
+                'ovd' => $dataRequest ? $this->ovdRepository->getFilterableOVD($dataRequest) : $this->ovdRepository->getPaginatedOVD(),
             ]
         );
     }
@@ -44,14 +42,14 @@ class OVDController extends Controller
 
             return back()->with('error', 'Не удалось создать ОВД.');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка при создании ОВД: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка при создании ОВД: '.$e->getMessage());
         }
     }
 
     public function edit(OVD $ovd): View
     {
         return view('pages.admin.ovd.edit', [
-           'ovd' => $this->ovdRepository->findOVDById($ovd->id),
+            'ovd' => $this->ovdRepository->findOVDById($ovd->id),
         ]);
     }
 
@@ -64,7 +62,7 @@ class OVDController extends Controller
                 ->route('admin.ovd.edit', $updatedOvd->id)
                 ->with('success', 'Данные ОВД обновлены');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка обновления данных ОВД: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка обновления данных ОВД: '.$e->getMessage());
         }
     }
 
@@ -77,7 +75,7 @@ class OVDController extends Controller
                 ->route('admin.ovd.index')
                 ->with('warning', 'ОВД успешно удалён');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка удаления ОВД: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка удаления ОВД: '.$e->getMessage());
         }
     }
 }

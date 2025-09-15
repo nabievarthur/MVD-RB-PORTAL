@@ -12,22 +12,23 @@ use Illuminate\Support\Facades\DB;
 class SubdivisionRepository implements SubdivisionInterface
 {
     private const CACHE_PREFIX_FOR_ALL_Subdivision = 'subdivision:all';
+
     private const CACHE_PREFIX_FOR_ONE_Subdivision = 'subdivision:single:';
+
     private const CACHE_TTL = 1440; // 60 * 24, сутки
+
     public function __construct(
         protected Subdivision $subdivision
-    )
-    {
-    }
+    ) {}
 
     public function findSubdivisionById(int $subdivisionId): ?Subdivision
     {
-        $cacheKey = self::CACHE_PREFIX_FOR_ONE_Subdivision . $subdivisionId;
+        $cacheKey = self::CACHE_PREFIX_FOR_ONE_Subdivision.$subdivisionId;
 
         return Cache::tags(['subdivision'])->remember(
             $cacheKey,
             self::CACHE_TTL,
-            fn() => $this->subdivision->find($subdivisionId)
+            fn () => $this->subdivision->find($subdivisionId)
         );
     }
 
@@ -36,16 +37,16 @@ class SubdivisionRepository implements SubdivisionInterface
         return Cache::tags(['subdivision'])->remember(
             'subdivision:count',
             self::CACHE_TTL,
-            fn() => $this->subdivision->count()
+            fn () => $this->subdivision->count()
         );
     }
 
     public function getSubdivisionList(): Collection
     {
         return Cache::tags(['subdivision'])->remember(
-            self::CACHE_PREFIX_FOR_ALL_Subdivision . '.list',
+            self::CACHE_PREFIX_FOR_ALL_Subdivision.'.list',
             60 * 60, // 1 час
-            fn() => $this->subdivision
+            fn () => $this->subdivision
                 ->orderByDesc('title')
                 ->pluck('title', 'id')
         );
@@ -58,6 +59,7 @@ class SubdivisionRepository implements SubdivisionInterface
             ->paginate(10)
             ->withQueryString();
     }
+
     public function getPaginatedSubdivision(): LengthAwarePaginator
     {
         $perPage = 10;
@@ -66,7 +68,7 @@ class SubdivisionRepository implements SubdivisionInterface
         $subdivisions = Cache::tags(['subdivision'])->remember(
             self::CACHE_PREFIX_FOR_ALL_Subdivision,
             self::CACHE_TTL,
-            fn() => $this->subdivision
+            fn () => $this->subdivision
                 ->orderByDesc('created_at')
                 ->orderByDesc('title')
                 ->get()
@@ -91,6 +93,7 @@ class SubdivisionRepository implements SubdivisionInterface
         return DB::transaction(function () use ($subdivisionData) {
             $subdivision = $this->subdivision->create($subdivisionData);
             $this->clearSubdivisionCache($subdivision->id);
+
             return $subdivision;
         });
     }
@@ -99,7 +102,7 @@ class SubdivisionRepository implements SubdivisionInterface
     {
         return DB::transaction(function () use ($subdivisionId, $subdivisionData) {
             $subdivision = $this->subdivision->find($subdivisionId);
-            if (!$subdivision) {
+            if (! $subdivision) {
                 return null;
             }
 
@@ -107,6 +110,7 @@ class SubdivisionRepository implements SubdivisionInterface
 
             if ($updated) {
                 $this->clearSubdivisionCache($subdivision->id);
+
                 return $subdivision;
             }
 
@@ -119,7 +123,7 @@ class SubdivisionRepository implements SubdivisionInterface
         return DB::transaction(function () use ($subdivisionId) {
             $subdivision = $this->subdivision->find($subdivisionId);
 
-            if (!$subdivision) {
+            if (! $subdivision) {
                 return false;
             }
 
@@ -135,8 +139,8 @@ class SubdivisionRepository implements SubdivisionInterface
     protected function clearSubdivisionCache(int $subdivisionId): void
     {
         Cache::tags(['subdivision'])->flush();
-        Cache::forget(self::CACHE_PREFIX_FOR_ONE_Subdivision . $subdivisionId);
-        Cache::forget(self::CACHE_PREFIX_FOR_ALL_Subdivision . '.list');
+        Cache::forget(self::CACHE_PREFIX_FOR_ONE_Subdivision.$subdivisionId);
+        Cache::forget(self::CACHE_PREFIX_FOR_ALL_Subdivision.'.list');
         Cache::forget('users:count');
     }
 }

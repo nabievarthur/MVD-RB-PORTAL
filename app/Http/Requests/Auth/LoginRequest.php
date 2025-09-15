@@ -18,7 +18,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'login.required' => 'Логин должен быть заполнен',
-            'password.required' => 'Пароль должен быть заполнен'
+            'password.required' => 'Пароль должен быть заполнен',
         ];
     }
 }

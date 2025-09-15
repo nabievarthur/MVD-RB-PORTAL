@@ -8,13 +8,9 @@ use App\Models\UserLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 
-
 class UserLogService
 {
-
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function log(Model $model, CrudActionEnum $action, array $data = []): void
     {
@@ -26,7 +22,6 @@ class UserLogService
 
             unset($data['password']);
         }
-
 
         UserLog::query()->create([
             'model_type' => get_class($model),

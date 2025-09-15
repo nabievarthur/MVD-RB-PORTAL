@@ -23,10 +23,9 @@ class LeaderStoreRequest extends FormRequest
     {
         return [
             'full_name' => ['required', 'string', 'unique:users,login'],
-            'rank' => ['required','string'],
+            'rank' => ['required', 'string'],
             'position' => ['required', 'string'],
             'priority' => 'required|in:minister,deputy_minister,deputy_police_chief,department_head',
         ];
     }
-
 }

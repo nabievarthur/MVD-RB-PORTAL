@@ -20,6 +20,7 @@ class LoginController extends Controller
 
             return redirect()->route('home')->with('success', 'Вы успешно вошли в систему');
         }
+
         return back()->withErrors([
             'login' => 'Неправильный логин или пароль',
             'password' => ' ',

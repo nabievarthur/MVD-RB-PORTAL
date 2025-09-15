@@ -1,18 +1,16 @@
 <?php
 
-
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Leader\LeaderController;
 use App\Http\Controllers\Admin\OVD\OVDController;
 use App\Http\Controllers\Admin\Subdivision\SubdivisionController;
 use App\Http\Controllers\Admin\User\UserController;
-use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /***
  *Роуты для админа
  */
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'] ],function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     Route::get('/users', [UserController::class, 'index'])->name('admin.user.index');
@@ -38,8 +36,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'] ],function 
     Route::get('subdivisions/{subdivision}', [SubdivisionController::class, 'edit'])->name('admin.subdivision.edit');
     Route::patch('subdivisions/{subdivision}', [SubdivisionController::class, 'update'])->name('admin.subdivision.update');
     Route::delete('subdivisions/{subdivision}', [SubdivisionController::class, 'destroy'])->name('admin.subdivision.destroy');
-
-
 
     Route::view('/news', 'pages.admin.news.index')->name('admin.news.index');
 

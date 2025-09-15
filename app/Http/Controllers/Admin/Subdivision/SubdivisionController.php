@@ -18,9 +18,7 @@ class SubdivisionController extends Controller
     public function __construct(
         protected SubdivisionInterface $subdivisionRepository,
         protected SubdivisionService $subdivisionService,
-    )
-    {
-    }
+    ) {}
 
     public function index(SubdivisionIndexRequest $searchRequest): View
     {
@@ -28,7 +26,7 @@ class SubdivisionController extends Controller
 
         return view('pages.admin.subdivision.index',
             [
-                'subdivisions' => $dataRequest? $this->subdivisionRepository->getFilterableSubdivision($dataRequest) : $this->subdivisionRepository->getPaginatedSubdivision(),
+                'subdivisions' => $dataRequest ? $this->subdivisionRepository->getFilterableSubdivision($dataRequest) : $this->subdivisionRepository->getPaginatedSubdivision(),
             ]
         );
     }
@@ -44,14 +42,14 @@ class SubdivisionController extends Controller
 
             return back()->with('error', 'Не удалось создать ОВД.');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка при создании ОВД: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка при создании ОВД: '.$e->getMessage());
         }
     }
 
     public function edit(Subdivision $subdivision): View
     {
         return view('pages.admin.subdivision.edit', [
-           'subdivision' => $this->subdivisionRepository->findSubdivisionById($subdivision->id),
+            'subdivision' => $this->subdivisionRepository->findSubdivisionById($subdivision->id),
         ]);
     }
 
@@ -64,7 +62,7 @@ class SubdivisionController extends Controller
                 ->route('admin.subdivision.edit', $updatedOvd->id)
                 ->with('success', 'Данные ОВД обновлены');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка обновления данных ОВД: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка обновления данных ОВД: '.$e->getMessage());
         }
     }
 
@@ -77,7 +75,7 @@ class SubdivisionController extends Controller
                 ->route('admin.subdivision.index')
                 ->with('warning', 'ОВД успешно удалён');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка удаления ОВД: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка удаления ОВД: '.$e->getMessage());
         }
     }
 }

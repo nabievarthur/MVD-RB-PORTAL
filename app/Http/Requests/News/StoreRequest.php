@@ -13,14 +13,14 @@ class StoreRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'nullable|string',
             'files.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,pdf,doc,docx,zip,tar,gz|max:30720',
-            'files' => 'max:5'
+            'files' => 'max:5',
         ];
     }
 
     protected function passedValidation()
     {
         return $this->merge([
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
         ]);
     }
 
@@ -28,9 +28,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'title.required' => 'Заголовок новости должнен быть заполнен',
-            'files.max' => 'Превышен лимит максимального колличества файлов или размера'
+            'files.max' => 'Превышен лимит максимального колличества файлов или размера',
         ];
     }
-
-
 }

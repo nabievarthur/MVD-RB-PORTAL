@@ -36,6 +36,6 @@ class UserFilter extends AbstractFilter
 
     protected function roleId(Builder $builder, $value)
     {
-        $builder->where('role_id',  $value);
+        $builder->where('role_id', $value);
     }
 }

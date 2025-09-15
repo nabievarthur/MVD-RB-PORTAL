@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 abstract class AbstractFilter
 {
-
     protected array $keys = [];
 
     public function apply(array $data, Builder $builder): Builder

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Repositories\OVDRepository;
 use App\Repositories\SubdivisionRepository;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -14,9 +13,7 @@ class AdminController extends Controller
         protected UserRepository $userRepository,
         protected SubdivisionRepository $subdivisionRepository,
         protected OvdRepository $ovdRepository
-    )
-    {
-    }
+    ) {}
 
     public function index()
     {

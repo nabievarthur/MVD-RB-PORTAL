@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\DB;
 class LeaderRepository implements LeaderInterface
 {
     private const CACHE_PREFIX_LEADER = 'leader:';
+
     private const CACHE_PREFIX_COUNT = 'leaders:count';
+
     private const CACHE_TTL = 1440; // 60 * 24, сутки
 
     public function findLeaderById(int $leaderId): ?Leader
     {
-        $cacheKey = self::CACHE_PREFIX_LEADER . $leaderId;
+        $cacheKey = self::CACHE_PREFIX_LEADER.$leaderId;
 
         return Cache::tags(['leaders'])->remember(
             $cacheKey,
@@ -25,7 +27,7 @@ class LeaderRepository implements LeaderInterface
         );
     }
 
-    //Мейби убрать
+    // Мейби убрать
     public function getLeadersCount(): int
     {
         return Cache::tags(['leaders'])->remember(
@@ -45,7 +47,7 @@ class LeaderRepository implements LeaderInterface
     public function getPaginatedLeaders(int $perPage = 10, int $page = 1): LengthAwarePaginator
     {
         return Cache::tags(['leaders'])->remember(
-            self::CACHE_PREFIX_COUNT . $perPage . $page,
+            self::CACHE_PREFIX_COUNT.$perPage.$page,
             self::CACHE_TTL,
             fn () => Leader::with('files')
                 ->orderByRaw("CASE priority
@@ -66,6 +68,7 @@ class LeaderRepository implements LeaderInterface
             if ($leader) {
                 $this->clearLeaderCache();
             }
+
             return $leader;
         });
     }
@@ -74,15 +77,17 @@ class LeaderRepository implements LeaderInterface
     {
         return DB::transaction(function () use ($leaderId, $leaderData) {
             $leader = Leader::find($leaderId);
-            if (!$leader) {
+            if (! $leader) {
                 return null;
             }
             $updated = $leader->update($leaderData);
 
             if ($updated) {
                 $this->clearLeaderCache();
+
                 return $leader->fresh();
             }
+
             return null;
         });
     }
@@ -91,13 +96,14 @@ class LeaderRepository implements LeaderInterface
     {
         return DB::transaction(function () use ($leaderId) {
             $leader = Leader::find($leaderId);
-            if (!$leader) {
+            if (! $leader) {
                 return false;
             }
             $deleted = $leader->delete();
             if ($deleted) {
                 $this->clearLeaderCache();
             }
+
             return $deleted;
         });
     }

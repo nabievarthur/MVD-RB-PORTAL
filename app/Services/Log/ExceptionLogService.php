@@ -8,10 +8,7 @@ use Throwable;
 
 class ExceptionLogService
 {
-    public function __construct()
-    {
-    }
-
+    public function __construct() {}
 
     public function logException(CrudActionEnum $action, Throwable $e, array $context = []): void
     {

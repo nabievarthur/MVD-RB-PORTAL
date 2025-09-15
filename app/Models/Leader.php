@@ -11,7 +11,7 @@ class Leader extends Model
         'full_name',
         'rank',
         'position',
-        'priority'
+        'priority',
     ];
 
     public function getPriorityAttribute($value): string
@@ -25,6 +25,7 @@ class Leader extends Model
 
         return $priority[$value] ?? $value;
     }
+
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');

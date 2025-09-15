@@ -9,19 +9,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
-
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login')->with('error', 'Требуется авторизация');
         }
 
         $user = Auth::user();
 
-        if (!$user->role || $user->role->title !== 'Администратор') {
+        if (! $user->role || $user->role->title !== 'Администратор') {
 
             abort(403, 'Доступ запрещен. Требуются права администратора.');
         }
+
         return $next($request);
     }
 }

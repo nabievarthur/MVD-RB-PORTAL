@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 class NewsRepository implements NewsInterface
 {
     private const CACHE_PREFIX_FOR_ALL_NEWS = 'news:all';
+
     private const CACHE_PREFIX_FOR_ONE_NEWS = 'news:single:';
+
     private const CACHE_TTL = 1440; // 60 * 24, сутки
 
     public function __construct(
@@ -23,12 +25,12 @@ class NewsRepository implements NewsInterface
      */
     public function findNewsById(int $newsId): ?News
     {
-        $cacheKey = self::CACHE_PREFIX_FOR_ONE_NEWS . $newsId;
+        $cacheKey = self::CACHE_PREFIX_FOR_ONE_NEWS.$newsId;
 
         return Cache::tags(['news'])->remember(
             $cacheKey,
             self::CACHE_TTL,
-            fn() => $this->news->find($newsId)
+            fn () => $this->news->find($newsId)
         );
     }
 
@@ -40,7 +42,7 @@ class NewsRepository implements NewsInterface
         return Cache::tags(['news'])->remember(
             'news:count',
             self::CACHE_TTL,
-            fn() => $this->news->count()
+            fn () => $this->news->count()
         );
     }
 
@@ -63,12 +65,12 @@ class NewsRepository implements NewsInterface
     public function getPaginatedNews(): LengthAwarePaginator
     {
         $perPage = 10;
-        $page = (int)request()->get('page', 1);
+        $page = (int) request()->get('page', 1);
 
         $news = Cache::tags(['news'])->remember(
             self::CACHE_PREFIX_FOR_ALL_NEWS,
             self::CACHE_TTL,
-            fn() => $this->news
+            fn () => $this->news
                 ->with(['user', 'files'])
                 ->orderByDesc('created_at')
                 ->get()
@@ -98,6 +100,7 @@ class NewsRepository implements NewsInterface
             if ($news) {
                 $this->clearNewsCache($news->id);
             }
+
             return $news;
         });
     }
@@ -109,7 +112,7 @@ class NewsRepository implements NewsInterface
     {
         return DB::transaction(function () use ($newsId, $newsData) {
             $news = $this->news->find($newsId);
-            if (!$news) {
+            if (! $news) {
                 return null;
             }
 
@@ -117,6 +120,7 @@ class NewsRepository implements NewsInterface
 
             if ($updated) {
                 $this->clearNewsCache($news->id);
+
                 return $news;
             }
 
@@ -132,7 +136,7 @@ class NewsRepository implements NewsInterface
         return DB::transaction(function () use ($newsId) {
             $news = $this->news->find($newsId);
 
-            if (!$news) {
+            if (! $news) {
                 return false;
             }
 
@@ -151,7 +155,7 @@ class NewsRepository implements NewsInterface
     protected function clearNewsCache(int $newsId): void
     {
         Cache::tags(['news'])->flush();
-        Cache::forget(self::CACHE_PREFIX_FOR_ONE_NEWS . $newsId);
+        Cache::forget(self::CACHE_PREFIX_FOR_ONE_NEWS.$newsId);
         Cache::forget('news:count');
     }
 }

@@ -27,7 +27,7 @@ class UserService
             $userData = $this->handlePassword($userData);
 
             $user = $this->userRepository->createUser($userData);
-            if (!$user) {
+            if (! $user) {
                 throw new \RuntimeException('Не удалось создать пользователя');
             }
 
@@ -55,7 +55,7 @@ class UserService
             $userData = $this->handlePassword($userData);
 
             $updatedUser = $this->userRepository->updateUser($user->id, $userData);
-            if (!$updatedUser) {
+            if (! $updatedUser) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
 
@@ -87,7 +87,7 @@ class UserService
             $oldData = $user->getOriginal();
 
             $success = $this->userRepository->deleteUser($user->id);
-            if (!$success) {
+            if (! $success) {
                 throw new \RuntimeException('Не удалось удалить пользователя.');
             }
 
@@ -115,6 +115,7 @@ class UserService
                 $userData['password'] = Hash::make($userData['password']);
             }
         }
+
         return $userData;
     }
 }

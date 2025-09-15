@@ -30,14 +30,14 @@ class News extends Model
 
     /**
      * @return void
-     * Удаляем изображения связанные с новостью при удалении новости
+     *              Удаляем изображения связанные с новостью при удалении новости
      */
     protected static function booted(): void
     {
-       static::deleting(function (self $model) {
-           foreach ($model->files as $file) {
-               Storage::disk('public')->delete($file->path);
-          }
-       });
+        static::deleting(function (self $model) {
+            foreach ($model->files as $file) {
+                Storage::disk('public')->delete($file->path);
+            }
+        });
     }
 }

@@ -241,7 +241,7 @@ return [
         'full_name' => 'ФИО',
         'rank' => 'Звание',
         'position' => 'Должность',
-        'priority' => 'Приоритет'
+        'priority' => 'Приоритет',
     ],
 
 ];

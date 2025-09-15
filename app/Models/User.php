@@ -15,8 +15,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-
-    use HasFactory, Notifiable, HasFilter;
+    use HasFactory, HasFilter, Notifiable;
 
     protected $fillable = [
         'login',
@@ -26,14 +25,12 @@ class User extends Authenticatable
         'password',
         'ovd_id',
         'subdivision_id',
-        'role_id'
+        'role_id',
     ];
-
 
     protected $hidden = [
         'remember_token',
     ];
-
 
     protected function casts(): array
     {

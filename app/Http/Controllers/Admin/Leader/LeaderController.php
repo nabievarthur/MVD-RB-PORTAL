@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Leader;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Leader\IndexRequest;
 use App\Http\Requests\Admin\Leader\LeaderStoreRequest;
 use App\Http\Requests\Admin\Leader\LeaderUpdateRequest;
 use App\Models\Leader;
@@ -16,11 +15,9 @@ use Throwable;
 class LeaderController extends Controller
 {
     public function __construct(
-        protected LeaderInterface        $leaderRepository,
-        protected LeaderService          $leaderService,
-    )
-    {
-    }
+        protected LeaderInterface $leaderRepository,
+        protected LeaderService $leaderService,
+    ) {}
 
     public function index(): View
     {
@@ -43,7 +40,7 @@ class LeaderController extends Controller
             return back()->with('error', 'Не удалось добавить руководителя.');
 
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка при создании руководителя: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка при создании руководителя: '.$e->getMessage());
         }
     }
 
@@ -63,7 +60,7 @@ class LeaderController extends Controller
                 ->route('admin.leader.edit', $updatedLeader->id)
                 ->with('success', 'Данные руководителя обновлены');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка обновления данных руководителя: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка обновления данных руководителя: '.$e->getMessage());
         }
     }
 
@@ -76,9 +73,7 @@ class LeaderController extends Controller
                 ->route('admin.leader.index')
                 ->with('warning', 'Руководитель успешно удалён');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка удаления руководителя: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка удаления руководителя: '.$e->getMessage());
         }
     }
-
-
 }

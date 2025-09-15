@@ -23,7 +23,7 @@ class OVDUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'cod_ovd' => 'required|unique:ovd,cod_ovd,'. $this->ovd->id,
+            'cod_ovd' => 'required|unique:ovd,cod_ovd,'.$this->ovd->id,
         ];
     }
 }

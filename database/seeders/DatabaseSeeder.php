@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
         29 => 'ОМВД по Бакалинскому району',
         10 => 'ОМВД по Белебеевскому району',
         11 => 'ОМВД по Белорецкому району',
-        34=> 'ОМВД по Бижбулякскому району',
+        34 => 'ОМВД по Бижбулякскому району',
         17 => 'ОМВД по Бирскому району',
         35 => 'ОМВД по Благоварскому району',
         36 => 'ОМВД по Благовещенскому району',
@@ -161,10 +161,9 @@ class DatabaseSeeder extends Seeder
             'first_name' => 'Админ',
             'surname' => 'Админович',
             'ovd_id' => 1,
-            'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
+            'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), // ID Информационного центра в базе
             'role_id' => 1,
         ]);
-
 
         $moder = User::query()->create([
             'login' => 'moder',
@@ -173,10 +172,9 @@ class DatabaseSeeder extends Seeder
             'first_name' => 'Модератор',
             'surname' => 'Модераторович',
             'ovd_id' => 1,
-            'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
+            'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), // ID Информационного центра в базе
             'role_id' => 2,
         ]);
-
 
         $user = User::query()->create([
             'login' => 'user',
@@ -185,7 +183,7 @@ class DatabaseSeeder extends Seeder
             'first_name' => 'Пользователь',
             'surname' => 'Пользователевич',
             'ovd_id' => 1,
-            'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), //ID Информационного центра в базе
+            'subdivision_id' => 1 + array_search('Информационный центр', $this->subdivisions), // ID Информационного центра в базе
             'role_id' => 3,
         ]);
 

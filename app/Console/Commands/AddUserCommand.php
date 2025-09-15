@@ -31,8 +31,8 @@ class AddUserCommand extends Command
     {
         for ($i = 0; $i <= 15; $i++) {
             User::create([
-                'login' => fake()->word() . $i,
-                'password' => Hash::make('password' . $i),
+                'login' => fake()->word().$i,
+                'password' => Hash::make('password'.$i),
                 'last_name' => fake()->word(),
                 'first_name' => fake()->word(),
                 'surname' => fake()->word(),
@@ -41,6 +41,6 @@ class AddUserCommand extends Command
             ]);
         }
 
-        echo "Пользователи успешно добавлены";
+        echo 'Пользователи успешно добавлены';
     }
 }

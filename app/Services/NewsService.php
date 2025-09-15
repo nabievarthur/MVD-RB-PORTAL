@@ -14,9 +14,9 @@ use Throwable;
 class NewsService
 {
     public function __construct(
-        protected NewsRepository      $newsRepository,
-        protected FileService         $fileUploadService,
-        protected UserLogService      $userLogService,
+        protected NewsRepository $newsRepository,
+        protected FileService $fileUploadService,
+        protected UserLogService $userLogService,
         protected ExceptionLogService $exceptionLogService,
     ) {}
 
@@ -32,7 +32,7 @@ class NewsService
 
             $news = $this->newsRepository->createNews($data);
 
-            if (!$news) {
+            if (! $news) {
                 throw new \RuntimeException('Не удалось создать новость.');
             }
 
@@ -67,7 +67,7 @@ class NewsService
 
             $updatedNews = $this->newsRepository->updateNews($news->id, $data);
 
-            if (!$updatedNews) {
+            if (! $updatedNews) {
                 throw new \RuntimeException('Не удалось обновить новость.');
             }
 

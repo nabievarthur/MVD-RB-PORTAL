@@ -9,7 +9,9 @@ use Illuminate\Support\Collection;
 interface SubdivisionInterface
 {
     public function findSubdivisionById(int $subdivisionId): ?Subdivision;
+
     public function getSubdivisionCount(): int;
+
     public function getSubdivisionList(): Collection;
 
     public function getFilterableSubdivision(array $data): LengthAwarePaginator;
@@ -21,5 +23,4 @@ interface SubdivisionInterface
     public function updateSubdivision(int $subdivisionId, array $subdivisionData): ?Subdivision;
 
     public function deleteSubdivision(int $subdivisionId): bool;
-
 }

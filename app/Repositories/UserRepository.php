@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\DB;
 class UserRepository implements UserInterface
 {
     private const CACHE_PREFIX_USER = 'user:';
+
     private const CACHE_PREFIX_COUNT = 'users:count';
+
     private const CACHE_TTL = 1440; // 60 * 24, сутки
 
     public function findUserById(int $userId): ?User
     {
-        $cacheKey = self::CACHE_PREFIX_USER . $userId;
+        $cacheKey = self::CACHE_PREFIX_USER.$userId;
 
         return Cache::tags(['users'])->remember(
             $cacheKey,
@@ -56,6 +58,7 @@ class UserRepository implements UserInterface
             if ($user) {
                 $this->clearUserCache($user->id);
             }
+
             return $user;
         });
     }
@@ -64,15 +67,17 @@ class UserRepository implements UserInterface
     {
         return DB::transaction(function () use ($userId, $userData) {
             $user = User::find($userId);
-            if (!$user) {
+            if (! $user) {
                 return null;
             }
             $updated = $user->update($userData);
 
             if ($updated) {
                 $this->clearUserCache($userId);
+
                 return $user->fresh();
             }
+
             return null;
         });
     }
@@ -81,20 +86,21 @@ class UserRepository implements UserInterface
     {
         return DB::transaction(function () use ($userId) {
             $user = User::find($userId);
-            if (!$user) {
+            if (! $user) {
                 return false;
             }
             $deleted = $user->delete();
             if ($deleted) {
                 $this->clearUserCache($userId);
             }
+
             return $deleted;
         });
     }
 
     protected function clearUserCache(int $userId): void
     {
-        Cache::tags(['users'])->forget(self::CACHE_PREFIX_USER . $userId);
+        Cache::tags(['users'])->forget(self::CACHE_PREFIX_USER.$userId);
         Cache::tags(['users'])->forget(self::CACHE_PREFIX_COUNT);
     }
 }

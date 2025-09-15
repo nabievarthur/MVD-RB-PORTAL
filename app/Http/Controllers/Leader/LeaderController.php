@@ -8,17 +8,15 @@ use Illuminate\View\View;
 
 class LeaderController extends Controller
 {
-    public function __construct(protected LeaderInterface $leaderRepository)
-    {
-    }
+    public function __construct(protected LeaderInterface $leaderRepository) {}
 
     public function index(): View
     {
 
         return view('pages.leader.index',
-        [
-            'leaders' => $this->leaderRepository->getPaginatedLeaders()
-        ]);
+            [
+                'leaders' => $this->leaderRepository->getPaginatedLeaders(),
+            ]);
 
     }
 }

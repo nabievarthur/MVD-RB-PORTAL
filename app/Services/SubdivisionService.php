@@ -18,9 +18,7 @@ class SubdivisionService
         protected SubdivisionRepository $subdivisionRepository,
         protected UserLogService $userLogService,
         protected ExceptionLogService $exceptionLogService,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws Throwable
@@ -30,11 +28,12 @@ class SubdivisionService
         try {
             $subdivision = $this->subdivisionRepository->createSubdivision($subdivisionData);
 
-            if (!$subdivision) {
+            if (! $subdivision) {
                 return false;
             }
 
             $this->userLogService->log($subdivision, CrudActionEnum::CREATE, $subdivisionData);
+
             return true;
 
         } catch (Throwable $e) {
@@ -53,7 +52,7 @@ class SubdivisionService
 
             $updatedOvd = $this->subdivisionRepository->updateSubdivision($subdivision->id, $subdivisionData);
 
-            if (!$updatedOvd) {
+            if (! $updatedOvd) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
 

@@ -7,7 +7,6 @@ use App\Models\User;
 
 class NewsPolicy
 {
-
     public function create(User $user): bool
     {
         return $user->isModerator() || $user->isAdmin();
@@ -22,6 +21,4 @@ class NewsPolicy
     {
         return $user->isAdmin() || ($user->isModerator() && $user->id === $news->user_id);
     }
-
-
 }

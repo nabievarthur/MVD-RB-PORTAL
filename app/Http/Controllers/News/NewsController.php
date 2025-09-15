@@ -41,6 +41,7 @@ class NewsController extends Controller
     public function create(): View
     {
         $this->authorize('create', News::class);
+
         return view('pages.news.create');
     }
 
@@ -63,7 +64,7 @@ class NewsController extends Controller
             return back()->with('error', 'Не удалось создать новость.');
 
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка при создании новости: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка при создании новости: '.$e->getMessage());
         }
     }
 
@@ -103,7 +104,7 @@ class NewsController extends Controller
                 ->route('news.show', $updatedNews->id)
                 ->with('success', 'Данные новости обновлены.');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка обновления данных новости: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка обновления данных новости: '.$e->getMessage());
         }
     }
 
@@ -121,7 +122,7 @@ class NewsController extends Controller
                 ->route('home')
                 ->with('warning', 'Новость успешно удалена.');
         } catch (Throwable $e) {
-            return back()->with('error', 'Ошибка удаления новости: ' . $e->getMessage());
+            return back()->with('error', 'Ошибка удаления новости: '.$e->getMessage());
         }
     }
 }

@@ -14,7 +14,7 @@ class File extends Model
         'path',
         'original_name',
         'mime_type',
-        'size'
+        'size',
     ];
 
     public function news(): BelongsTo
