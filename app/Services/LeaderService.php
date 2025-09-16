@@ -51,21 +51,21 @@ class LeaderService
     /**
      * @throws Throwable
      */
-    public function updateLeader(Leader $user, array $userData): Leader
+    public function updateLeader(Leader $leader, array $leaderData): Leader
     {
         try {
-            $oldData = $user->getOriginal();
+            $oldData = $leader->getOriginal();
 
-            $userData = $this->handlePassword($userData);
+            $leaderData = $this->handlePassword($leaderData);
 
-            $updatedLeader = $this->leaderRepository->updateLeader($user->id, $userData);
+            $updatedLeader = $this->leaderRepository->updateLeader($leader->id, $leaderData);
             if (! $updatedLeader) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
 
             $this->userLogService->log($updatedLeader, CrudActionEnum::UPDATE, [
                 'old' => $oldData,
-                'new' => $userData,
+                'new' => $leaderData,
             ]);
 
             return $updatedLeader;
@@ -74,8 +74,8 @@ class LeaderService
                 CrudActionEnum::UPDATE,
                 $e,
                 [
-                    'user_id' => $user->id,
-                    'data' => $userData,
+                    'leader_id' => $leader->id,
+                    'data' => $leaderData,
                 ]
             );
             throw $e;

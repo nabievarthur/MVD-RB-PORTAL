@@ -22,13 +22,10 @@ class LeaderUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'login' => ['required', 'string'],
-            'password' => ['sometimes', 'confirmed'],
-            'last_name' => ['nullable', 'string'],
-            'first_name' => ['nullable', 'string'],
-            'surname' => ['nullable', 'string'],
-            'subdivision_id' => ['nullable', 'exists:subdivisions,id'],
-            'role_id' => ['nullable', 'exists:roles,id'],
+            'full_name' => ['required', 'string', 'unique:users,login'],
+            'rank' => ['required', 'string'],
+            'position' => ['required', 'string'],
+            'priority' => 'required|in:minister,deputy_minister,deputy_police_chief,department_head',
         ];
     }
 }

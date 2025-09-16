@@ -56,6 +56,48 @@
         }
         return password;
     }
+
+
+    // Удаление изображения при редактировании руководства
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-file-btn');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const fileId = this.dataset.id;
+                const url = this.dataset.url;
+                const listItem = this.closest('li');
+                const fileListContainer = listItem.closest('.file-list-wrapper'); // добавим класс для обёртки
+
+                if (confirm('Удалить этот файл?')) {
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                listItem.remove();
+
+                                // Проверим, остались ли другие <li>
+                                const remainingFiles = fileListContainer.querySelectorAll('li');
+                                if (remainingFiles.length === 0) {
+                                    fileListContainer.remove(); // скрываем весь блок
+                                }
+                            } else {
+                                alert('Ошибка при удалении файла.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert('Произошла ошибка при удалении.');
+                        });
+                }
+            });
+        });
+    });
 </script>
 
 </body>

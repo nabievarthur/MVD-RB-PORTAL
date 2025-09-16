@@ -87,6 +87,34 @@
                         @enderror
                     </div>
 
+                @if($leader->files->count() > 0)
+                    <div class="w-2/3 mx-auto mb-4 file-list-wrapper">
+                        <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Загруженные файлы</h2>
+                        <ul class="list-disc">
+                            @foreach($leader->files as $file)
+                                <li class="mb-2 flex items-center">
+                                    <div class="flex items-center">
+                                        <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <a href="{{ asset('storage/' . $file->path) }}" target="_blank" class="text-indigo-600 hover:underline dark:text-indigo-400">
+                                            {{ $file->original_name }}
+                                        </a>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        class="ml-4 text-red-500 text-sm hover:underline delete-file-btn"
+                                        data-id="{{ $file->id }}"
+                                        data-url="{{route('files.destroy', $file->id)}}"
+                                    >
+                                        Удалить
+                                    </button>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                     <div>
                         <label for="file" class="block text-sm font-medium text-gray-400">Изображение</label>
                         <input
