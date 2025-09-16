@@ -10,10 +10,16 @@ class Subdivision extends Model
 {
     use HasFilter;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'title',
     ];
 
+    /**
+     * @return HasMany
+     */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

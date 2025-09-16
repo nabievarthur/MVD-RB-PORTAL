@@ -13,24 +13,28 @@ class News extends Model implements HasFiles
 {
     use HasFileDeleted, HasFilter;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'title',
         'description',
         'user_id',
     ];
 
+    /**
+     * @return MorphMany
+     */
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
-    /**
-     * @return void
-     *              Удаляем изображения связанные с новостью при удалении новости
-     */
 }

@@ -9,8 +9,14 @@ class OVD extends Model
 {
     use HasFilter;
 
+    /**
+     * @var string
+     */
     protected $table = 'ovd';
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'title',
         'cod_ovd',

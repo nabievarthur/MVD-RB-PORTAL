@@ -19,6 +19,9 @@ class User extends Authenticatable
 {
     use HasFactory, HasFilter, Notifiable;
 
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'login',
         'last_name',
@@ -30,10 +33,16 @@ class User extends Authenticatable
         'role_id',
     ];
 
+    /**
+     * @var list<string>
+     */
     protected $hidden = [
         'remember_token',
     ];
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [
@@ -42,6 +51,9 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @return Attribute
+     */
     protected function firstName(): Attribute
     {
         return Attribute::make(
@@ -49,6 +61,9 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * @return Attribute
+     */
     protected function lastName(): Attribute
     {
         return Attribute::make(
@@ -56,6 +71,9 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * @return Attribute
+     */
     protected function surname(): Attribute
     {
         return Attribute::make(
@@ -63,6 +81,9 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * @return Attribute
+     */
     protected function login(): Attribute
     {
         return Attribute::make(
@@ -70,31 +91,49 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function ovd(): BelongsTo
     {
         return $this->belongsTo(OVD::class, 'ovd_id', 'id', 'ovd');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function subdivision(): BelongsTo
     {
         return $this->belongsTo(Subdivision::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function news(): HasMany
     {
         return $this->hasMany(News::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * @return bool
+     */
     public function isAdmin(): bool
     {
         return $this->role && $this->role->title === 'Администратор';
     }
 
+    /**
+     * @return bool
+     */
     public function isModerator(): bool
     {
         return $this->role && $this->role->title === 'Модератор';

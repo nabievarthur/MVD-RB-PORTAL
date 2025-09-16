@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Storage;
  */
 class File extends Model
 {
+    /**
+     * @var list<string>
+     */
     protected $fillable = [
         'fileable_id',
         'path',
@@ -20,16 +23,25 @@ class File extends Model
         'size',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function news(): BelongsTo
     {
         return $this->belongsTo(News::class);
     }
 
+    /**
+     * @return MorphTo
+     */
     public function fileable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * @return void
+     */
     protected static function booted(): void
     {
         static::deleting(function (self $model) {
