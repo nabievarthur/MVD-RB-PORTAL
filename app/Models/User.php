@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Filters\Traits\HasFilter;
+use App\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

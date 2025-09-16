@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Filters\Traits\HasFilter;
+use App\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Model;
 
 class OVD extends Model

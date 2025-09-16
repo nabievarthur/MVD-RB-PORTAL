@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Filters\Traits\HasFilter;
 use App\Models\Contracts\HasFiles;
 use App\Models\Traits\HasFileDeleted;
+use App\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Facades\Storage;
 
 class Leader extends Model implements HasFiles
 {
