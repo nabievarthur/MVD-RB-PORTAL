@@ -26,6 +26,7 @@ class LeaderStoreRequest extends FormRequest
             'rank' => ['required', 'string'],
             'position' => ['required', 'string'],
             'priority' => 'required|in:minister,deputy_minister,deputy_police_chief,department_head',
+            'file' => 'nullable|image|mimes:jpeg,jpg,png,gif,pdf|max:2048',
         ];
     }
 }

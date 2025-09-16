@@ -21,11 +21,13 @@ class LeaderUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'full_name' => ['required', 'string', 'unique:users,login'],
             'rank' => ['required', 'string'],
             'position' => ['required', 'string'],
             'priority' => 'required|in:minister,deputy_minister,deputy_police_chief,department_head',
+            'file' => 'sometimes|image|mimes:jpeg,jpg,png,gif,pdf|max:2048',
         ];
     }
 }

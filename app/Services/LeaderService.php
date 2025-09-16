@@ -8,6 +8,7 @@ use App\Models\Leader;
 use App\Repositories\LeaderRepository;
 use App\Services\Log\ExceptionLogService;
 use App\Services\Log\UserLogService;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
@@ -33,6 +34,7 @@ class LeaderService
             $this->userLogService->log($leader, CrudActionEnum::CREATE, $data);
 
             if ($request->hasFile('file')) {
+
                 $this->fileUploadService->uploadFiles('leader_files', $leader, $request->file('file'));
             }
 
@@ -42,7 +44,7 @@ class LeaderService
             $this->exceptionLogService->logException(
                 CrudActionEnum::CREATE,
                 $e,
-                ['data' => $data ?? []] // Добавлено ?? [] на случай если $data не определена
+                ['data' => $data ?? []]
             );
             throw $e;
         }
@@ -58,9 +60,23 @@ class LeaderService
 
             $leaderData = $this->handlePassword($leaderData);
 
+            // Извлекаем файл из данных, если он есть
+            $file = $leaderData['file'] ?? null;
+            unset($leaderData['file']); // Удаляем файл из данных для обновления
+
             $updatedLeader = $this->leaderRepository->updateLeader($leader->id, $leaderData);
             if (! $updatedLeader) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
+            }
+
+            if ($file instanceof UploadedFile) {
+                // Удаляем старый файл, если он существует
+                if ($leader->file) {
+                    $this->fileUploadService->destroyFile($leader->file);
+                }
+
+                // Загружаем новый файл
+                $this->fileUploadService->uploadFiles('leader_files', $leader, $file);
             }
 
             $this->userLogService->log($updatedLeader, CrudActionEnum::UPDATE, [

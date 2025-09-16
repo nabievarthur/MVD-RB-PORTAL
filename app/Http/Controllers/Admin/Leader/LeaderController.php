@@ -28,6 +28,7 @@ class LeaderController extends Controller
 
     public function store(LeaderStoreRequest $request): RedirectResponse
     {
+
         try {
             $this->leaderService->storeLeader($request);
 

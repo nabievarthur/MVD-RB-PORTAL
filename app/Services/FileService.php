@@ -28,6 +28,7 @@ class FileService
     {
         $file->delete();
         Cache::tags(['news'])->flush();
+        // Cache::tags(['leades'])->flush();
 
     }
 }

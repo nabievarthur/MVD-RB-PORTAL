@@ -7,7 +7,11 @@ use App\Models\Traits\HasFileDeleted;
 use App\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
+/**
+ * @property File|null $file
+ */
 class Leader extends Model implements HasFiles
 {
     use HasFileDeleted, HasFilter;
@@ -29,6 +33,11 @@ class Leader extends Model implements HasFiles
         ];
 
         return $priority[$value] ?? $value;
+    }
+
+    public function file(): MorphOne
+    {
+        return $this->morphOne(File::class, 'fileable');
     }
 
     public function files(): MorphMany
