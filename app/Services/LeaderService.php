@@ -30,10 +30,6 @@ class LeaderService
 
             $leader = $this->leaderRepository->createLeader($data);
 
-            if (! $leader) {
-                throw new \RuntimeException('Не удалось создать новость.');
-            }
-
             $this->userLogService->log($leader, CrudActionEnum::CREATE, $data);
 
             if ($request->hasFile('file')) {
@@ -41,11 +37,12 @@ class LeaderService
             }
 
             return $leader;
+
         } catch (Throwable $e) {
             $this->exceptionLogService->logException(
                 CrudActionEnum::CREATE,
                 $e,
-                ['data' => $data]
+                ['data' => $data ?? []] // Добавлено ?? [] на случай если $data не определена
             );
             throw $e;
         }

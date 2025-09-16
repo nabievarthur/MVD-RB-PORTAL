@@ -33,9 +33,9 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services.ind
  *
  */
 
-Route::get('debug', function () {
+/*Route::get('debug', function () {
     return auth()->user()->ovd->title;
-});
+});*/
 
 Route::get('clear', function () {
     Cache::flush();

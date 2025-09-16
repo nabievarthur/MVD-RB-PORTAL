@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\Contracts\HasFiles;
 use App\Models\File;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class FileService
 {
-    public function uploadFiles(string $folderName, Model $model, $files): void
+    public function uploadFiles(string $folderName, HasFiles $model, $files): void
     {
         $files = is_array($files) ? $files : [$files];
 

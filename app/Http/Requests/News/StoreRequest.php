@@ -17,10 +17,10 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    protected function passedValidation(): void
     {
-        return $this->merge([
-            'user_id' => Auth::user()->id,
+        $this->merge([
+            'user_id' => Auth::id(),
         ]);
     }
 

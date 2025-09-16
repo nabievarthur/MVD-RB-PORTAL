@@ -29,6 +29,15 @@ class AddUserCommand extends Command
      */
     public function handle()
     {
+        $subdivisionIds = Subdivision::pluck('id')->toArray();
+        $roleIds = Role::pluck('id')->toArray();
+
+        if (empty($subdivisionIds) || empty($roleIds)) {
+            echo 'Нет данных в таблицах subdivisions или roles';
+
+            return;
+        }
+
         for ($i = 0; $i <= 15; $i++) {
             User::create([
                 'login' => fake()->word().$i,
@@ -36,8 +45,8 @@ class AddUserCommand extends Command
                 'last_name' => fake()->word(),
                 'first_name' => fake()->word(),
                 'surname' => fake()->word(),
-                'subdivision_id' => fake()->randomElement(Subdivision::all()->pluck('id')->toArray()),
-                'role_id' => fake()->randomElement(Role::all()->pluck('id')->toArray()),
+                'subdivision_id' => fake()->randomElement($subdivisionIds),
+                'role_id' => fake()->randomElement($roleIds),
             ]);
         }
 

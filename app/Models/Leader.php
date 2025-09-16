@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Filters\Traits\HasFilter;
+use App\Models\Contracts\HasFiles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class Leader extends Model
+class Leader extends Model implements HasFiles
 {
+    use HasFilter;
+
     protected $fillable = [
         'full_name',
         'rank',

@@ -27,9 +27,6 @@ class UserService
             $userData = $this->handlePassword($userData);
 
             $user = $this->userRepository->createUser($userData);
-            if (! $user) {
-                throw new \RuntimeException('Не удалось создать пользователя');
-            }
 
             $this->userLogService->log($user, CrudActionEnum::CREATE, $userData);
 

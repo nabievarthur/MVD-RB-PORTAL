@@ -27,14 +27,12 @@ class NewsService
      */
     public function store(StoreRequest $request): News
     {
+        $data = [];
+
         try {
             $data = $request->except(['_token', 'files']);
 
             $news = $this->newsRepository->createNews($data);
-
-            if (! $news) {
-                throw new \RuntimeException('Не удалось создать новость.');
-            }
 
             $this->userLogService->log($news, CrudActionEnum::CREATE, $data);
 
@@ -60,6 +58,8 @@ class NewsService
      */
     public function update(UpdateRequest $request, News $news): News
     {
+        $data = [];
+
         try {
             $oldData = $news->getOriginal();
 

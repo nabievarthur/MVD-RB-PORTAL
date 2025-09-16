@@ -17,11 +17,16 @@ class UpdateRequest extends FormRequest
         ];
     }
 
-    public function withValidator(Validator $validator)
+    public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {
             if ($this->hasFile('files')) {
                 $news = $this->route('news');
+
+                if (! is_object($news) || ! method_exists($news, 'files')) {
+                    return; // Прерываем выполнение, если это не объект модели
+                }
+
                 $existingFilesCount = $news->files()->count();
                 $newFilesCount = count($this->file('files'));
                 $totalFilesCount = $existingFilesCount + $newFilesCount;
@@ -36,8 +41,8 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'Заголовок новости должнен быть заполнен',
-            'files.max' => 'Превышен лимит максимального колличества файлов или размера',
+            'title.required' => 'Заголовок новости должен быть заполнен',
+            'files.max' => 'Превышен лимит максимального количества файлов или размера',
         ];
     }
 }

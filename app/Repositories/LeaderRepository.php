@@ -39,7 +39,7 @@ class LeaderRepository implements LeaderInterface
 
     public function getFilterableLeaders(array $filters): LengthAwarePaginator
     {
-        return Leader::filter($filters)
+        return Leader::query()->filter($filters)
             ->paginate(10)
             ->withQueryString();
     }
@@ -61,13 +61,12 @@ class LeaderRepository implements LeaderInterface
 
     }
 
-    public function createLeader(array $leaderData): ?Leader
+    public function createLeader(array $leaderData): Leader
     {
         return DB::transaction(function () use ($leaderData) {
             $leader = Leader::create($leaderData);
-            if ($leader) {
-                $this->clearLeaderCache();
-            }
+
+            $this->clearLeaderCache();
 
             return $leader;
         });

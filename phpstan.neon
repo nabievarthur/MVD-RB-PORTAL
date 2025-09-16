@@ -1,0 +1,25 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - config/
+        - database/factories/
+        - database/seeders/
+        - routes/
+        - tests/
+
+    # Уровень строгости (0-9)
+    level: 5
+
+    ignoreErrors:
+
+    excludePaths:
+        - storage/
+        - bootstrap/cache/
+        - node_modules/
+
+    bootstrapFiles:
+        - vendor/autoload.php
+        - bootstrap/app.php

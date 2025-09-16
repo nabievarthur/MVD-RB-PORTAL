@@ -51,13 +51,11 @@ class UserRepository implements UserInterface
             ->paginate($perPage, ['*'], 'page', $page);
     }
 
-    public function createUser(array $userData): ?User
+    public function createUser(array $userData): User
     {
         return DB::transaction(function () use ($userData) {
             $user = User::create($userData);
-            if ($user) {
-                $this->clearUserCache($user->id);
-            }
+            $this->clearUserCache($user->id);
 
             return $user;
         });

@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Filters\Traits\HasFilter;
+use App\Models\Contracts\HasFiles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Storage;
 
-class News extends Model
+class News extends Model implements HasFiles
 {
     use HasFilter;
 
@@ -36,6 +37,10 @@ class News extends Model
     {
         static::deleting(function (self $model) {
             foreach ($model->files as $file) {
+
+                /**
+                 * @var File $file
+                 */
                 Storage::disk('public')->delete($file->path);
             }
         });

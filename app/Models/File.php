@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property string $path
+ */
 class File extends Model
 {
     protected $fillable = [
-        'news_id',
+        'fileable_id',
         'path',
         'original_name',
         'mime_type',

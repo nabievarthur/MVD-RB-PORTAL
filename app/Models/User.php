@@ -12,6 +12,8 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * @method static filter(array $data)
+ *
+ * @property-read \App\Models\Role|null $role
  */
 class User extends Authenticatable
 {
@@ -90,11 +92,11 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role->title === 'Администратор';
+        return $this->role && $this->role->title === 'Администратор';
     }
 
     public function isModerator(): bool
     {
-        return $this->role->title === 'Модератор';
+        return $this->role && $this->role->title === 'Модератор';
     }
 }

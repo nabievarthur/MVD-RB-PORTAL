@@ -4,6 +4,7 @@ namespace App\Filters\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 trait HasFilter
 {
@@ -12,9 +13,10 @@ trait HasFilter
         $ClassName = 'App\\Filters\\'.class_basename($this).'Filter';
 
         if (! class_exists($ClassName)) {
-            return response([
-                'message' => 'Filter class not found',
-            ], Response::HTTP_NOT_FOUND);
+
+            Log::error("Filter class not found: {$ClassName}");
+
+            return $builder;
         }
 
         return (new $ClassName)->apply($data, $builder);

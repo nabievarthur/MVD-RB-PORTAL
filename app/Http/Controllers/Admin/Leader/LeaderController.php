@@ -29,15 +29,11 @@ class LeaderController extends Controller
     public function store(LeaderStoreRequest $request): RedirectResponse
     {
         try {
-            $success = $this->leaderService->storeLeader($request);
+            $this->leaderService->storeLeader($request);
 
-            if ($success) {
-                return redirect()
-                    ->route('admin.leader.index')
-                    ->with('success', 'Руководитель успешно добавлен.');
-            }
-
-            return back()->with('error', 'Не удалось добавить руководителя.');
+            return redirect()
+                ->route('admin.leader.index')
+                ->with('success', 'Руководитель успешно добавлен.');
 
         } catch (Throwable $e) {
             return back()->with('error', 'Ошибка при создании руководителя: '.$e->getMessage());

@@ -53,15 +53,11 @@ class NewsController extends Controller
         $this->authorize('create', News::class);
 
         try {
-            $success = $this->newsService->store($request);
+            $this->newsService->store($request);
 
-            if ($success) {
-                return redirect()
-                    ->route('home')
-                    ->with('success', 'Новость успешно добавлена.');
-            }
-
-            return back()->with('error', 'Не удалось создать новость.');
+            return redirect()
+                ->route('home')
+                ->with('success', 'Новость успешно добавлена.');
 
         } catch (Throwable $e) {
             return back()->with('error', 'Ошибка при создании новости: '.$e->getMessage());

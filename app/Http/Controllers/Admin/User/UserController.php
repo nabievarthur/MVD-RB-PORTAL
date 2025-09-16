@@ -41,13 +41,9 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): RedirectResponse
     {
         try {
-            $success = $this->userService->storeUser($request->validated());
+            $this->userService->storeUser($request->validated());
 
-            if ($success) {
-                return back()->with('success', 'Пользователь успешно добавлен');
-            }
-
-            return back()->with('error', 'Не удалось создать пользователя.');
+            return back()->with('success', 'Пользователь успешно добавлен');
 
         } catch (Throwable $e) {
             return back()->with('error', 'Ошибка при создании пользователя: '.$e->getMessage());

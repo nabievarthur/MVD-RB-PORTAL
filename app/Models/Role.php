@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    /**
+     * @property string $title
+     */
     public function getTitleAttribute($value): string
     {
         $titles = [

@@ -93,13 +93,11 @@ class NewsRepository implements NewsInterface
     /**
      * Создать новость.
      */
-    public function createNews(array $newsData): ?News
+    public function createNews(array $newsData): News
     {
         return DB::transaction(function () use ($newsData) {
             $news = $this->news->create($newsData);
-            if ($news) {
-                $this->clearNewsCache($news->id);
-            }
+            $this->clearNewsCache($news->id);
 
             return $news;
         });

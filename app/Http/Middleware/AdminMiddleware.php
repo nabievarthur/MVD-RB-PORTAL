@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,9 +16,10 @@ class AdminMiddleware
             return redirect()->route('login')->with('error', 'Требуется авторизация');
         }
 
+        /** @var User $user */
         $user = Auth::user();
 
-        if (! $user->role || $user->role->title !== 'Администратор') {
+        if (! $user->isAdmin()) {
 
             abort(403, 'Доступ запрещен. Требуются права администратора.');
         }
