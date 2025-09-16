@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class News extends Model implements HasFiles
 {
-    use HasFilter, HasFileDeleted;
+    use HasFileDeleted, HasFilter;
 
     protected $fillable = [
         'title',
@@ -33,5 +33,4 @@ class News extends Model implements HasFiles
      * @return void
      *              Удаляем изображения связанные с новостью при удалении новости
      */
-
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Leader extends Model implements HasFiles
 {
-    use HasFilter, HasFileDeleted;
+    use HasFileDeleted, HasFilter;
 
     protected $fillable = [
         'full_name',
