@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Filters\Traits\HasFilter;
 use App\Models\Contracts\HasFiles;
+use App\Models\Traits\HasFileDeleted;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Storage;
 
 class Leader extends Model implements HasFiles
 {
-    use HasFilter;
+    use HasFilter, HasFileDeleted;
 
     protected $fillable = [
         'full_name',

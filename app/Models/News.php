@@ -4,14 +4,14 @@ namespace App\Models;
 
 use App\Filters\Traits\HasFilter;
 use App\Models\Contracts\HasFiles;
+use App\Models\Traits\HasFileDeleted;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Facades\Storage;
 
 class News extends Model implements HasFiles
 {
-    use HasFilter;
+    use HasFilter, HasFileDeleted;
 
     protected $fillable = [
         'title',
@@ -33,16 +33,5 @@ class News extends Model implements HasFiles
      * @return void
      *              Удаляем изображения связанные с новостью при удалении новости
      */
-    protected static function booted(): void
-    {
-        static::deleting(function (self $model) {
-            foreach ($model->files as $file) {
 
-                /**
-                 * @var File $file
-                 */
-                Storage::disk('public')->delete($file->path);
-            }
-        });
-    }
 }
