@@ -82,15 +82,13 @@ class LeaderService
         // Сохраняем файл
         Storage::disk('public')->put($filename, $decodedData);
 
-        // Создаем запись в базе
         $leader->files()->create([
             'path' => $filename,
-            'original_name' => 'cropped_image.'.$extension,
+            'original_name' => 'leader'.$extension,
             'mime_type' => 'image/'.$extension,
             'size' => strlen($decodedData),
         ]);
 
-        // Чистим кеш
         Cache::tags(['leaders'])->flush();
     }
 
@@ -106,23 +104,31 @@ class LeaderService
 
             // Извлекаем файл из данных, если он есть
             $file = $leaderData['file'] ?? null;
-            unset($leaderData['file']); // Удаляем файл из данных для обновления
+            unset($leaderData['file']); // Убираем, чтобы не мешало апдейту
 
             $updatedLeader = $this->leaderRepository->updateLeader($leader->id, $leaderData);
             if (! $updatedLeader) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
 
-            if ($file instanceof UploadedFile) {
-                // Удаляем старый файл, если он существует
-                if ($leader->file) {
-                    $this->fileUploadService->destroyFile($leader->file);
+            // --- Работаем с файлами ---
+            if ($file) {
+                // Удаляем старые файлы (если политика такая)
+                foreach ($leader->files as $existingFile) {
+                    $this->fileUploadService->destroyFile($existingFile);
                 }
 
-                // Загружаем новый файл
-                $this->fileUploadService->uploadFiles('leader_files', $leader, $file);
+                // Если file = base64 строка
+                if (is_string($file) && strpos($file, 'data:image') === 0) {
+                    $this->handleBase64Image($file, $leader);
+                }
+                // Если file = UploadedFile
+                elseif ($file instanceof UploadedFile) {
+                    $this->fileUploadService->uploadFiles('leader_files', $leader, $file);
+                }
             }
 
+            // Логируем изменения
             $this->userLogService->log($updatedLeader, CrudActionEnum::UPDATE, [
                 'old' => $oldData,
                 'new' => $leaderData,

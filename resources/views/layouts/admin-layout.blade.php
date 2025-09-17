@@ -21,6 +21,9 @@
 @include('components.messagebox')
 
 @include('components.modal-confirmation')
+
+<link rel="stylesheet" href="{{asset('cropper/cropper.min.css')}}">
+<script src="{{asset('cropper/cropper.min.js')}}"></script>
 <script>
     function openModal(actionUrl, entityText = 'этого объекта') {
         const form = document.getElementById('delete-form');
@@ -56,46 +59,126 @@
         }
         return password;
     }
+// обрезка фото руководства
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('file');
+        const imagePreview = document.getElementById('image-preview');
+        const cropperContainer = document.getElementById('image-cropper-container');
+        const cropBtn = document.getElementById('crop-btn');
+        const cancelCropBtn = document.getElementById('cancel-crop-btn');
+        const croppedImageData = document.getElementById('cropped-image-data');
+        let cropper;
 
+        // Обработка выбора файла
+        fileInput.addEventListener('change', function(e) {
+            const files = e.target.files;
 
-    // Удаление изображения при редактировании руководства
-    document.addEventListener('DOMContentLoaded', function () {
-        const deleteButtons = document.querySelectorAll('.delete-file-btn');
+            if (files && files.length > 0) {
+                const file = files[0];
 
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const fileId = this.dataset.id;
-                const url = this.dataset.url;
-                const listItem = this.closest('li');
-                const fileListContainer = listItem.closest('.file-list-wrapper'); // добавим класс для обёртки
-
-                if (confirm('Удалить этот файл?')) {
-                    fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                        },
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                listItem.remove();
-
-                                // Проверим, остались ли другие <li>
-                                const remainingFiles = fileListContainer.querySelectorAll('li');
-                                if (remainingFiles.length === 0) {
-                                    fileListContainer.remove(); // скрываем весь блок
-                                }
-                            } else {
-                                alert('Ошибка при удалении файла.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            alert('Произошла ошибка при удалении.');
-                        });
+                // Проверяем, является ли файл изображением
+                if (!file.type.match('image.*')) {
+                    alert('Пожалуйста, выберите файл изображения');
+                    return;
                 }
-            });
+
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    imagePreview.src = event.target.result;
+                    cropperContainer.classList.remove('hidden');
+
+                    // Инициализируем Cropper.js
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    cropper = new Cropper(imagePreview, {
+                        aspectRatio: 3/4, // Соотношение сторон (например, 3:4 для портрета)
+                        viewMode: 1,
+                        guides: true,
+                        movable: true,
+                        zoomable: true,
+                        rotatable: true,
+                        scalable: true
+                    });
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Обработка кнопки обрезки
+        cropBtn.addEventListener('click', function() {
+            if (cropper) {
+                // Получаем обрезанное изображение в формате base64
+                const canvas = cropper.getCroppedCanvas({
+                    width: 300,  // Ширина конечного изображения
+                    height: 400  // Высота конечного изображения
+                });
+
+                if (canvas) {
+                    // Конвертируем canvas в base64 строку
+                    const base64Image = canvas.toDataURL('image/jpeg');
+                    croppedImageData.value = base64Image;
+
+                    // Создаем миниатюру для предпросмотра
+                    imagePreview.src = base64Image;
+
+                    // Отключаем cropper
+                    cropper.destroy();
+                    cropper = null;
+
+                    // Меняем видимость кнопок
+                    cropBtn.classList.add('hidden');
+                    cancelCropBtn.textContent = 'Изменить обрезку';
+                }
+            }
+        });
+
+        // Обработка кнопки отмены/изменения обрезки
+        cancelCropBtn.addEventListener('click', function() {
+            if (cropper) {
+                // Если cropper активен, отменяем обрезку
+                cropper.destroy();
+                cropper = null;
+                cropperContainer.classList.add('hidden');
+                fileInput.value = '';
+                croppedImageData.value = '';
+                cropBtn.classList.remove('hidden');
+                cancelCropBtn.textContent = 'Отмена';
+            } else {
+                // Если обрезка уже выполнена, позволяем изменить её
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imagePreview.src = event.target.result;
+                        cropperContainer.classList.remove('hidden');
+                        cropper = new Cropper(imagePreview, {
+                            aspectRatio: 3/4,
+                            viewMode: 1,
+                            guides: true,
+                            movable: true,
+                            zoomable: true,
+                            rotatable: true,
+                            scalable: true
+                        });
+                        cropBtn.classList.remove('hidden');
+                        cancelCropBtn.textContent = 'Отмена';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        // Обработка отправки формы
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Если выбрано изображение, но не выполнена обрезка
+            if (fileInput.files.length > 0 && !croppedImageData.value && cropper) {
+                e.preventDefault();
+                alert('Пожалуйста, обрежьте изображение перед отправкой');
+            }
         });
     });
 </script>

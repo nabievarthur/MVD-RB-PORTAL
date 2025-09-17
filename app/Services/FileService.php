@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Contracts\HasFiles;
-use App\Models\File;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class FileService
@@ -24,7 +24,7 @@ class FileService
         }
     }
 
-    public function destroyFile(File $file): void
+    public function destroyFile(Model $file): void
     {
         $file->delete();
         // Cache::tags(['news'])->flush();

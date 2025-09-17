@@ -1,7 +1,7 @@
 @extends('layouts.admin-layout')
 
 @section('content')
-    <div class="flex w-full justify-center bg-gray-800 rounded-lg shadow-md p-6 m-4 relative">
+    <div class="flex w-full h-auto justify-center bg-gray-800 rounded-lg shadow-md p-6 m-4 relative">
         <!-- Кнопка "Назад" -->
         <a href="{{ route('admin.leader.index') }}"
            class="absolute top-4 right-4 bg-teal-700/50 text-white px-4 py-2 rounded hover:bg-teal-800/50 cursor-pointer transition flex items-center space-x-2">
@@ -13,7 +13,7 @@
             <span>Назад</span>
         </a>
 
-        <div class="w-1/3">
+        <div class="relative w-1/3 mx-auto">
             <div>
                 <h2 class="text-xl font-bold text-gray-200 mb-4 text-center">Редактирование руководителя
                     <br> {{$leader->full_name}}</h2>
@@ -104,44 +104,45 @@
                     <div>
                         <h2 class="text-sm font-medium text-gray-400 mb-3">Загруженное изображение</h2>
                         <div
-                            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700">
+                            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border dark:border-gray-700">
                             <div class="flex flex-col items-center">
                                 <!-- Миниатюра изображения -->
                                 <div
-                                    class="mb-3 w-48 h-48 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600">
+                                    class="p-2 mb-3 w-46 h-58 overflow-hidden rounded-lg border dark:border-gray-600">
                                     <img
                                         src="{{ asset('storage/' . $leader->file->path) }}"
                                         alt="{{ $leader->file->original_name }}"
-                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-200 cursor-pointer"
+                                        class="w-full h-full object-contain hover:scale-105 transition-transform duration-200 cursor-pointer"
                                         loading="lazy"
                                         onclick="window.open('{{ asset('storage/' . $leader->file->path) }}', '_blank')"
                                     >
-                                </div>
-
-                                <!-- Название файла -->
-                                <div class="text-center">
-                                    <p class="text-sm text-gray-600 dark:text-gray-300 font-medium mb-1">
-                                        Название файла:
-                                    </p>
-                                    <p class="text-sm text-gray-700 dark:text-gray-200 break-words max-w-xs">
-                                        {{ $leader->file->original_name }}
-                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endif
 
+                <div id="image-cropper-container" class="hidden mt-4 p-4 bg-gray-700 rounded-lg border border-gray-600 transition-all duration-300">
+                    <h3 class="text-sm font-medium text-gray-300 mb-3">Режим обрезки</h3>
+                    <div class="mb-4">
+                        <img id="image-preview" class="max-w-full max-h-64 mx-auto rounded">
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="button" id="crop-btn" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">Обрезать</button>
+                        <button type="button" id="cancel-crop-btn" class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700">Отмена</button>
+                    </div>
+                </div>
+
                 <div>
                     <label for="file" class="block text-sm font-medium text-gray-400">Изменить изображение</label>
                     <input
-                        value="{{ old('file') }}"
                         type="file"
                         id="file"
-                        name="file"
-                        placeholder="Введите отчество"
-                        class="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-600/50 file:text-indigo-200 hover:file:bg-gray-600 mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('file') border border-red-400 @enderror"
+                        accept="image/*"
+                        class="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-600/50 file:text-indigo-500 hover:file:bg-gray-600 mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('file') border border-red-400 @enderror"
                     />
+                    <!-- Скрытое поле для хранения обрезанного изображения -->
+                    <input type="hidden" id="cropped-image-data" name="file">
                     @error('file')
                     <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
                     @enderror
