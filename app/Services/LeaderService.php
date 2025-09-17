@@ -57,27 +57,32 @@ class LeaderService
 
     protected function handleBase64Image(string $base64Image, Leader $leader): void
     {
-        // Извлекаем данные из base64
-        @[$type, $data] = explode(';', $base64Image);
-        @[, $data] = explode(',', $data);
-        @[, $extension] = explode('/', $type);
-
-        if (! in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+        // Проверяем формат: data:image/{ext};base64,{data}
+        if (! preg_match('/^data:image\/(jpeg|jpg|png|gif);base64,(.+)$/', $base64Image, $matches)) {
             return;
+        }
+
+        $extension = strtolower($matches[1]);
+        $data = $matches[2];
+
+        // Нормализуем jpeg → jpg
+        if ($extension === 'jpeg') {
+            $extension = 'jpg';
         }
 
         // Декодируем base64
         $decodedData = base64_decode($data, true);
-
         if ($decodedData === false) {
             return;
         }
 
+        // Генерируем уникальное имя
+        $filename = 'leader_files/'.uniqid('', true).'.'.$extension;
+
         // Сохраняем файл
-        $filename = 'leader_files/'.uniqid().'.'.$extension;
         Storage::disk('public')->put($filename, $decodedData);
 
-        // Создаем запись в базе данных
+        // Создаем запись в базе
         $leader->files()->create([
             'path' => $filename,
             'original_name' => 'cropped_image.'.$extension,
@@ -85,6 +90,7 @@ class LeaderService
             'size' => strlen($decodedData),
         ]);
 
+        // Чистим кеш
         Cache::tags(['leaders'])->flush();
     }
 
