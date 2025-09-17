@@ -145,17 +145,21 @@ class LeaderService
     /**
      * @throws Throwable
      */
-    public function deleteLeader(Leader $user): void
+    public function deleteLeader(Leader $leader): void
     {
         try {
-            $oldData = $user->getOriginal();
+            $oldData = $leader->getOriginal();
 
-            $success = $this->leaderRepository->deleteLeader($user->id);
+            foreach ($leader->files as $file) {
+                $file->delete();
+            }
+
+            $success = $this->leaderRepository->deleteLeader($leader->id);
             if (! $success) {
                 throw new \RuntimeException('Не удалось удалить пользователя.');
             }
 
-            $this->userLogService->log($user, CrudActionEnum::DELETE, [
+            $this->userLogService->log($leader, CrudActionEnum::DELETE, [
                 'old' => $oldData,
             ]);
         } catch (Throwable $e) {
@@ -163,7 +167,7 @@ class LeaderService
                 CrudActionEnum::DELETE,
                 $e,
                 [
-                    'user_id' => $user->id,
+                    'user_id' => $leader->id,
                 ]
             );
             throw $e;
