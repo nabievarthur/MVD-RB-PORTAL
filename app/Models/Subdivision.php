@@ -17,9 +17,6 @@ class Subdivision extends Model
         'title',
     ];
 
-    /**
-     * @return HasMany
-     */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

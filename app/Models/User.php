@@ -51,9 +51,6 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * @return Attribute
-     */
     protected function firstName(): Attribute
     {
         return Attribute::make(
@@ -61,9 +58,6 @@ class User extends Authenticatable
         );
     }
 
-    /**
-     * @return Attribute
-     */
     protected function lastName(): Attribute
     {
         return Attribute::make(
@@ -71,9 +65,6 @@ class User extends Authenticatable
         );
     }
 
-    /**
-     * @return Attribute
-     */
     protected function surname(): Attribute
     {
         return Attribute::make(
@@ -81,9 +72,6 @@ class User extends Authenticatable
         );
     }
 
-    /**
-     * @return Attribute
-     */
     protected function login(): Attribute
     {
         return Attribute::make(
@@ -91,49 +79,31 @@ class User extends Authenticatable
         );
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function ovd(): BelongsTo
     {
         return $this->belongsTo(OVD::class, 'ovd_id', 'id', 'ovd');
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function subdivision(): BelongsTo
     {
         return $this->belongsTo(Subdivision::class);
     }
 
-    /**
-     * @return HasMany
-     */
     public function news(): HasMany
     {
         return $this->hasMany(News::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    /**
-     * @return bool
-     */
     public function isAdmin(): bool
     {
         return $this->role && $this->role->title === 'Администратор';
     }
 
-    /**
-     * @return bool
-     */
     public function isModerator(): bool
     {
         return $this->role && $this->role->title === 'Модератор';

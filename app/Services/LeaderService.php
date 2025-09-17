@@ -9,7 +9,9 @@ use App\Repositories\LeaderRepository;
 use App\Services\Log\ExceptionLogService;
 use App\Services\Log\UserLogService;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class LeaderService
@@ -30,11 +32,14 @@ class LeaderService
             $data = $request->except(['_token', 'file']);
 
             $leader = $this->leaderRepository->createLeader($data);
-
             $this->userLogService->log($leader, CrudActionEnum::CREATE, $data);
 
-            if ($request->hasFile('file')) {
-
+            // Проверяем, является ли file base64 строкой
+            if ($request->has('file') && is_string($request->file) && strpos($request->file, 'data:image') === 0) {
+                $this->handleBase64Image($request->file, $leader);
+            }
+            // Или обычным файлом
+            elseif ($request->hasFile('file')) {
                 $this->fileUploadService->uploadFiles('leader_files', $leader, $request->file('file'));
             }
 
@@ -48,6 +53,39 @@ class LeaderService
             );
             throw $e;
         }
+    }
+
+    protected function handleBase64Image(string $base64Image, Leader $leader): void
+    {
+        // Извлекаем данные из base64
+        @[$type, $data] = explode(';', $base64Image);
+        @[, $data] = explode(',', $data);
+        @[, $extension] = explode('/', $type);
+
+        if (! in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+            return;
+        }
+
+        // Декодируем base64
+        $decodedData = base64_decode($data, true);
+
+        if ($decodedData === false) {
+            return;
+        }
+
+        // Сохраняем файл
+        $filename = 'leader_files/'.uniqid().'.'.$extension;
+        Storage::disk('public')->put($filename, $decodedData);
+
+        // Создаем запись в базе данных
+        $leader->files()->create([
+            'path' => $filename,
+            'original_name' => 'cropped_image.'.$extension,
+            'mime_type' => 'image/'.$extension,
+            'size' => strlen($decodedData),
+        ]);
+
+        Cache::tags(['leaders'])->flush();
     }
 
     /**

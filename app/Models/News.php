@@ -22,17 +22,11 @@ class News extends Model implements HasFiles
         'user_id',
     ];
 
-    /**
-     * @return MorphMany
-     */
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

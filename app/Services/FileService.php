@@ -27,7 +27,7 @@ class FileService
     public function destroyFile(File $file): void
     {
         $file->delete();
-        Cache::tags(['news'])->flush();
+        // Cache::tags(['news'])->flush();
         // Cache::tags(['leades'])->flush();
 
     }

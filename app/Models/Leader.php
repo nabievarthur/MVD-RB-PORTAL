@@ -26,10 +26,6 @@ class Leader extends Model implements HasFiles
         'priority',
     ];
 
-    /**
-     * @param $value
-     * @return string
-     */
     public function getPriorityAttribute($value): string
     {
         $priority = [
@@ -42,17 +38,11 @@ class Leader extends Model implements HasFiles
         return $priority[$value] ?? $value;
     }
 
-    /**
-     * @return MorphOne
-     */
     public function file(): MorphOne
     {
         return $this->morphOne(File::class, 'fileable');
     }
 
-    /**
-     * @return MorphMany
-     */
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
