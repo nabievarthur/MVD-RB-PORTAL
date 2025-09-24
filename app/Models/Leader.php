@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Contracts\HasFiles;
-use App\Models\Traits\HasFileDeleted;
 use App\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -14,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  */
 class Leader extends Model implements HasFiles
 {
-    use HasFileDeleted, HasFilter;
+    use HasFilter;
 
     /**
      * @var list<string>
@@ -46,5 +45,16 @@ class Leader extends Model implements HasFiles
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+
+    /**
+     * @return iterable<File>
+     */
+    public function getFiles(): iterable
+    {
+        /** @var iterable<File> $files */
+        $files = $this->files;
+
+        return $files;
     }
 }

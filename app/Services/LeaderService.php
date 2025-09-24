@@ -8,10 +8,7 @@ use App\Models\Leader;
 use App\Repositories\LeaderRepository;
 use App\Services\Log\ExceptionLogService;
 use App\Services\Log\UserLogService;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class LeaderService
@@ -20,7 +17,7 @@ class LeaderService
         protected LeaderRepository $leaderRepository,
         protected UserLogService $userLogService,
         protected ExceptionLogService $exceptionLogService,
-        protected FileService $fileUploadService,
+        protected FileService $fileService,
     ) {}
 
     /**
@@ -30,17 +27,16 @@ class LeaderService
     {
         try {
             $data = $request->except(['_token', 'file']);
-
             $leader = $this->leaderRepository->createLeader($data);
+
             $this->userLogService->log($leader, CrudActionEnum::CREATE, $data);
 
-            // Проверяем, является ли file base64 строкой
-            if ($request->has('file') && is_string($request->file) && strpos($request->file, 'data:image') === 0) {
-                $this->handleBase64Image($request->file, $leader);
-            }
-            // Или обычным файлом
-            elseif ($request->hasFile('file')) {
-                $this->fileUploadService->uploadFiles('leader_files', $leader, $request->file('file'));
+            if ($request->has('file') && $request->file) {
+                $this->fileService->uploadFile(
+                    $request->file,
+                    $leader,
+                    'leader_files'
+                );
             }
 
             return $leader;
@@ -55,43 +51,6 @@ class LeaderService
         }
     }
 
-    protected function handleBase64Image(string $base64Image, Leader $leader): void
-    {
-        // Проверяем формат: data:image/{ext};base64,{data}
-        if (! preg_match('/^data:image\/(jpeg|jpg|png|gif);base64,(.+)$/', $base64Image, $matches)) {
-            return;
-        }
-
-        $extension = strtolower($matches[1]);
-        $data = $matches[2];
-
-        // Нормализуем jpeg → jpg
-        if ($extension === 'jpeg') {
-            $extension = 'jpg';
-        }
-
-        // Декодируем base64
-        $decodedData = base64_decode($data, true);
-        if ($decodedData === false) {
-            return;
-        }
-
-        // Генерируем уникальное имя
-        $filename = 'leader_files/'.uniqid('', true).'.'.$extension;
-
-        // Сохраняем файл
-        Storage::disk('public')->put($filename, $decodedData);
-
-        $leader->files()->create([
-            'path' => $filename,
-            'original_name' => 'leader'.$extension,
-            'mime_type' => 'image/'.$extension,
-            'size' => strlen($decodedData),
-        ]);
-
-        Cache::tags(['leaders'])->flush();
-    }
-
     /**
      * @throws Throwable
      */
@@ -99,36 +58,24 @@ class LeaderService
     {
         try {
             $oldData = $leader->getOriginal();
-
             $leaderData = $this->handlePassword($leaderData);
 
-            // Извлекаем файл из данных, если он есть
             $file = $leaderData['file'] ?? null;
-            unset($leaderData['file']); // Убираем, чтобы не мешало апдейту
+            unset($leaderData['file']);
 
             $updatedLeader = $this->leaderRepository->updateLeader($leader->id, $leaderData);
             if (! $updatedLeader) {
                 throw new \RuntimeException('Не удалось обновить пользователя.');
             }
 
-            // --- Работаем с файлами ---
             if ($file) {
-                // Удаляем старые файлы (если политика такая)
-                foreach ($leader->files as $existingFile) {
-                    $this->fileUploadService->destroyFile($existingFile);
-                }
+                // Удаляем старые файлы
+                $this->fileService->deleteModelFiles($leader);
 
-                // Если file = base64 строка
-                if (is_string($file) && strpos($file, 'data:image') === 0) {
-                    $this->handleBase64Image($file, $leader);
-                }
-                // Если file = UploadedFile
-                elseif ($file instanceof UploadedFile) {
-                    $this->fileUploadService->uploadFiles('leader_files', $leader, $file);
-                }
+                // Загружаем новый файл
+                $this->fileService->uploadFile($file, $leader, 'leader_files');
             }
 
-            // Логируем изменения
             $this->userLogService->log($updatedLeader, CrudActionEnum::UPDATE, [
                 'old' => $oldData,
                 'new' => $leaderData,
@@ -156,9 +103,8 @@ class LeaderService
         try {
             $oldData = $leader->getOriginal();
 
-            foreach ($leader->files as $file) {
-                $file->delete();
-            }
+            // Удаляем все файлы модели
+            $this->fileService->deleteModelFiles($leader);
 
             $success = $this->leaderRepository->deleteLeader($leader->id);
             if (! $success) {

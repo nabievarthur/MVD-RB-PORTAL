@@ -15,7 +15,7 @@ class NewsService
 {
     public function __construct(
         protected NewsRepository $newsRepository,
-        protected FileService $fileUploadService,
+        protected FileService $fileService,
         protected UserLogService $userLogService,
         protected ExceptionLogService $exceptionLogService,
     ) {}
@@ -37,7 +37,7 @@ class NewsService
             $this->userLogService->log($news, CrudActionEnum::CREATE, $data);
 
             if ($request->hasFile('files')) {
-                $this->fileUploadService->uploadFiles('news_files', $news, $request->file('files'));
+                $this->fileService->uploadFiles('news_files', $news, $request->file('files'));
             }
 
             return $news;
@@ -77,7 +77,7 @@ class NewsService
             ]);
 
             if ($request->hasFile('files')) {
-                $this->fileUploadService->uploadFiles('news_files', $news, $request->file('files'));
+                $this->fileService->uploadFiles('news_files', $news, $request->file('files'));
             }
 
             return $updatedNews;
@@ -104,6 +104,8 @@ class NewsService
     {
         try {
             $oldData = $news->getOriginal();
+
+            $this->fileService->deleteModelFiles($news);
 
             $this->newsRepository->deleteNews($news->id);
 
