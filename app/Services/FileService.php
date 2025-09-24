@@ -7,15 +7,17 @@ use App\Models\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class FileService
 {
     /**
-     * Универсальный метод для загрузки файлов (поддерживает base64 и UploadedFile)
+     * Универсальный метод для загрузки файлов
      */
-    public function uploadFile($file, HasFiles $model, string $folderName): void
+    public function uploadFile(string|UploadedFile $file, HasFiles $model, string $folderName): void
     {
-        if (is_string($file) && strpos($file, 'data:image') === 0) {
+        if (is_string($file) && str_starts_with($file, 'data:image')) {
             $this->handleBase64Image($file, $model, $folderName);
         } elseif ($file instanceof UploadedFile) {
             $this->uploadFiles($folderName, $model, $file);
@@ -23,24 +25,28 @@ class FileService
     }
 
     /**
-     * Загрузка одного или нескольких файлов (традиционный способ)
+     * Загрузка одного или нескольких файлов
      */
-    public function uploadFiles(string $folderName, HasFiles $model, $files): void
+    public function uploadFiles(string $folderName, HasFiles $model, UploadedFile|array $files): void
     {
         $files = is_array($files) ? $files : [$files];
+        $folders = [];
 
         foreach ($files as $file) {
             $path = $file->store($folderName, 'public');
 
-            $model->files()->create([
-                'path' => $path,
-                'original_name' => $file->getClientOriginalName(),
-                'mime_type' => $file->getClientMimeType(),
-                'size' => $file->getSize(),
-            ]);
+            $this->storeFile(
+                $model,
+                $path,
+                $file->getClientOriginalName(),
+                $file->getClientMimeType(),
+                $file->getSize()
+            );
+
+            $folders[] = $folderName;
         }
 
-        $this->clearCache($folderName);
+        $this->clearCacheFor($folders);
     }
 
     /**
@@ -49,51 +55,41 @@ class FileService
     public function handleBase64Image(string $base64Image, HasFiles $model, string $folderName = 'uploads'): void
     {
         if (! preg_match('/^data:image\/(jpeg|jpg|png|gif|webp|bmp);base64,(.+)$/', $base64Image, $matches)) {
-            throw new \InvalidArgumentException('Invalid base64 image format');
+            throw new InvalidArgumentException('Invalid base64 image format');
         }
 
-        $extension = strtolower($matches[1]);
-        $data = $matches[2];
-        // Нормализация расширений
-        if ($extension === 'jpeg') {
-            $extension = 'jpg';
-        }
+        $extension = strtolower($matches[1]) === 'jpeg' ? 'jpg' : strtolower($matches[1]);
+        $decodedData = base64_decode($matches[2], true);
 
-        $decodedData = base64_decode($data, true);
         if ($decodedData === false) {
-            throw new \InvalidArgumentException('Failed to decode base64 data');
+            throw new InvalidArgumentException('Failed to decode base64 data');
         }
 
-        // Валидация размера файла (например, максимум 10MB)
-        if (strlen($decodedData) > 10 * 1024 * 1024) {
-            throw new \InvalidArgumentException('File size too large');
+        if (strlen($decodedData) > 10 * 1024 * 1024) { // 10MB
+            throw new InvalidArgumentException('File size too large');
         }
 
-        $filename = $folderName.'/'.uniqid('', true).'.'.$extension;
-
+        $filename = $folderName . '/' . Str::uuid() . '.' . $extension;
         Storage::disk('public')->put($filename, $decodedData);
 
-        $model->files()->create([
-            'path' => $filename,
-            'original_name' => 'image.'.$extension,
-            'mime_type' => 'image/'.$extension,
-            'size' => strlen($decodedData),
-        ]);
+        $this->storeFile(
+            $model,
+            $filename,
+            'image.' . $extension,
+            'image/' . $extension,
+            strlen($decodedData)
+        );
 
-        $this->clearCache($folderName);
+        $this->clearCacheFor([$folderName]);
     }
 
+    /**
+     * Удаление одного файла
+     */
     public function destroyFile(File $file): void
     {
-        if (Storage::disk('public')->exists($file->path)) {
-            Storage::disk('public')->delete($file->path);
-        }
-
-        $file->delete();
-
-        $pathParts = explode('/', $file->path);
-        $folderName = $pathParts[0];
-        $this->clearCache($folderName);
+        $folderName = $this->deleteFile($file);
+        $this->clearCacheFor([$folderName]);
     }
 
     /**
@@ -101,32 +97,54 @@ class FileService
      */
     public function deleteModelFiles(HasFiles $model): void
     {
-        $folderNames = [];
+        $folders = [];
 
         foreach ($model->getFiles() as $file) {
-
-            $pathParts = explode('/', $file->path);
-            $folderName = $pathParts[0];
-            $folderNames[$folderName] = true;
-
-            if (Storage::disk('public')->exists($file->path)) {
-                Storage::disk('public')->delete($file->path);
-            }
-            $file->delete();
+            $folders[] = $this->deleteFile($file);
         }
 
-        foreach (array_keys($folderNames) as $folderName) {
-            $this->clearCache($folderName);
-        }
+        $this->clearCacheFor($folders);
     }
 
     /**
-     * Очистка кеша для конкретной папки
+     * Сохранение информации о файле в базе
      */
-    protected function clearCache(string $folderName): void
+    protected function storeFile(HasFiles $model, string $path, string $originalName, string $mimeType, int $size): void
     {
-        $cacheTag = $this->getCacheTag($folderName);
-        Cache::tags([$cacheTag])->flush();
+        $model->files()->create([
+            'path'          => $path,
+            'original_name' => $originalName,
+            'mime_type'     => $mimeType,
+            'size'          => $size,
+        ]);
+    }
+
+    /**
+     * Удаление файла с диска и из базы, возврат имени папки
+     */
+    protected function deleteFile(File $file): string
+    {
+        if (Storage::disk('public')->exists($file->path)) {
+            Storage::disk('public')->delete($file->path);
+        }
+
+        $pathParts = explode('/', $file->path);
+        $folderName = $pathParts[0] ?: 'uploads';
+
+        $file->delete();
+
+        return $folderName;
+    }
+
+
+    /**
+     * Очистка кеша для набора папок
+     */
+    protected function clearCacheFor(array $folders): void
+    {
+        foreach (array_unique($folders) as $folder) {
+            Cache::tags([$this->getCacheTag($folder)])->flush();
+        }
     }
 
     /**
@@ -134,12 +152,11 @@ class FileService
      */
     protected function getCacheTag(string $folderName): string
     {
-        $mapping = [
-            'leader_files' => 'leaders',
-            'news_images' => 'news',
+        return match ($folderName) {
+            'leader_files'  => 'leaders',
+            'news_images'   => 'news',
             'article_files' => 'articles',
-        ];
-
-        return $mapping[$folderName] ?? str_replace('_files', 's', $folderName);
+            default         => str_replace('_files', 's', $folderName),
+        };
     }
 }
