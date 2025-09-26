@@ -69,14 +69,14 @@ class FileService
             throw new InvalidArgumentException('File size too large');
         }
 
-        $filename = $folderName . '/' . Str::uuid() . '.' . $extension;
+        $filename = $folderName.'/'.Str::uuid().'.'.$extension;
         Storage::disk('public')->put($filename, $decodedData);
 
         $this->storeFile(
             $model,
             $filename,
-            'image.' . $extension,
-            'image/' . $extension,
+            'image.'.$extension,
+            'image/'.$extension,
             strlen($decodedData)
         );
 
@@ -112,10 +112,10 @@ class FileService
     protected function storeFile(HasFiles $model, string $path, string $originalName, string $mimeType, int $size): void
     {
         $model->files()->create([
-            'path'          => $path,
+            'path' => $path,
             'original_name' => $originalName,
-            'mime_type'     => $mimeType,
-            'size'          => $size,
+            'mime_type' => $mimeType,
+            'size' => $size,
         ]);
     }
 
@@ -136,7 +136,6 @@ class FileService
         return $folderName;
     }
 
-
     /**
      * Очистка кеша для набора папок
      */
@@ -153,10 +152,10 @@ class FileService
     protected function getCacheTag(string $folderName): string
     {
         return match ($folderName) {
-            'leader_files'  => 'leaders',
-            'news_images'   => 'news',
+            'leader_files' => 'leaders',
+            'news_images' => 'news',
             'article_files' => 'articles',
-            default         => str_replace('_files', 's', $folderName),
+            default => str_replace('_files', 's', $folderName),
         };
     }
 }

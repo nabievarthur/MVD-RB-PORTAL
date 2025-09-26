@@ -292,7 +292,7 @@
                             <td class="py-3 px-4">{{$user->last_name}}</td>
                             <td class="py-3 px-4">{{$user->first_name}}</td>
                             <td class="py-3 px-4">{{$user->surname}}</td>
-                            <td class="py-3 px-4">{{$user->role->title}}</td>
+                            <td class="py-3 px-4">{{$user->role->title ?? "Null"}}</td>
                             <td class="py-3 px-4 space-x-2 flex justify-center">
                                 <a href="{{route('admin.user.edit', $user->id)}}"
                                    class="bg-indigo-500/50 text-white px-3 py-1 rounded cursor-pointer hover:bg-indigo-800/50 transition flex items-center space-x-2">
