@@ -30,8 +30,10 @@ class UserController extends Controller
     {
         $dataRequest = $searchRequest->validated();
 
+        $users = $this->userRepository->getUsers($dataRequest);
+
         return view('pages.admin.user.index', [
-            'users' => $dataRequest ? $this->userRepository->getFilterableUsers($dataRequest) : $this->userRepository->getPaginatedUsers(),
+            'users' => $users,
             'subdivisions' => $this->subdivisionRepository->getSubdivisionList(),
             'roles' => $this->roleRepository->getRolesList(),
             'ovd' => $this->ovdRepository->getOVDList(),

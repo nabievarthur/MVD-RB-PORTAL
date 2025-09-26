@@ -119,7 +119,7 @@
             </div>
             @auth()
                 <div>
-                    <p class="font-medium text-gray-600 dark:text-gray-300">{{$fio}}</p>
+                    <p class="font-medium text-gray-600 dark:text-gray-300">{{str_contains($fio, "Не указано") ? $login : $fio}}</p>
                 </div>
             @endauth
             <div>

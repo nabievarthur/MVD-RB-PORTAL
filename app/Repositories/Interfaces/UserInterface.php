@@ -11,9 +11,7 @@ interface UserInterface
 
     public function getUsersCount(): int;
 
-    public function getFilterableUsers(array $filters): LengthAwarePaginator;
-
-    public function getPaginatedUsers(): LengthAwarePaginator;
+    public function getUsers(array $filters): LengthAwarePaginator;
 
     public function createUser(array $userData): ?User;
 

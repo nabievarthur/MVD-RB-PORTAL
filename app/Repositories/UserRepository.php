@@ -36,19 +36,15 @@ class UserRepository implements UserInterface
         );
     }
 
-    public function getFilterableUsers(array $filters): LengthAwarePaginator
+    public function getUsers(array $filters = [], int $perPage = 10): LengthAwarePaginator
     {
-        return User::filter($filters)
-            ->with('role')
-            ->paginate(10)
-            ->withQueryString();
-    }
+        $query = User::with(['role', 'ovd'])->orderByDesc('created_at');
 
-    public function getPaginatedUsers(int $perPage = 10, int $page = 1): LengthAwarePaginator
-    {
-        return User::with(['role', 'ovd'])
-            ->orderByDesc('created_at')
-            ->paginate($perPage, ['*'], 'page', $page);
+        if (! empty($filters)) {
+            $query->filter($filters);
+        }
+
+        return $query->paginate($perPage)->withQueryString();
     }
 
     public function createUser(array $userData): User
