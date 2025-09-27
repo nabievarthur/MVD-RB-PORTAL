@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
-class ImportUsersFromCsv extends Command
+class ImportUsersFromCSV extends Command
 {
     protected $signature = 'import:users {file}';
 
