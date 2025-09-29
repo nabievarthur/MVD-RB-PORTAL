@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Leader;
 
+use App\Models\Leader;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LeaderUpdateRequest extends FormRequest
@@ -23,10 +24,18 @@ class LeaderUpdateRequest extends FormRequest
     {
 
         return [
-            'full_name' => ['required', 'string', 'unique:users,login'],
+            'full_name' => ['required', 'string'],
             'rank' => ['required', 'string'],
             'position' => ['required', 'string'],
-            'priority' => 'required|in:minister,deputy_minister,deputy_police_chief,department_head',
+            'priority' => [
+                'required',
+                'in:minister,deputy_minister,deputy_police_chief,department_head',
+                function ($attribute, $value, $fail) {
+                    if ($value === 'minister' && Leader::where('priority', 'minister')->exists()) {
+                        $fail('Может быть только один руководитель с приоритетом Министр.');
+                    }
+                }
+            ],
             'file' => 'nullable|string',
         ];
     }
