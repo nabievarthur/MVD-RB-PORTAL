@@ -31,4 +31,16 @@ class UserUpdateRequest extends FormRequest
             'role_id' => ['nullable', 'exists:roles,id'],
         ];
     }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->filled('role_id') && empty($this->subdivision_id)) {
+                $validator->errors()->add(
+                    'subdivision_id',
+                    'Подразделение обязательно при указании роли.'
+                );
+            }
+        });
+    }
 }
