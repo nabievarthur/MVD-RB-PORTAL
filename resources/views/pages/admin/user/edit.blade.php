@@ -114,7 +114,7 @@
                             name="role_id"
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('role_id') border border-red-400 @enderror"
                     >
-                        <option value="" selected>Пользователь</option>
+                        <option value="" selected disabled>Выберите роль</option>
                         @foreach($roles as $id => $title)
                             <option
                                     value="{{ $id }}" {{ $id === $user->role_id ? 'selected' : '' }}>{{ $title }}</option>
