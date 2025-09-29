@@ -171,10 +171,10 @@
                             class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('priority') border border-red-400 @enderror"
                         >
                             <option value="" disabled selected>Выберите приоритет</option>
-                            <option value="minister">Министр</option>
-                            <option value="deputy_minister">Заместитель министра</option>
-                            <option value="deputy_police_chief">Заместитель начальника полиции</option>
-                            <option value="department_head">Прочее</option>
+                            <option value="minister" {{old('priority') === 'minister' ? "selected" : ""}}>Министр</option>
+                            <option value="deputy_minister" {{old('priority') === 'deputy_minister' ? "selected" : ""}}>Заместитель министра</option>
+                            <option value="deputy_police_chief" {{old('priority') === 'deputy_police_chief' ? "selected" : ""}}>Заместитель начальника полиции</option>
+                            <option value="department_head" {{old('priority') === 'department_head' ? "selected" : ""}}>Прочее</option>
                         </select>
                         @error('priority')
                         <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
