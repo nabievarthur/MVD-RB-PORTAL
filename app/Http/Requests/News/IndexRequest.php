@@ -22,7 +22,7 @@ class IndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string',
+            'q' => 'nullable|string',
         ];
     }
 }

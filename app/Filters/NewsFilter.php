@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 class NewsFilter extends AbstractFilter
 {
     protected array $keys = [
-        'title',
+        'q',
     ];
 
-    protected function title(Builder $builder, $value)
+    protected function q(Builder $builder, $value)
     {
         $builder->where('title', 'ilike', "%$value%")
             ->orWhere('description', 'ilike', "%$value%");

@@ -33,7 +33,7 @@ class LeaderStoreRequest extends FormRequest
                     if ($value === 'minister' && Leader::where('priority', 'minister')->exists()) {
                         $fail('Может быть только один руководитель с приоритетом Министр.');
                     }
-                }
+                },
             ],
             'file' => 'required|string',
         ];
