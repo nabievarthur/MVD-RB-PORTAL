@@ -2,112 +2,6 @@
 
 @section('content')
     <div class="flex w-full">
-        <!-- Блок создания руководителя (1/3 ширины) -->
-{{--        <div class="w-1/3 bg-gray-800 rounded-lg shadow-md ml-4 mt-4 mb-4 p-4 overflow-auto">--}}
-{{--            <h2 class="text-xl font-bold text-gray-200 text-center">Добавление нового руководителя</h2>--}}
-{{--            <form action="{{route('admin.leader.store')}}" method="POST" class="w-full" enctype="multipart/form-data">--}}
-{{--                @csrf--}}
-{{--                <div class="space-y-4">--}}
-{{--                    <!-- ФИО -->--}}
-{{--                    <div>--}}
-{{--                        <label for="full_name" class="block text-sm font-medium text-gray-400">ФИО</label>--}}
-{{--                        <input--}}
-{{--                            value="{{ old('full_name') }}"--}}
-{{--                            type="text"--}}
-{{--                            id="full_name"--}}
-{{--                            name="full_name"--}}
-{{--                            placeholder="Введите ФИО"--}}
-{{--                            class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('full_name') border border-red-400 @enderror"--}}
-{{--                        />--}}
-{{--                        @error('full_name')--}}
-{{--                        <p class="mt-1 text-sm text-red-400">{{ $message }}</p>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-
-{{--                    <!-- Звание -->--}}
-{{--                    <div>--}}
-{{--                        <label for="rank" class="block text-sm font-medium text-gray-400">Звание</label>--}}
-{{--                        <input--}}
-{{--                            value="{{ old('rank') }}"--}}
-{{--                            type="text"--}}
-{{--                            id="rank"--}}
-{{--                            name="rank"--}}
-{{--                            placeholder="Введите звание"--}}
-{{--                            class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('rank') border border-red-400 @enderror"--}}
-{{--                        />--}}
-{{--                        @error('rank')--}}
-{{--                        <p class="mt-1 text-sm text-red-400">{{ $message }}</p>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-
-{{--                    <!-- Должность -->--}}
-{{--                    <div>--}}
-{{--                        <label for="position" class="block text-sm font-medium text-gray-400">Должность</label>--}}
-{{--                        <input--}}
-{{--                            value="{{ old('position') }}"--}}
-{{--                            type="text"--}}
-{{--                            id="position"--}}
-{{--                            name="position"--}}
-{{--                            placeholder="Введите должность"--}}
-{{--                            class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('position') border border-red-400 @enderror"--}}
-{{--                        />--}}
-{{--                        @error('position')--}}
-{{--                        <p class="mt-1 text-sm text-red-400">{{ $message }}</p>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-
-{{--                    <div>--}}
-{{--                        <label for="priority" class="block text-sm font-medium text-gray-400">Приоритет--}}
-{{--                            отображения</label>--}}
-{{--                        <select--}}
-{{--                            id="priority"--}}
-{{--                            name="priority"--}}
-{{--                            class="mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('priority') border border-red-400 @enderror"--}}
-{{--                        >--}}
-{{--                            <option value="" disabled selected>Выберите приоритет</option>--}}
-{{--                            <option value="minister">Министр</option>--}}
-{{--                            <option value="deputy_minister">Заместитель министра</option>--}}
-{{--                            <option value="deputy_police_chief">Заместитель начальника полиции</option>--}}
-{{--                            <option value="department_head">Прочее</option>--}}
-{{--                        </select>--}}
-{{--                        @error('priority')--}}
-{{--                        <p class="mt-1 text-sm text-red-400">{{ $message }}</p>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-
-{{--                    <div>--}}
-{{--                        <label for="file" class="block text-sm font-medium text-gray-400">Изображение</label>--}}
-{{--                        <input--}}
-{{--                            value="{{ old('file') }}"--}}
-{{--                            type="file"--}}
-{{--                            id="file"--}}
-{{--                            name="file"--}}
-{{--                            placeholder="Введите отчество"--}}
-{{--                            class="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-600/50 file:text-indigo-500 hover:file:bg-gray-600 mt-1 block w-full bg-gray-700 text-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600 transition @error('file') border border-red-400 @enderror"--}}
-{{--                        />--}}
-{{--                        @error('file')--}}
-{{--                        <p class="mt-1 text-sm text-red-400">{{ $message }}</p>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-
-{{--                    <!-- Submit Button -->--}}
-{{--                    <div class="pt-2">--}}
-{{--                        <button type="submit"--}}
-{{--                                class="w-full bg-green-600/50 text-white px-4 py-2 rounded hover:bg-green-700/50 cursor-pointer transition flex items-center justify-center space-x-2">--}}
-{{--                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"--}}
-{{--                                 class="bi bi-person-plus" viewBox="0 0 16 16">--}}
-{{--                                <path--}}
-{{--                                    d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>--}}
-{{--                                <path fill-rule="evenodd"--}}
-{{--                                      d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>--}}
-{{--                            </svg>--}}
-{{--                            <span>Добавить</span>--}}
-{{--                        </button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </form>--}}
-{{--        </div>--}}
-
         <!-- Блок с поиском и таблицей (2/3 ширины) -->
         <div class="w-1/3 bg-gray-800 rounded-lg shadow-md ml-4 mt-4 mb-4 p-4 overflow-auto">
             <h2 class="text-xl font-bold text-gray-200 text-center">Добавление нового руководителя</h2>
@@ -345,9 +239,6 @@
                 {{$leaders->withQueryString()->links()}}
             </div>
 
-            <div class="backdrop-blur-sm bg-white/30 ...">
-
-            </div>
         </div>
     </div>
 @endsection

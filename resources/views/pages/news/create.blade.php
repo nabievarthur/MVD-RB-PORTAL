@@ -34,7 +34,7 @@
                 <div class="w-2/3 mx-auto mb-4">
                     <label for="content" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Содержание</label>
                     <textarea
-                        rows="4"
+                        rows="10"
                         id="content"
                         name="description"
                         class="w-full block px-3 py-2 dark:bg-gray-800 border dark:text-white border-gray-300 dark:border-blue-700 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
