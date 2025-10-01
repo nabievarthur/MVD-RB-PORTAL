@@ -7,7 +7,7 @@
 ])
 
 <div
-    class="w-60 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border-2 border-gray-200 dark:border-gray-700 hover:border-blue-700 transition-colors duration-300">
+    class="w-60 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md border-2 border-gray-200 dark:border-gray-800 hover:border-blue-700 transition-colors duration-300">
     <div class="h-56 w-full bg-gray-200/50 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
         <img
             class="h-full w-full object-cover object-top"
