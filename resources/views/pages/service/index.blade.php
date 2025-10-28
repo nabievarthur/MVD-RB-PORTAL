@@ -7,8 +7,7 @@
 
         <div class="border-b border-b-gray-200 dark:border-b-gray-600 flex justify-between items-center py-4 mb-4">
             <div class="flex justify-between items-center">
-                <h1 class="text-xl font-semibold text-black/80 dark:text-white mr-4">Сервисы МВД по Республике
-                    Башкортостан</h1>
+                <h1 class="text-xl font-semibold text-black/80 dark:text-white mr-4">Сервисы МВД по Республике Башкортостан</h1>
             </div>
             <div class="flex justify-between items-center">
                 <x-button-back route="home"/>
