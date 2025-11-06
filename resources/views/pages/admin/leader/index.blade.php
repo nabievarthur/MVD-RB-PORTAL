@@ -150,7 +150,7 @@
                         Найти
                     </button>
 
-                    <a href="{{ route('admin.user.index') }}" class="w-full">
+                    <a href="{{ route('admin.leader.index') }}" class="w-full">
                         <button
                             type="button"
                             class="bg-indigo-500/50 text-white px-4 py-2 rounded hover:bg-indigo-800/50 transition w-full flex items-center justify-center"
