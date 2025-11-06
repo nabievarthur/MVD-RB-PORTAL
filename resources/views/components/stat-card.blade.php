@@ -31,7 +31,7 @@
 
     <div class="relative z-10">
         @if($title)<h3 class="text-xl font-semibold text-gray-300">{{ $title }}</h3>@endif
-        @if($value)<p class="text-4xl font-bold text-white mt-2">{{ $value }}</p>@endif
+        @if($value)<p class="text-4xl font-bold text-white mt-2">{{ $value }}</p>@else<p class="text-4xl font-bold text-white mt-2">0</p> @endif
         @if($description)<p class="text-gray-400 mt-2">{{ $description }}</p>@endif
 
         {{ $slot }}

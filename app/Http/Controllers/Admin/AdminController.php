@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\NewsRepository;
 use App\Repositories\OVDRepository;
 use App\Repositories\SubdivisionRepository;
 use App\Repositories\UserRepository;
@@ -12,7 +13,8 @@ class AdminController extends Controller
     public function __construct(
         protected UserRepository $userRepository,
         protected SubdivisionRepository $subdivisionRepository,
-        protected OvdRepository $ovdRepository
+        protected OvdRepository $ovdRepository,
+        protected NewsRepository $newsRepository,
     ) {}
 
     public function index()
@@ -22,6 +24,7 @@ class AdminController extends Controller
                 'usersCount' => $this->userRepository->getUsersCount(),
                 'subdivisionsCount' => $this->subdivisionRepository->getSubdivisionCount(),
                 'ovdCount' => $this->ovdRepository->getOvdCount(),
+                'newsCount' => $this->newsRepository->getNewsCount(),
             ]
         );
     }
